@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EF.Contexts;
 using EF.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreApp.Controllers
 {
@@ -21,6 +22,7 @@ namespace CoreApp.Controllers
         public IValueRepository ValueItems { get; set; }
 
         [HttpGet]
+        [Authorize(Policy = "ValuesUser")]
         public IEnumerable<ValueItem> GetAll()
         {
             return _valuesRepository.GetAll();  
