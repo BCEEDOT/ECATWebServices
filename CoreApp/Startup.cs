@@ -9,13 +9,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using EF.Contexts;
-using EF.Models;
+using ECATDataLib.Contexts;
+using ECATDataLib.Models;
 using AspNet.Security.OAuth.Validation;
 using Microsoft.AspNetCore.Http;
 using CoreApp.Providers;
 using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OpenIdConnect.Primitives;
+using ECATBusinessLib.Repositories.Interface;
+using ECATBusinessLib.Repositories.User;
 
 namespace CoreApp
 {
@@ -55,11 +57,15 @@ namespace CoreApp
 
             var connectionString = Configuration["DbConnection"];
             services.AddScoped(_ => new ValueContext(connectionString));
-            services.AddSingleton<IValueRepository, ValueRepository>();
+            //services.AddSingleton<IValueRepository, ValueRepository>();
+            services.AddScoped<IValueRepository, ValueRepository>();
             services.AddScoped(_ => new ProductContext(connectionString));
             //services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped(_ => new EcatContext(connectionString));
+            services.AddScoped<IUserRepo, UserRepo>(); 
             // Add framework services.
 
            

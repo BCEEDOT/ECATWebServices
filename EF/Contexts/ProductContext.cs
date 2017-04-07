@@ -3,25 +3,27 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using EF.Models;
+using ECATDataLib.Models;
 
-namespace EF.Contexts
+namespace ECATDataLib.Contexts
 {
     public class ProductContext : DbContext
     {
-        private const string LocalDb = "Server=(localdb)\\mssqllocaldb;Database=ecatlocaldev;Trusted_Connection=True;MultipleActiveResultSets=true";
+        //private const string LocalDb = "Server=(localdb)\\mssqllocaldb;Database=ecatlocaldev;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public static string ContextName { get { return "ProductContext"; } }
+        private static string dbConn;
 
-        public ProductContext() : base(LocalDb) { }
+        //public static string ContextName { get { return "ProductContext"; } }
 
-        public ProductContext(string connectionString = LocalDb) : base(connectionString)
+        public ProductContext() : base("ecat") { }
+
+        public ProductContext(string connectionString) : base(connectionString)
         {
-
+            dbConn = connectionString;
         }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserTest> Users { get; set; }
 
     }
 }

@@ -3,21 +3,23 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using EF.Models;
+using ECATDataLib.Models;
 
-namespace EF.Contexts
+namespace ECATDataLib.Contexts
 {
     public class ValueContext : DbContext
     {
-        private const string LocalDb = "Server=(localdb)\\mssqllocaldb;Database=ecatlocaldev;Trusted_Connection=True;MultipleActiveResultSets=true";
+        //private const string LocalDb = "Server=(localdb)\\mssqllocaldb;Database=ecatlocaldev;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public static string ContextName { get { return "ValueContext"; } }
+        //public static string ContextName { get { return "ValueContext"; } }
 
-        public ValueContext() : base(LocalDb) { }
+        public static string dbConn;
 
-        public ValueContext(string connectionString = LocalDb) : base(connectionString)
-        { 
+        public ValueContext() : base("ecat") { }
 
+        public ValueContext(string connectionString) : base(connectionString)
+        {
+            dbConn = connectionString;
         }
 
 

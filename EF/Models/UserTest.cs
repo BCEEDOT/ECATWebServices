@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EF.Models
+namespace ECATDataLib.Models
 {
-    public class User
+    public class UserTest
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

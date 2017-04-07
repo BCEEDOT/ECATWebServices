@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using Breeze.Persistence;
 using Newtonsoft.Json.Linq;
 
-namespace EF.Models
+namespace ECATDataLib.Models
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetUsers();
-        void Add(User user);
+        IEnumerable<UserTest> GetUsers();
+        void Add(UserTest user);
         void Add(string username, string password);
 
         //Breeze specific methods

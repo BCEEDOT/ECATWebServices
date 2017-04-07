@@ -4,8 +4,10 @@
 /obj
 /EF/obj
 /CoreApp/obj
+/ECATBusinessLib/obj
 /EF/bin
 /CoreApp/bin
+/ECATBusinessLib/bin
 
 # dependencies
 /packages

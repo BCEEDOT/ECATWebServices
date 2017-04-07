@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Breeze.Persistence;
-using EF.Models;
+using ECATDataLib.Models;
 using Newtonsoft.Json.Linq;
-using EF.Contexts;
+using ECATDataLib.Contexts;
 using Breeze.Persistence.EF6;
 
-namespace EF.Models
+namespace ECATDataLib.Models
 {
     public class UserRepository : IUserRepository
     {
@@ -24,7 +24,7 @@ namespace EF.Models
             _persistenceManager = new EFPersistenceManager<ProductContext>(productContext);
         }
 
-        public void Add(User user)
+        public void Add(UserTest user)
         {
             _persistenceManager.Context.Users.Add(user);
             _persistenceManager.Context.SaveChanges();
@@ -32,11 +32,11 @@ namespace EF.Models
 
         public void Add(string username, string password)
         {
-            _persistenceManager.Context.Users.Add(new User { Username = username, Password = password });
+            _persistenceManager.Context.Users.Add(new UserTest { Username = username, Password = password });
             _persistenceManager.Context.SaveChanges();
         }
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<UserTest> GetUsers()
         {
             return _persistenceManager.Context.Users;
         }

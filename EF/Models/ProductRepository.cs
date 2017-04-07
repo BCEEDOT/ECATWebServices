@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EF.Contexts;
+using ECATDataLib.Contexts;
 using Breeze.Persistence.EF6;
 using Breeze.Persistence;
 using Newtonsoft.Json.Linq;
 
-namespace EF.Models
+namespace ECATDataLib.Models
 {
     public class ProductRepository : IProductRepository
     {

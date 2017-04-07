@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EF.Contexts
+namespace ECATDataLib.Contexts
 {
-    public class ValueContextFactory : IDbContextFactory<ValueContext>
-    {
-        public ValueContext Create()
-        {
-            return new ValueContext("Server=(localdb)\\mssqllocaldb;Database=ecatlocaldev;Trusted_Connection=True;MultipleActiveResultSets=true");
-        }
-    }
+    //public class ValueContextFactory : IDbContextFactory<ValueContext>
+    //{
+    //    public ValueContext Create()
+    //    {
+    //        return new ValueContext("Server=(localdb)\\mssqllocaldb;Database=ecatlocaldev;Trusted_Connection=True;MultipleActiveResultSets=true");
+    //    }
+    //}
 }

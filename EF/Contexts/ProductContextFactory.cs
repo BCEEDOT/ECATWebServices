@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EF.Contexts
+namespace ECATDataLib.Contexts
 {
-    public class ProductContextFactory : IDbContextFactory<ProductContext>
-    {
-        public ProductContext Create()
-        {
-            return new ProductContext("Server=(localdb)\\mssqllocaldb;Database=ecatlocaldev;Trusted_Connection=True;MultipleActiveResultSets=true");
-        }
-    }
+    //public class ProductContextFactory : IDbContextFactory<ProductContext>
+    //{
+    //    public ProductContext Create()
+    //    {
+    //        return new ProductContext("Server=(localdb)\\mssqllocaldb;Database=ecatlocaldev;Trusted_Connection=True;MultipleActiveResultSets=true");
+    //    }
+    //}
 }

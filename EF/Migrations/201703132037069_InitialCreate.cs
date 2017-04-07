@@ -1,4 +1,4 @@
-namespace EF.Migrations
+namespace ECATDataLib.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
