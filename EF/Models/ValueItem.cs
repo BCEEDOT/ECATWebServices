@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ECATDataLib.Models
+namespace Ecat.Data.Models
 {
     public class ValueItem
     {

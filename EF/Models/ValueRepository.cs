@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using ECATDataLib.Contexts;
+using Ecat.Data.Contexts;
 using System.Linq;
 
 
-namespace ECATDataLib.Models
+namespace Ecat.Data.Models
 {
     public class ValueRepository : IValueRepository
 

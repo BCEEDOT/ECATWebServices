@@ -7,8 +7,8 @@
     <ProjectGuid>{990DD786-E0CA-4A61-9386-76FEB67713FE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ECATBusinessLib</RootNamespace>
-    <AssemblyName>ECATBusinessLib</AssemblyName>
+    <RootNamespace>Ecat.Business</RootNamespace>
+    <AssemblyName>Ecat.Business</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -172,9 +172,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Guards\UserGuard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Interface\IUserRepo.cs" />
-    <Compile Include="Repositories\User\UserRepo.cs" />
+    <Compile Include="Repositories\UserRepo.cs" />
+    <Compile Include="Utilities\EmailValidator.cs" />
+    <Compile Include="Utilities\Hasher.cs" />
+    <Compile Include="Utilities\SaveMapExtension.cs" />
+    <Compile Include="Utilities\UserExceptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

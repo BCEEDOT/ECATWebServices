@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ECATDataLib.Models.User;
+using Ecat.Data.Models.User;
 
-namespace ECATDataLib.Models.Interface
+namespace Ecat.Data.Models.Interface
 {
     public interface IProfileBase
     {

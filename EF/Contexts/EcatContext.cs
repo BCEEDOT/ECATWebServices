@@ -8,10 +8,10 @@ using System.Data.Entity.Migrations;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
 using System.Reflection;
-using ECATDataLib.Models.User;
+using Ecat.Data.Models.User;
 
 
-namespace ECATDataLib.Contexts
+namespace Ecat.Data.Contexts
 {
     public class EcatContext : DbContext
     {
@@ -48,9 +48,9 @@ namespace ECATDataLib.Contexts
                 .Where(type => type.Name.StartsWith("Ec"))
                 .Configure(type => type.ToTable(type.ClrType.Name.Substring(2)));
 
-            //TODO
+            //TODO: Put configs under a single namespace? ie Ecat.Data.Config?
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(type => type.IsClass && type.Namespace == "ECATDataLib.Models.User.Config");
+                .Where(type => type.IsClass && type.Namespace == "Ecat.Data.Models.User.Config");
 
             foreach (var configurationInstance in typesToRegister.Select(Activator.CreateInstance))
             {
@@ -60,6 +60,7 @@ namespace ECATDataLib.Contexts
             mb.Properties<DateTime>()
                 .Configure(c => c.HasColumnType("datetime2"));
 
+//TODO: Updates as more models implemented
             //mb.Ignore<Academy>();
             //mb.Ignore<AcademyCategory>();
             //mb.Ignore<SanitizedSpComment>();

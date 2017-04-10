@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ECATDataLib.Contexts;
-using ECATDataLib.Models;
+using Ecat.Data.Contexts;
+using Ecat.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace CoreApp.Controllers
+namespace Ecat.Web.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller

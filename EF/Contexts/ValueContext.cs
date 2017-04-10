@@ -3,9 +3,9 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using ECATDataLib.Models;
+using Ecat.Data.Models;
 
-namespace ECATDataLib.Contexts
+namespace Ecat.Data.Contexts
 {
     public class ValueContext : DbContext
     {

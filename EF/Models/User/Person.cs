@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using ECATDataLib.Models.Interface;
+using Ecat.Data.Models.Interface;
 
-namespace ECATDataLib.Models.User
+namespace Ecat.Data.Models.User
 {
     public class Person: IAuditable
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PersonId { get; set; }
 
         public string LmsUserId { get; set; }

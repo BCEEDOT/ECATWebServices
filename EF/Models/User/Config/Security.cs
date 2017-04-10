@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity.ModelConfiguration;
 
-namespace ECATDataLib.Models.User.Config
+namespace Ecat.Data.Models.User.Config
 {
     public class ConfigSecurity : EntityTypeConfiguration<Security>
     {

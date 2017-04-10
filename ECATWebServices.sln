@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApp", "CoreApp\CoreApp.csproj", "{51AF607B-BD1C-4F40-B271-1F90513887C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECATWebApp", "CoreApp\ECATWebApp.csproj", "{51AF607B-BD1C-4F40-B271-1F90513887C4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{990DD786-E0CA-4A61-9386-76FEB67713FE} = {990DD786-E0CA-4A61-9386-76FEB67713FE}
 	EndProjectSection

@@ -9,17 +9,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using ECATDataLib.Contexts;
-using ECATDataLib.Models;
+using Ecat.Data.Contexts;
+using Ecat.Data.Models;
 using AspNet.Security.OAuth.Validation;
 using Microsoft.AspNetCore.Http;
-using CoreApp.Providers;
+using Ecat.Web.Providers;
 using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OpenIdConnect.Primitives;
-using ECATBusinessLib.Repositories.Interface;
-using ECATBusinessLib.Repositories.User;
+using Ecat.Business.Repositories.Interface;
+using Ecat.Business.Repositories;
 
-namespace CoreApp
+namespace Ecat.Web
 {
     public class Startup
     {

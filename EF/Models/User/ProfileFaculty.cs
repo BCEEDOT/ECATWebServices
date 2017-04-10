@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ECATDataLib.Models.Interface;
+using Ecat.Data.Models.Interface;
 using System.ComponentModel.DataAnnotations;
 
-namespace ECATDataLib.Models.User
+namespace Ecat.Data.Models.User
 {
     public class ProfileFaculty: IProfileBase
     {
-        //[Key]
         public int PersonId { get; set; }
         public string Bio { get; set; }
         public string HomeStation { get; set; }

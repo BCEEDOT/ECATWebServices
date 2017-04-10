@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Breeze.Persistence;
 using Newtonsoft.Json.Linq;
 
-namespace ECATDataLib.Models
+namespace Ecat.Data.Models
 {
     public interface IUserRepository
     {

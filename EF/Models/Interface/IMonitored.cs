@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace Ecat.Data.Models.Interface
 {
-    public interface IAuditable
+    public interface ICourseMonitored
     {
-        int? ModifiedById { get; set; }
-        DateTime? ModifiedDate { get; set; }
+        int CourseId { get; set; }
+    }
+
+    public interface IWorkGroupMonitored
+    {
+        int WorkGroupId { get; set; }
     }
 }

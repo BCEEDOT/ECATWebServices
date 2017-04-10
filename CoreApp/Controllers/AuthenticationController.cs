@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CoreApp.Controllers
+namespace Ecat.Web.Controllers
 {
     [Produces("application/json")]
     [Route("api/Authentication")]

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Ecat.Data.Models.Interface
 {
-    public interface IAuditable
+    public interface ISoftDelete
     {
-        int? ModifiedById { get; set; }
-        DateTime? ModifiedDate { get; set; }
+        bool IsDeleted { get; set; }
+        int? DeletedById { get; set; }
+        DateTime? DeletedDate { get; set; }
     }
 }

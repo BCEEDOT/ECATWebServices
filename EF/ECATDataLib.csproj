@@ -7,8 +7,8 @@
     <ProjectGuid>{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EF</RootNamespace>
-    <AssemblyName>EF</AssemblyName>
+    <RootNamespace>Ecat.Data</RootNamespace>
+    <AssemblyName>Ecat.Data</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -242,13 +242,19 @@
     <Compile Include="Contexts\ProductContextFactory.cs" />
     <Compile Include="Contexts\ValueContext.cs" />
     <Compile Include="Contexts\ValueContextFactory.cs" />
+    <Compile Include="Migrations\201704101604195_UserModels.cs" />
+    <Compile Include="Migrations\201704101604195_UserModels.Designer.cs">
+      <DependentUpon>201704101604195_UserModels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Interface\IAuditable.cs" />
+    <Compile Include="Models\Interface\IMonitored.cs" />
     <Compile Include="Models\Interface\IProfileBase.cs" />
     <Compile Include="Migrations\201703132037069_InitialCreate.cs" />
     <Compile Include="Migrations\201703132037069_InitialCreate.Designer.cs">
       <DependentUpon>201703132037069_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Interface\ISoftDelete.cs" />
     <Compile Include="Models\IProductRepository.cs" />
     <Compile Include="Models\IUserRepository.cs" />
     <Compile Include="Models\IValueRepository.cs" />
@@ -274,6 +280,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703132037069_InitialCreate.resx">
       <DependentUpon>201703132037069_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704101604195_UserModels.resx">
+      <DependentUpon>201704101604195_UserModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ECATDataLib.Models
+namespace Ecat.Data.Models
 {
     public interface IValueRepository
     {

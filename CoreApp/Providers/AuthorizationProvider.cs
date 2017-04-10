@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Primitives;
 using AspNet.Security.OpenIdConnect.Server;
 using Microsoft.Extensions.DependencyInjection;
-using ECATDataLib.Models;
-using ECATDataLib.Contexts;
+using Ecat.Data.Models;
+using Ecat.Data.Contexts;
 using Breeze.Persistence.EF6;
 using AspNet.Security.OpenIdConnect.Extensions;
 using Microsoft.AspNetCore.Authentication;
@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Authentication;
 using System.Security.Claims;
 
-namespace CoreApp.Providers
+namespace Ecat.Web.Providers
 {
     public sealed class AuthorizationProvider : OpenIdConnectServerProvider
     {

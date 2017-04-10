@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Breeze.Persistence;
-using ECATDataLib.Models;
+using Ecat.Data.Models;
 using Newtonsoft.Json.Linq;
-using ECATDataLib.Contexts;
+using Ecat.Data.Contexts;
 using Breeze.Persistence.EF6;
 
-namespace ECATDataLib.Models
+namespace Ecat.Data.Models
 {
     public class UserRepository : IUserRepository
     {

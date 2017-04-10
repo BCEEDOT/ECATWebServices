@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECATDataLib.Contexts
+namespace Ecat.Data.Contexts
 {
     //public class ProductContextFactory : IDbContextFactory<ProductContext>
     //{

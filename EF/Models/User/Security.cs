@@ -5,14 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using ECATDataLib.Models.Interface;
+using Ecat.Data.Models.Interface;
 
-namespace ECATDataLib.Models.User
+namespace Ecat.Data.Models.User
 {
     public class Security: IAuditable
     {
-        //[Key]
-        //[ForeignKey("PersonId")]
         public int PersonId { get; set; }
         public int BadPasswordCount { get; set; }
         public string PasswordHash { get; set; }

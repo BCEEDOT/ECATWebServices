@@ -1,19 +1,19 @@
-namespace ECATDataLib.Migrations
+namespace Ecat.Data.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    //internal sealed class Configuration : DbMigrationsConfiguration<ECATDataLib.Contexts.ValueContext>
+    //internal sealed class Configuration : DbMigrationsConfiguration<Ecat.Data.Contexts.ValueContext>
     //{
     //    public Configuration()
     //    {
     //        AutomaticMigrationsEnabled = false;
-    //        ContextKey = "ECATDataLib.Contexts.ValueContext";
+    //        ContextKey = "Ecat.Data.Contexts.ValueContext";
     //    }
 
-    //    protected override void Seed(ECATDataLib.Contexts.ValueContext context)
+    //    protected override void Seed(Ecat.Data.Contexts.ValueContext context)
     //    {
     //        //  This method will be called after migrating to the latest version.
 

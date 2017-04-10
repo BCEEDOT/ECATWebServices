@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ECATDataLib.Contexts;
-using ECATDataLib.Models;
+using Ecat.Data.Contexts;
+using Ecat.Data.Models;
 using Breeze.AspNetCore;
 using Breeze.Persistence;
 using Newtonsoft.Json.Linq;
 using Breeze.Persistence.EF6;
 
-namespace CoreApp.Controllers
+namespace Ecat.Web.Controllers
 {
     //standard breeze routing and attribute
     [Route("breeze/[controller]/[action]")]
