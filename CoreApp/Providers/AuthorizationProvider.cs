@@ -28,13 +28,11 @@ namespace CoreApp.Providers
                );
 
                 await Task.FromResult(context.IsValidated);
-                //return;
             }
 
             context.Skip();
 
             await Task.FromResult(context.IsValidated);
-            //return;
 
         }
 
@@ -53,8 +51,7 @@ namespace CoreApp.Providers
                         OpenIdConnectServerDefaults.AuthenticationScheme, OpenIdConnectConstants.Claims.Name, OpenIdConnectConstants.Claims.Role);
 
                     identity.AddClaim(OpenIdConnectConstants.Claims.Subject, "[1]");
-                    //identity.AddClaim("username", "test", OpenIdConnectConstants.Destinations.AccessToken, OpenIdConnectConstants.Destinations.IdentityToken);
-                    identity.AddClaim("User", "Student", OpenIdConnectConstants.Destinations.AccessToken, OpenIdConnectConstants.Destinations.IdentityToken);
+                    identity.AddClaim(OpenIdConnectConstants.Claims.Role, "Student", OpenIdConnectConstants.Destinations.AccessToken);
 
                     var ticket = new AuthenticationTicket(
                         new ClaimsPrincipal(identity), new AuthenticationProperties(), context.Options.AuthenticationScheme);
@@ -63,17 +60,25 @@ namespace CoreApp.Providers
                     //    "test", "test2", "test3"
                     //);
 
-                    ticket.SetResources("resource_server");
+                    ticket.SetResources("ecat_server");
 
 
                     context.Validate(ticket);
+
+                    
                    
                 }
 
                 await Task.FromResult(context.IsValidated);
-                //return;
             }
            
+        }
+
+        public override Task ApplyTokenResponse(ApplyTokenResponseContext context)
+        {
+            context.Response["CUSTOM"] = "CUSTOMVALUE";
+
+            return base.ApplyTokenResponse(context);
         }
 
     }

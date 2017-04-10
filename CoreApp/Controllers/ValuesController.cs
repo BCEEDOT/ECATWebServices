@@ -22,9 +22,10 @@ namespace CoreApp.Controllers
         public IValueRepository ValueItems { get; set; }
 
         [HttpGet]
-        //[Authorize(Policy = "ValuesUser")]
+        [Authorize(Policy = "ValuesUser")]
         public IEnumerable<ValueItem> GetAll()
         {
+
             return _valuesRepository.GetAll();  
         }
         

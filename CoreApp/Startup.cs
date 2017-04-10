@@ -41,7 +41,7 @@ namespace CoreApp
 
             services.AddAuthorization(options => {
                 options.AddPolicy("ValuesUser",
-                                    policy => policy.RequireClaim("User", "Student"));
+                                    policy => policy.RequireClaim("Role", "Student"));
             });
 
 
@@ -87,10 +87,11 @@ namespace CoreApp
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
 
+
             app.UseJwtBearerAuthentication(new JwtBearerOptions {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                Audience = "resource_server",
+                Audience = "ecat_server",
                 Authority  = "http://localhost:62187",
                 RequireHttpsMetadata = false,
                 TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
