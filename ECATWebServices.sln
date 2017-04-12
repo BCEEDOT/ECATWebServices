@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECATWebApp", "CoreApp\ECATWebApp.csproj", "{51AF607B-BD1C-4F40-B271-1F90513887C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECATBusinessLib", "ECATBusinessLib\ECATBusinessLib.csproj", "{990DD786-E0CA-4A61-9386-76FEB67713FE}"
 	ProjectSection(ProjectDependencies) = postProject
-		{990DD786-E0CA-4A61-9386-76FEB67713FE} = {990DD786-E0CA-4A61-9386-76FEB67713FE}
+		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4} = {E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECATDataLib", "EF\ECATDataLib.csproj", "{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECATDataLib", "ECATDataLib\ECATDataLib.csproj", "{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECATBusinessLib", "ECATBusinessLib\ECATBusinessLib.csproj", "{990DD786-E0CA-4A61-9386-76FEB67713FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECATWebApp", "ECATWebApp\ECATWebApp.csproj", "{864A649E-67C5-48F4-8348-D5B290DFE393}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4} = {E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}
 	EndProjectSection
@@ -21,18 +21,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{51AF607B-BD1C-4F40-B271-1F90513887C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51AF607B-BD1C-4F40-B271-1F90513887C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51AF607B-BD1C-4F40-B271-1F90513887C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51AF607B-BD1C-4F40-B271-1F90513887C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{990DD786-E0CA-4A61-9386-76FEB67713FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{990DD786-E0CA-4A61-9386-76FEB67713FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{990DD786-E0CA-4A61-9386-76FEB67713FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{990DD786-E0CA-4A61-9386-76FEB67713FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4FBD950-31B9-4DE5-BE20-9165A7FF35D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{864A649E-67C5-48F4-8348-D5B290DFE393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{864A649E-67C5-48F4-8348-D5B290DFE393}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{864A649E-67C5-48F4-8348-D5B290DFE393}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{864A649E-67C5-48F4-8348-D5B290DFE393}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

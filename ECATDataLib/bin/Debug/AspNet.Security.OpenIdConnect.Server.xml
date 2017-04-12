@@ -1,0 +1,2660 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AspNet.Security.OpenIdConnect.Server</name>
+    </assembly>
+    <members>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerDefaults">
+            <summary>
+            Exposes the default values used by the OpenID Connect server middleware.
+            </summary>
+        </member>
+        <member name="F:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerDefaults.AuthenticationScheme">
+            <summary>
+            Default value for <see cref="P:Microsoft.AspNetCore.Builder.AuthenticationOptions.AuthenticationScheme"/>.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerFeature">
+            <summary>
+            Exposes the OpenID Connect request/response
+            attached with the current HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerFeature.Request">
+            <summary>
+            Gets or sets the OpenID Connect request
+            attached with the current HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerFeature.Response">
+            <summary>
+            Gets or sets the OpenID Connect response
+            attached with the current HTTP context.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerMiddleware">
+            <summary>
+            Authorization Server middleware component which is added to an OWIN pipeline. This class is not
+            created by application code directly, instead it is added by calling the the IAppBuilder UseOpenIdConnectServer
+            extension method.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Options.IOptions{AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions},Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.Extensions.Logging.ILoggerFactory,System.Text.Encodings.Web.HtmlEncoder,System.Text.Encodings.Web.UrlEncoder,Microsoft.AspNetCore.DataProtection.IDataProtectionProvider)">
+            <summary>
+            Authorization Server middleware component which is added to an OWIN pipeline. This constructor is not
+            called by application code directly, instead it is added by calling the the IAppBuilder UseOpenIdConnectServer
+            extension method.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerMiddleware.CreateHandler">
+            <summary>
+            Called by the AuthenticationMiddleware base class to create a per-request handler.
+            </summary>
+            <returns>A new instance of the request handler</returns>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions">
+            <summary>
+            Provides various settings needed to control
+            the behavior of the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.#ctor">
+            <summary>
+            Creates an instance of authorization server options with default values.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.Issuer">
+            <summary>
+            The base address used to uniquely identify the authorization server.
+            The URI must be absolute and may contain a path, but no query string or fragment part.
+            Unless AllowInsecureHttp has been set to true, an HTTPS address must be provided.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.SigningCredentials">
+            <summary>
+            Gets the list of the credentials used to sign JWT tokens. You can provide any symmetric (e.g <see cref="T:Microsoft.IdentityModel.Tokens.SymmetricSecurityKey"/>)
+            or asymmetric (e.g <see cref="T:Microsoft.IdentityModel.Tokens.RsaSecurityKey"/>, or <see cref="T:Microsoft.IdentityModel.Tokens.X509SecurityKey"/>) security key, but you're strongly
+            encouraged to use a 2048 or 4096-bits RSA asymmetric key in production. Note that only keys supporting the
+            <see cref="F:Microsoft.IdentityModel.Tokens.SecurityAlgorithms.RsaSha256Signature"/> algorithm can be exposed on the configuration metadata endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.AuthorizationEndpointPath">
+            <summary>
+            The request path where client applications will redirect the user-agent in order to
+            obtain user consent to issue a token. Must begin with a leading slash, like "/connect/authorize".
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.ConfigurationEndpointPath">
+            <summary>
+            The request path where client applications will be able to retrieve the configuration metadata associated
+            with this instance. Must begin with a leading slash, like "/.well-known/openid-configuration".
+            This setting can be set to <see cref="F:Microsoft.AspNetCore.Http.PathString.Empty"/> to disable the configuration endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.CryptographyEndpointPath">
+            <summary>
+            The request path where client applications will be able to retrieve the JSON Web Key Set
+            associated with this instance. Must begin with a leading slash, like "/.well-known/jwks".
+            This setting can be set to <see cref="F:Microsoft.AspNetCore.Http.PathString.Empty"/> to disable the cryptography endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.IntrospectionEndpointPath">
+            <summary>
+            The request path client applications communicate with to validate an access, identity or refresh token.
+            Must begin with a leading slash, like "/connect/introspect".
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.LogoutEndpointPath">
+            <summary>
+            The request path client applications communicate with to log out.
+            Must begin with a leading slash, like "/connect/logout".
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.RevocationEndpointPath">
+            <summary>
+            The request path client applications communicate with to revoke an access or refresh token.
+            Must begin with a leading slash, like "/connect/revoke".
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.TokenEndpointPath">
+            <summary>
+            The request path client applications communicate with directly as part of the OpenID Connect protocol.
+            Must begin with a leading slash, like "/connect/token". If the client is issued a client_secret, it must
+            be provided to this endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.UserinfoEndpointPath">
+            <summary>
+            The request path client applications communicate with to retrieve user information.
+            Must begin with a leading slash, like "/connect/userinfo".
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.Provider">
+            <summary>
+            Specifies a <see cref="T:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider"/> that the <see cref="T:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerMiddleware" />
+            invokes to enable developer control over the while authentication/authorization process.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.AuthorizationCodeFormat">
+            <summary>
+            The data format used to protect and unprotect the information contained in the authorization code.
+            If not provided by the application the default data protection provider depends on the host server.
+            The SystemWeb host on IIS will use ASP.NET machine key data protection, and HttpListener and other self-hosted
+            servers will use DPAPI data protection.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.AccessTokenFormat">
+            <summary>
+            The data format used to protect the information contained in the access token.
+            If not provided by the application the default data protection provider depends on the host server.
+            The SystemWeb host on IIS will use ASP.NET machine key data protection, and HttpListener and other self-hosted
+            servers will use DPAPI data protection.
+            This property is only used when <see cref="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.AccessTokenHandler"/> is explicitly set to <value>null</value>
+            and when <see cref="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.SerializeAccessToken(AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext)"/>
+            doesn't call <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.RefreshTokenFormat">
+            <summary>
+            The data format used to protect and unprotect the information contained in the refresh token.
+            If not provided by the application the default data protection provider depends on the host server.
+            The SystemWeb host on IIS will use ASP.NET machine key data protection, and HttpListener and other self-hosted
+            servers will use DPAPI data protection.
+            This property is only used when <see cref="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.SerializeRefreshToken(AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext)"/>
+            doesn't call <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.AccessTokenHandler">
+            <summary>
+            The <see cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenHandler"/> instance used to forge access tokens.
+            Note: this property is only used when <see cref="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.SerializeAccessToken(AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext)"/>
+            doesn't call <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.IdentityTokenHandler">
+            <summary>
+            The <see cref="T:System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler"/> instance used to forge identity tokens.
+            You can replace the default instance to change the way id_tokens are serialized.
+            This property is only used when <see cref="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.SerializeIdentityToken(AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext)"/>
+            doesn't call <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.AuthorizationCodeLifetime">
+            <summary>
+            The period of time the authorization code remains valid after being issued. The default is 5 minutes.
+            This time span must also take into account clock synchronization between servers in a web farm, so a very
+            brief value could result in unexpectedly expired tokens.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.AccessTokenLifetime">
+            <summary>
+            The period of time the access token remains valid after being issued. The default is 1 hour.
+            The client application is expected to refresh or acquire a new access token after the token has expired.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.IdentityTokenLifetime">
+            <summary>
+            The period of time the identity token remains valid after being issued. The default is 20 minutes.
+            The client application is expected to refresh or acquire a new identity token after the token has expired.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.RefreshTokenLifetime">
+            <summary>
+            The period of time the refresh token remains valid after being issued. The default is 14 days.
+            The client application is expected to start a whole new authentication flow after the refresh token has expired.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.UseSlidingExpiration">
+            <summary>
+            Determines whether new refresh tokens should be issued during a grant_type=refresh_token request.
+            Set this property to <c>true</c> to issue a new refresh token, <c>false</c> to prevent the OpenID Connect
+            server middleware from issuing new refresh tokens when receiving a grant_type=refresh_token request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.ApplicationCanDisplayErrors">
+            <summary>
+            Set to true if the web application is able to render error messages on the authorization endpoint. This is only needed for cases where
+            the browser is not redirected back to the client application, for example, when the client_id or redirect_uri are incorrect. The
+            authorization endpoint should expect to see the OpenID Connect response added to the ASP.NET 5 environment.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.SystemClock">
+            <summary>
+            Used to know what the current clock time is when calculating or validating token expiration. When not assigned default is based on
+            DateTimeOffset.UtcNow. This is typically needed only for unit testing.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.AllowInsecureHttp">
+            <summary>
+            Gets or sets a boolean indicating whether incoming requests arriving on non-HTTPS endpoints should be rejected.
+            By default, this property is set to <c>false</c> to help mitigate man-in-the-middle attacks.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.HtmlEncoder">
+            <summary>
+            Used to sanitize HTML responses. If you don't provide an explicit instance,
+            one will be automatically retrieved through the dependency injection system.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions.DataProtectionProvider">
+            <summary>
+            Gets or sets the data protection provider used to create the default
+            data protectors used by <see cref="T:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerMiddleware"/>.
+            When this property is set to <c>null</c>, the data protection provider
+            is directly retrieved from the dependency injection container.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider">
+            <summary>
+            Exposes events used by the authorization server to communicate with the web application
+            while processing incoming requests. This class may be used as a virtual base class, and offers
+            delegate properties which may be used to handle individual calls without declaring a new type.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnMatchEndpoint">
+            <summary>
+            Called to determine if an incoming request is treated as an authorization or token
+            endpoint. If Options.AuthorizationEndpointPath or Options.TokenEndpointPath
+            are assigned values, then handling this event is optional and context.IsAuthorizationEndpoint and context.IsTokenEndpoint
+            will already be true if the request path matches.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnExtractAuthorizationRequest">
+            <summary>
+            Called for each request to the authorization endpoint to give the application code
+            a chance to manually extract the authorization request from the ambient HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnExtractConfigurationRequest">
+            <summary>
+            Called for each request to the configuration endpoint to give the application code
+            a chance to manually extract the configuration request from the ambient HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnExtractCryptographyRequest">
+            <summary>
+            Called for each request to the cryptography endpoint to give the application code
+            a chance to manually extract the cryptography request from the ambient HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnExtractIntrospectionRequest">
+            <summary>
+            Called for each request to the introspection endpoint to give the application code
+            a chance to manually extract the introspection request from the ambient HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnExtractLogoutRequest">
+            <summary>
+            Called for each request to the logout endpoint to give the application code
+            a chance to manually extract the logout request from the ambient HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnExtractRevocationRequest">
+            <summary>
+            Called for each request to the revocation endpoint to give the application code
+            a chance to manually extract the revocation request from the ambient HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnExtractTokenRequest">
+            <summary>
+            Called for each request to the token endpoint to give the application code
+            a chance to manually extract the token request from the ambient HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnExtractUserinfoRequest">
+            <summary>
+            Called for each request to the userinfo endpoint to give the application code
+            a chance to manually extract the userinfo request from the ambient HTTP context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnValidateAuthorizationRequest">
+            <summary>
+            Called for each request to the authorization endpoint to determine if the request is valid and should continue.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnValidateConfigurationRequest">
+            <summary>
+            Called for each request to the configuration endpoint to determine if the request is valid and should continue.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnValidateCryptographyRequest">
+            <summary>
+            Called for each request to the cryptography endpoint to determine if the request is valid and should continue.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnValidateIntrospectionRequest">
+            <summary>
+            Called for each request to the introspection endpoint to determine if the request is valid and should continue.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnValidateRevocationRequest">
+            <summary>
+            Called for each request to the revocation endpoint to determine if the request is valid and should continue.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnValidateLogoutRequest">
+            <summary>
+            Called for each request to the logout endpoint to determine if the request is valid and should continue.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnValidateTokenRequest">
+            <summary>
+            Called for each request to the token endpoint to determine if the request is valid and should continue.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnValidateUserinfoRequest">
+            <summary>
+            Called for each request to the userinfo endpoint to determine if the request is valid and should continue.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnHandleAuthorizationRequest">
+            <summary>
+            Called at the final stage of an incoming authorization endpoint request before the execution continues on to the web application component
+            responsible for producing the html response. Anything present in the OWIN pipeline following the Authorization Server may produce the
+            response for the authorization page. If running on IIS any ASP.NET technology running on the server may produce the response for the
+            authorization page. If the web application wishes to produce the response directly in the AuthorizationEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing. If the web application wishes
+            to grant the authorization directly in the AuthorizationEndpoint call it cay call context.OwinContext.Authentication.SignIn with the
+            appropriate ClaimsIdentity and should call context.RequestCompleted to stop other handlers from executing.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnHandleConfigurationRequest">
+            <summary>
+            Called by the client applications to retrieve the OpenID Connect configuration associated with this instance.
+            An application may implement this call in order to do any final modification to the configuration metadata.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnHandleCryptographyRequest">
+            <summary>
+            Called by the client applications to retrieve the OpenID Connect JSON Web Key set associated with this instance.
+            An application may implement this call in order to do any final modification to the keys set.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnHandleIntrospectionRequest">
+            <summary>
+            Called by the applications to determine the status and metadata for a token.
+            Validation conforms to the OAuth 2.0 Token Introspection specification with some additions. See documentation for details.
+            An application may implement this call in order to do any final modification to the token status and metadata.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnHandleLogoutRequest">
+            <summary>
+            Called at the final stage of an incoming logout endpoint request before the execution continues on to the web application component
+            responsible for producing the html response. Anything present in the OWIN pipeline following the Authorization Server may produce the
+            response for the logout page. If running on IIS any ASP.NET technology running on the server may produce the response for the
+            authorization page. If the web application wishes to produce the response directly in the LogoutEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnHandleRevocationRequest">
+            <summary>
+            Called by the client applications to revoke an access or refresh token.
+            An application may implement this call in order to do any final modification to the revocation response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnHandleTokenRequest">
+            <summary>
+            Called at the final stage of a successful Token endpoint request.
+            An application may implement this call in order to do any final
+            modification of the claims being used to issue access or refresh tokens.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnHandleUserinfoRequest">
+            <summary>
+            Called at the final stage of an incoming userinfo endpoint request before the execution continues on to the web application component
+            responsible for producing the JSON response. Anything present in the OWIN pipeline following the Authorization Server may produce the
+            response for the userinfo response. If the web application wishes to produce the response directly in the UserinfoEndpoint call it
+            may write to the context.Response directly and should call context.HandleResponse to stop other handlers from executing.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnApplyAuthorizationResponse">
+            <summary>
+            Called before the AuthorizationEndpoint redirects its response to the caller.
+            The response could contain an access token when using implicit flow or
+            an authorization code when using the authorization code flow.
+            If the web application wishes to produce the authorization response directly in the AuthorizationEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing.
+            This call may also be used to add additional response parameters to the authorization response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnApplyConfigurationResponse">
+            <summary>
+            Called before the authorization server starts emitting the OpenID Connect configuration associated with this instance.
+            If the web application wishes to produce the configuration metadata directly in this call, it may write to the
+            context.Response directly and should call context.RequestCompleted to stop the default behavior from executing.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnApplyCryptographyResponse">
+            <summary>
+            Called before the authorization server starts emitting the OpenID Connect JSON Web Key set associated with this instance.
+            If the web application wishes to produce the JSON Web Key set directly in this call, it may write to the
+            context.Response directly and should call context.RequestCompleted to stop the default behavior from executing.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnApplyIntrospectionResponse">
+            <summary>
+            Called before the authorization server starts emitting the status and metadata associated with the token received.
+            Validation conforms to the OAuth 2.0 Token Introspection specification with some additions. See documentation for details.
+            If the web application wishes to produce the token status and metadata directly in this call, it may write to the
+            context.Response directly and should call context.RequestCompleted to stop the default behavior from executing.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnApplyLogoutResponse">
+            <summary>
+            Called before the LogoutEndpoint endpoint redirects its response to the caller.
+            If the web application wishes to produce the authorization response directly in the LogoutEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing.
+            This call may also be used to add additional response parameters to the authorization response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnApplyRevocationResponse">
+            <summary>
+            Called before the authorization server starts emitting the revocation response to the response stream.
+            If the web application wishes to produce the token status and metadata directly in this call, it may write to the
+            context.Response directly and should call context.RequestCompleted to stop the default behavior from executing.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnApplyTokenResponse">
+            <summary>
+            Called before the TokenEndpoint redirects its response to the caller.
+            This call may also be used in order to add additional
+            response parameters to the JSON response payload.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnApplyUserinfoResponse">
+            <summary>
+            Called before the UserinfoEndpoint endpoint starts writing to the response stream.
+            If the web application wishes to produce the userinfo response directly in the UserinfoEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing.
+            This call may also be used to add additional response parameters to the authorization response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnSerializeAuthorizationCode">
+            <summary>
+            Called to create a new authorization code. An application may use this context
+            to replace the authentication ticket before it is serialized or to use its own code store
+            and skip the default logic using <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnSerializeAccessToken">
+            <summary>
+            Called to create a new access token. An application may use this context
+            to replace the authentication ticket before it is serialized or to use its own token format
+            and skip the default logic using <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnSerializeIdentityToken">
+            <summary>
+            Called to create a new identity token. An application may use this context
+            to replace the authentication ticket before it is serialized or to use its own token format
+            and skip the default logic using <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnSerializeRefreshToken">
+            <summary>
+            Called to create a new refresh token. An application may use this context
+            to replace the authentication ticket before it is serialized or to use its own token format
+            and skip the default logic using <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnDeserializeAuthorizationCode">
+            <summary>
+            Called when receiving an authorization code. An application may use this context
+            to deserialize the code using a custom format and to skip the default logic using
+            <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnDeserializeAccessToken">
+            <summary>
+            Called when receiving an access token. An application may use this context
+            to deserialize the token using a custom format and to skip the default logic using
+            <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnDeserializeIdentityToken">
+            <summary>
+            Called when receiving an identity token. An application may use this context
+            to deserialize the token using a custom format and to skip the default logic using
+            <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.OnDeserializeRefreshToken">
+            <summary>
+            Called when receiving a refresh token. An application may use this context
+            to deserialize the code using a custom format and to skip the default logic using
+            <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.MatchEndpoint(AspNet.Security.OpenIdConnect.Server.MatchEndpointContext)">
+            <summary>
+            Called to determine if an incoming request is treated as an authorization or token
+            endpoint. If Options.AuthorizationEndpointPath or Options.TokenEndpointPath
+            are assigned values, then handling this event is optional and context.IsAuthorizationEndpoint and context.IsTokenEndpoint
+            will already be true if the request path matches.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ExtractAuthorizationRequest(AspNet.Security.OpenIdConnect.Server.ExtractAuthorizationRequestContext)">
+            <summary>
+            Called for each request to the authorization endpoint to give the application code
+            a chance to manually extract the authorization request from the ambient HTTP context.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ExtractConfigurationRequest(AspNet.Security.OpenIdConnect.Server.ExtractConfigurationRequestContext)">
+            <summary>
+            Called for each request to the configuration endpoint to give the application code
+            a chance to manually extract the configuration request from the ambient HTTP context.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ExtractCryptographyRequest(AspNet.Security.OpenIdConnect.Server.ExtractCryptographyRequestContext)">
+            <summary>
+            Called for each request to the cryptography endpoint to give the application code
+            a chance to manually extract the cryptography request from the ambient HTTP context.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ExtractIntrospectionRequest(AspNet.Security.OpenIdConnect.Server.ExtractIntrospectionRequestContext)">
+            <summary>
+            Called for each request to the introspection endpoint to give the application code
+            a chance to manually extract the introspection request from the ambient HTTP context.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ExtractLogoutRequest(AspNet.Security.OpenIdConnect.Server.ExtractLogoutRequestContext)">
+            <summary>
+            Called for each request to the logout endpoint to give the application code
+            a chance to manually extract the logout request from the ambient HTTP context.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ExtractRevocationRequest(AspNet.Security.OpenIdConnect.Server.ExtractRevocationRequestContext)">
+            <summary>
+            Called for each request to the revocation endpoint to give the application code
+            a chance to manually extract the revocation request from the ambient HTTP context.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ExtractTokenRequest(AspNet.Security.OpenIdConnect.Server.ExtractTokenRequestContext)">
+            <summary>
+            Called for each request to the token endpoint to give the application code
+            a chance to manually extract the token request from the ambient HTTP context.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ExtractUserinfoRequest(AspNet.Security.OpenIdConnect.Server.ExtractUserinfoRequestContext)">
+            <summary>
+            Called for each request to the userinfo endpoint to give the application code
+            a chance to manually extract the userinfo request from the ambient HTTP context.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ValidateAuthorizationRequest(AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext)">
+            <summary>
+            Called for each request to the authorization endpoint to determine if the request is valid and should continue.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ValidateConfigurationRequest(AspNet.Security.OpenIdConnect.Server.ValidateConfigurationRequestContext)">
+            <summary>
+            Called for each request to the configuration endpoint to determine if the request is valid and should continue.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ValidateCryptographyRequest(AspNet.Security.OpenIdConnect.Server.ValidateCryptographyRequestContext)">
+            <summary>
+            Called for each request to the cryptography endpoint to determine if the request is valid and should continue.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ValidateIntrospectionRequest(AspNet.Security.OpenIdConnect.Server.ValidateIntrospectionRequestContext)">
+            <summary>
+            Called for each request to the introspection endpoint to determine if the request is valid and should continue.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ValidateLogoutRequest(AspNet.Security.OpenIdConnect.Server.ValidateLogoutRequestContext)">
+            <summary>
+            Called for each request to the logout endpoint to determine if the request is valid and should continue.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ValidateRevocationRequest(AspNet.Security.OpenIdConnect.Server.ValidateRevocationRequestContext)">
+            <summary>
+            Called for each request to the revocation endpoint to determine if the request is valid and should continue.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ValidateTokenRequest(AspNet.Security.OpenIdConnect.Server.ValidateTokenRequestContext)">
+            <summary>
+            Called for each request to the token endpoint to determine if the request is valid and should continue.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ValidateUserinfoRequest(AspNet.Security.OpenIdConnect.Server.ValidateUserinfoRequestContext)">
+            <summary>
+            Called for each request to the userinfo endpoint to determine if the request is valid and should continue.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.HandleAuthorizationRequest(AspNet.Security.OpenIdConnect.Server.HandleAuthorizationRequestContext)">
+            <summary>
+            Called at the final stage of an incoming authorization endpoint request before the execution continues on to the web application component
+            responsible for producing the html response. Anything present in the OWIN pipeline following the Authorization Server may produce the
+            response for the authorization page. If running on IIS any ASP.NET technology running on the server may produce the response for the
+            authorization page. If the web application wishes to produce the response directly in the AuthorizationEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing. If the web application wishes
+            to grant the authorization directly in the AuthorizationEndpoint call it cay call context.OwinContext.Authentication.SignIn with the
+            appropriate ClaimsIdentity and should call context.RequestCompleted to stop other handlers from executing.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.HandleConfigurationRequest(AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext)">
+            <summary>
+            Called by the client applications to retrieve the OpenID Connect configuration associated with this instance.
+            An application may implement this call in order to do any final modification to the configuration metadata.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.HandleCryptographyRequest(AspNet.Security.OpenIdConnect.Server.HandleCryptographyRequestContext)">
+            <summary>
+            Called by the client applications to retrieve the OpenID Connect JSON Web Key set associated with this instance.
+            An application may implement this call in order to do any final modification to the keys set.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.HandleIntrospectionRequest(AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext)">
+            <summary>
+            Called by applications to determine the status and metadata for a token.
+            Validation conforms to the OAuth 2.0 Token Introspection specification with some additions. See documentation for details.
+            An application may implement this call in order to do any final modification to the status and metadata.
+            </summary>`
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.HandleLogoutRequest(AspNet.Security.OpenIdConnect.Server.HandleLogoutRequestContext)">
+            <summary>
+            Called at the final stage of an incoming logout endpoint request before the execution continues on to the web application component
+            responsible for producing the html response. Anything present in the OWIN pipeline following the Authorization Server may produce the
+            response for the logout page. If running on IIS any ASP.NET technology running on the server may produce the response for the
+            authorization page. If the web application wishes to produce the response directly in the LogoutEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.HandleRevocationRequest(AspNet.Security.OpenIdConnect.Server.HandleRevocationRequestContext)">
+            <summary>
+            Called by the client applications to revoke an access or refresh token.
+            An application may implement this call in order to do any final modification to the revocation response.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.HandleTokenRequest(AspNet.Security.OpenIdConnect.Server.HandleTokenRequestContext)">
+            <summary>
+            Called at the final stage of a successful Token endpoint request.
+            An application may implement this call in order to do any final
+            modification of the claims being used to issue access or refresh tokens.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.HandleUserinfoRequest(AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext)">
+            <summary>
+            Called at the final stage of an incoming userinfo endpoint request before the execution continues on to the web application component
+            responsible for producing the JSON response. Anything present in the OWIN pipeline following the Authorization Server may produce the
+            response for the userinfo response. If the web application wishes to produce the response directly in the UserinfoEndpoint call it
+            may write to the context.Response directly and should call context.HandleResponse to stop other handlers from executing.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ApplyAuthorizationResponse(AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext)">
+            <summary>
+            Called before the AuthorizationEndpoint redirects its response to the caller.
+            The response could contain an access token when using implicit flow or
+            an authorization code when using the authorization code flow.
+            If the web application wishes to produce the authorization response directly in the AuthorizationEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing.
+            This call may also be used to add additional response parameters to the authorization response.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ApplyConfigurationResponse(AspNet.Security.OpenIdConnect.Server.ApplyConfigurationResponseContext)">
+            <summary>
+            Called before the authorization server starts emitting the OpenID Connect configuration associated with this instance.
+            If the web application wishes to produce the configuration metadata directly in this call, it may write to the
+            context.Response directly and should call context.RequestCompleted to stop the default behavior from executing.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ApplyCryptographyResponse(AspNet.Security.OpenIdConnect.Server.ApplyCryptographyResponseContext)">
+            <summary>
+            Called before the authorization server starts emitting the OpenID Connect JSON Web Key set associated with this instance.
+            If the web application wishes to produce the JSON Web Key set directly in this call, it may write to the
+            context.Response directly and should call context.RequestCompleted to stop the default behavior from executing.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ApplyIntrospectionResponse(AspNet.Security.OpenIdConnect.Server.ApplyIntrospectionResponseContext)">
+            <summary>
+            Called before the authorization server starts emitting the status and metadata associated with the token received.
+            Validation conforms to the OAuth 2.0 Token Introspection specification with some additions. See documentation for details.
+            If the web application wishes to produce the status and metadata directly in this call, it may write to the
+            context.Response directly and should call context.RequestCompleted to stop the default behavior from executing.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ApplyLogoutResponse(AspNet.Security.OpenIdConnect.Server.ApplyLogoutResponseContext)">
+            <summary>
+            Called before the LogoutEndpoint endpoint redirects its response to the caller.
+            If the web application wishes to produce the authorization response directly in the LogoutEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing.
+            This call may also be used to add additional response parameters to the authorization response.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ApplyRevocationResponse(AspNet.Security.OpenIdConnect.Server.ApplyRevocationResponseContext)">
+            <summary>
+            Called before the authorization server starts emitting the revocation response to the response stream.
+            If the web application wishes to produce the token status and metadata directly in this call, it may write to the
+            context.Response directly and should call context.RequestCompleted to stop the default behavior from executing.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ApplyTokenResponse(AspNet.Security.OpenIdConnect.Server.ApplyTokenResponseContext)">
+            <summary>
+            Called before the TokenEndpoint redirects its response to the caller.
+            This call may also be used in order to add additional
+            response parameters to the JSON response payload.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.ApplyUserinfoResponse(AspNet.Security.OpenIdConnect.Server.ApplyUserinfoResponseContext)">
+            <summary>
+            Called before the UserinfoEndpoint endpoint starts writing to the response stream.
+            If the web application wishes to produce the userinfo response directly in the UserinfoEndpoint call it may write to the
+            context.Response directly and should call context.RequestCompleted to stop other handlers from executing.
+            This call may also be used to add additional response parameters to the authorization response.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.SerializeAuthorizationCode(AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext)">
+            <summary>
+            Called to create a new authorization code. An application may use this context
+            to replace the authentication ticket before it is serialized or to use its own code store
+            and skip the default logic using <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.SerializeAccessToken(AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext)">
+            <summary>
+            Called to create a new access token. An application may use this context
+            to replace the authentication ticket before it is serialized or to use its own token format
+            and skip the default logic using <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.SerializeIdentityToken(AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext)">
+            <summary>
+            Called to create a new identity token. An application may use this context
+            to replace the authentication ticket before it is serialized or to use its own token format
+            and skip the default logic using <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.SerializeRefreshToken(AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext)">
+            <summary>
+            Called to create a new refresh token. An application may use this context
+            to replace the authentication ticket before it is serialized or to use its own token format
+            and skip the default logic using <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.DeserializeAuthorizationCode(AspNet.Security.OpenIdConnect.Server.DeserializeAuthorizationCodeContext)">
+            <summary>
+            Called when receiving an authorization code. An application may use this context
+            to deserialize the code using a custom format and to skip the default logic using
+            <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.DeserializeAccessToken(AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext)">
+            <summary>
+            Called when receiving an access token. An application may use this context
+            to deserialize the token using a custom format and to skip the default logic using
+            <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.DeserializeIdentityToken(AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext)">
+            <summary>
+            Called when receiving an identity token. An application may use this context
+            to deserialize the token using a custom format and to skip the default logic using
+            <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerProvider.DeserializeRefreshToken(AspNet.Security.OpenIdConnect.Server.DeserializeRefreshTokenContext)">
+            <summary>
+            Called when receiving a refresh token. An application may use this context
+            to deserialize the code using a custom format and to skip the default logic using
+            <see cref="M:Microsoft.AspNetCore.Authentication.BaseControlContext.HandleResponse"/>.
+            </summary>
+            <param name="context">The context of the event carries information in and results out.</param>
+            <returns>Task to enable asynchronous execution</returns>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext">
+            <summary>
+            Provides context information when processing an Authorization Response
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,Microsoft.AspNetCore.Authentication.AuthenticationTicket,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="ticket"></param>
+            <param name="request"></param>
+            <param name="response"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext.Request">
+            <summary>
+            Gets the authorization request.
+            </summary>
+            <remarks>
+            Note: this property may be null if an error occurred when
+            extracting the authorization request from the HTTP request.
+            </remarks>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext.Response">
+            <summary>
+            Gets the authorization response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext.AccessToken">
+            <summary>
+            Gets the access code expected to
+            be returned to the client application.
+            Depending on the flow, it can be null.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext.AuthorizationCode">
+            <summary>
+            Gets the authorization code expected to
+            be returned to the client application.
+            Depending on the flow, it can be null.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyAuthorizationResponseContext.Error">
+            <summary>
+            Gets the error code returned to the client application.
+            When the response indicates a successful response,
+            this property returns <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ApplyConfigurationResponseContext">
+            <summary>
+            An event raised before the authorization server starts
+            writing the configuration metadata to the response stream.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ApplyConfigurationResponseContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse)">
+            <summary>
+            Creates an instance of this context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyConfigurationResponseContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyConfigurationResponseContext.Request">
+            <summary>
+            Gets the configuration request.
+            </summary>
+            <remarks>
+            Note: this property may be null if an error occurred when
+            extracting the configuration request from the HTTP request.
+            </remarks>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyConfigurationResponseContext.Response">
+            <summary>
+            Gets the configuration response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyConfigurationResponseContext.Error">
+            <summary>
+            Gets the error code returned to the client application.
+            When the response indicates a successful response,
+            this property returns <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ApplyCryptographyResponseContext">
+            <summary>
+            An event raised before the authorization server starts
+            writing the JWKS metadata to the response stream.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ApplyCryptographyResponseContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse)">
+            <summary>
+            Creates an instance of this context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyCryptographyResponseContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyCryptographyResponseContext.Request">
+            <summary>
+            Gets the cryptography request.
+            </summary>
+            <remarks>
+            Note: this property may be null if an error occurred when
+            extracting the cryptography request from the HTTP request.
+            </remarks>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyCryptographyResponseContext.Response">
+            <summary>
+            Gets the cryptography response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyCryptographyResponseContext.Error">
+            <summary>
+            Gets the error code returned to the client application.
+            When the response indicates a successful response,
+            this property returns <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ApplyIntrospectionResponseContext">
+            <summary>
+            An event raised before the authorization server starts
+            writing the token status/metadata to the response stream.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ApplyIntrospectionResponseContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse)">
+            <summary>
+            Creates an instance of this context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyIntrospectionResponseContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyIntrospectionResponseContext.Request">
+            <summary>
+            Gets the introspection request.
+            </summary>
+            <remarks>
+            Note: this property may be null if an error occurred when
+            extracting the introspection request from the HTTP request.
+            </remarks>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyIntrospectionResponseContext.Response">
+            <summary>
+            Gets the introspection response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyIntrospectionResponseContext.Error">
+            <summary>
+            Gets the error code returned to the client application.
+            When the response indicates a successful response,
+            this property returns <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ApplyLogoutResponseContext">
+            <summary>
+            Provides context information when processing a logout response.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ApplyLogoutResponseContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ApplyLogoutResponseContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="response"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyLogoutResponseContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyLogoutResponseContext.Request">
+            <summary>
+            Gets the logout request.
+            </summary>
+            <remarks>
+            Note: this property may be null if an error occurred when
+            extracting the logout request from the HTTP request.
+            </remarks>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyLogoutResponseContext.Response">
+            <summary>
+            Gets the logout response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyLogoutResponseContext.Error">
+            <summary>
+            Gets the error code returned to the client application.
+            When the response indicates a successful response,
+            this property returns <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ApplyRevocationResponseContext">
+            <summary>
+            An event raised before the authorization server starts
+            writing the revocation response to the response stream.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ApplyRevocationResponseContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse)">
+            <summary>
+            Creates an instance of this context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyRevocationResponseContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyRevocationResponseContext.Request">
+            <summary>
+            Gets the revocation request.
+            </summary>
+            <remarks>
+            Note: this property may be null if an error occurred when
+            extracting the revocation request from the HTTP request.
+            </remarks>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyRevocationResponseContext.Response">
+            <summary>
+            Gets the revocation response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyRevocationResponseContext.Error">
+            <summary>
+            Gets the error code returned to the client application.
+            When the response indicates a successful response,
+            this property returns <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ApplyTokenResponseContext">
+            <summary>
+            Provides context information used at the end of a token-endpoint-request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ApplyTokenResponseContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,Microsoft.AspNetCore.Authentication.AuthenticationTicket,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ApplyTokenResponseContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="ticket"></param>
+            <param name="request"></param>
+            <param name="response"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyTokenResponseContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyTokenResponseContext.Request">
+            <summary>
+            Gets the token request.
+            </summary>
+            <remarks>
+            Note: this property may be null if an error occurred when
+            extracting the token request from the HTTP request.
+            </remarks>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyTokenResponseContext.Response">
+            <summary>
+            Gets the token response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyTokenResponseContext.Error">
+            <summary>
+            Gets the error code returned to the client application.
+            When the response indicates a successful response,
+            this property returns <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ApplyUserinfoResponseContext">
+            <summary>
+            Provides context information used at the end of a userinfo request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ApplyUserinfoResponseContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ApplyUserinfoResponseContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="response"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyUserinfoResponseContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyUserinfoResponseContext.Request">
+            <summary>
+            Gets the token request.
+            </summary>
+            <remarks>
+            Note: this property may be null if an error occurred when
+            extracting the userinfo request from the HTTP request.
+            </remarks>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyUserinfoResponseContext.Response">
+            <summary>
+            Gets the userinfo response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ApplyUserinfoResponseContext.Error">
+            <summary>
+            Gets the error code returned to the client application.
+            When the response indicates a successful response,
+            this property returns <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.BaseValidatingClientContext">
+            <summary>
+            Base class used for certain event contexts
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingClientContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes base class used for certain event contexts
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingClientContext.ClientId">
+            <summary>
+            The "client_id" parameter for the current request.
+            The authorization server application is responsible for
+            validating this value to ensure it identifies a registered client.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingClientContext.ClientSecret">
+            <summary>
+            The "client_secret" parameter for the current request.
+            The authorization server application is responsible for
+            validating this value to ensure it identifies a registered client.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingClientContext.Validate">
+            <summary>
+            Marks this context as validated by the application.
+            IsValidated becomes true and HasError becomes false as a result of calling.
+            </summary>>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingClientContext.Validate(System.String)">
+            <summary>
+            Sets client_id and marks the context
+            as validated by the application.
+            </summary>
+            <param name="identifier"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext">
+            <summary>
+            Base class used for certain event contexts.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes base class used for certain event contexts.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Request">
+            <summary>
+            Gets the OpenID Connect request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Response">
+            <summary>
+            Gets the OpenID Connect response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.IsSkipped">
+            <summary>
+            Gets whether the <see cref="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Skip"/>
+            method has been called or not.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.IsValidated">
+            <summary>
+            Gets whether the <see cref="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Validate"/>
+            method has been called or not.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.IsRejected">
+            <summary>
+            Gets whether the <see cref="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Reject"/>
+            method has been called or not.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Error">
+            <summary>
+            The error argument provided when <see cref="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Reject"/> was called on this context.
+            This is eventually returned to the client app as the OAuth2 "error" parameter.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.ErrorDescription">
+            <summary>
+            The optional description argument provided when <see cref="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Reject"/> was called on this context.
+            This is eventually returned to the client app as the OAuth2 "error_description" parameter.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.ErrorUri">
+            <summary>
+            The optional uri argument provided when <see cref="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Reject"/> was called on this context.
+            This is eventually returned to the client app as the OpenIdConnect "error_uri" parameter.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Skip">
+            <summary>
+            Marks the context as skipped by the application.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Validate">
+            <summary>
+            Marks this context as validated by the application.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Reject">
+            <summary>
+            Marks this context as not validated by the application.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Reject(System.String)">
+            <summary>
+            Marks this context as not validated by the application
+            and assigns various error information properties.
+            </summary>
+            <param name="error">Assigned to the <see cref="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Error"/> property.</param>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Reject(System.String,System.String)">
+            <summary>
+            Marks this context as not validated by the application
+            and assigns various error information properties.
+            </summary>
+            <param name="error">Assigned to the <see cref="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Error"/> property.</param>
+            <param name="description">Assigned to the <see cref="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.ErrorDescription"/> property.</param>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Reject(System.String,System.String,System.String)">
+            <summary>
+            Marks this context as not validated by the application
+            and assigns various error information properties.
+            </summary>
+            <param name="error">Assigned to the <see cref="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.Error"/> property</param>
+            <param name="description">Assigned to the <see cref="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.ErrorDescription"/> property</param>
+            <param name="uri">Assigned to the <see cref="P:AspNet.Security.OpenIdConnect.Server.BaseValidatingContext.ErrorUri"/> property</param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.BaseValidatingTicketContext">
+            <summary>
+            Base class used for certain event contexts
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingTicketContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Initializes base class used for certain event contexts
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingTicketContext.Validate(Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Replaces the ticket information on this context and marks it as as validated by the application.
+            IsValidated becomes true and HasError becomes false as a result of calling.
+            </summary>
+            <param name="ticket">Assigned to the Ticket property</param>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.BaseValidatingTicketContext.Validate(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Alters the ticket information on this context and marks it as as validated by the application.
+            IsValidated becomes true and HasError becomes false as a result of calling.
+            </summary>
+            <param name="principal">Assigned to the Ticket.Principal property</param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext">
+            <summary>
+            Provides context information used when receiving an access token.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="token"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.Request">
+            <summary>
+            Gets the OpenID Connect request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.Response">
+            <summary>
+            Gets the OpenID Connect response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.TokenValidationParameters">
+            <summary>
+            Gets or sets the validation parameters used to verify the authenticity of access tokens.
+            Note: this property is only used when <see cref="P:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.SecurityTokenHandler"/> is not <c>null</c>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.DataFormat">
+            <summary>
+            Gets or sets the data format used to deserialize the authentication ticket.
+            Note: this property is only used when <see cref="P:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.SecurityTokenHandler"/> is <c>null</c>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.SecurityTokenHandler">
+            <summary>
+            Gets or sets the security token handler used to
+            deserialize the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAccessTokenContext.AccessToken">
+            <summary>
+            Gets the access token used by the client application.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.DeserializeAuthorizationCodeContext">
+            <summary>
+            Provides context information used when receiving an authorization code.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.DeserializeAuthorizationCodeContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.DeserializeAuthorizationCodeContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="code"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAuthorizationCodeContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAuthorizationCodeContext.Request">
+            <summary>
+            Gets the OpenID Connect request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAuthorizationCodeContext.Response">
+            <summary>
+            Gets the OpenID Connect response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAuthorizationCodeContext.DataFormat">
+            <summary>
+            Gets or sets the data format used to deserialize the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeAuthorizationCodeContext.AuthorizationCode">
+            <summary>
+            Gets the authorization code
+            used by the client application.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext">
+            <summary>
+            Provides context information used when receiving an identity token.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="token"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext.Request">
+            <summary>
+            Gets the OpenID Connect request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext.Response">
+            <summary>
+            Gets the OpenID Connect response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext.TokenValidationParameters">
+            <summary>
+            Gets or sets the validation parameters used to verify the authenticity of identity tokens.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext.SecurityTokenHandler">
+            <summary>
+            Gets or sets the security token handler used to
+            deserialize the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeIdentityTokenContext.IdentityToken">
+            <summary>
+            Gets the identity token used by the client application.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.DeserializeRefreshTokenContext">
+            <summary>
+            Provides context information used when receiving a refresh token.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.DeserializeRefreshTokenContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.DeserializeRefreshTokenContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="token"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeRefreshTokenContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeRefreshTokenContext.Request">
+            <summary>
+            Gets the OpenID Connect request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeRefreshTokenContext.Response">
+            <summary>
+            Gets the OpenID Connect response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeRefreshTokenContext.DataFormat">
+            <summary>
+            Gets or sets the data format used to deserialize the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.DeserializeRefreshTokenContext.RefreshToken">
+            <summary>
+            Gets the refresh code used
+            by the client application.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ExtractAuthorizationRequestContext">
+            <summary>
+            Provides context information used when extracting an authorization request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ExtractAuthorizationRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ExtractAuthorizationRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ExtractConfigurationRequestContext">
+            <summary>
+            Provides context information used when extracting a configuration request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ExtractConfigurationRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ExtractConfigurationRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ExtractCryptographyRequestContext">
+            <summary>
+            Provides context information used when extracting a cryptography request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ExtractCryptographyRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ExtractCryptographyRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ExtractIntrospectionRequestContext">
+            <summary>
+            Provides context information used when extracting an introspection request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ExtractIntrospectionRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ExtractIntrospectionRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ExtractLogoutRequestContext">
+            <summary>
+            Provides context information used when extracting a logout request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ExtractLogoutRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ExtractLogoutRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ExtractRevocationRequestContext">
+            <summary>
+            Provides context information used when extracting a revocation request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ExtractRevocationRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ExtractRevocationRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ExtractTokenRequestContext">
+            <summary>
+            Provides context information used when extracting a token request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ExtractTokenRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ExtractTokenRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ExtractUserinfoRequestContext">
+            <summary>
+            Provides context information used when extracting a userinfo request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ExtractUserinfoRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ExtractUserinfoRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.HandleAuthorizationRequestContext">
+            <summary>
+            An event raised after the Authorization Server has processed the request, but before it is passed on to the web application.
+            Calling RequestCompleted will prevent the request from passing on to the web application.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.HandleAuthorizationRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Creates an instance of this context
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext">
+            <summary>
+            An event raised before the authorization server handles
+            the request made to the configuration metadata endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Creates an instance of this context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.Metadata">
+            <summary>
+            Gets the additional parameters returned to the client application.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.AuthorizationEndpoint">
+            <summary>
+            Gets or sets the authorization endpoint address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.CryptographyEndpoint">
+            <summary>
+            Gets or sets the JWKS endpoint address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.IntrospectionEndpoint">
+            <summary>
+            Gets or sets the introspection endpoint address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.LogoutEndpoint">
+            <summary>
+            Gets or sets the logout endpoint address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.RevocationEndpoint">
+            <summary>
+            Gets or sets the revocation endpoint address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.TokenEndpoint">
+            <summary>
+            Gets or sets the token endpoint address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.UserinfoEndpoint">
+            <summary>
+            Gets or sets the userinfo endpoint address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.Issuer">
+            <summary>
+            Gets or sets the issuer address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.CodeChallengeMethods">
+            <summary>
+            Gets a list of the code challenge methods
+            supported by the authorization server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.GrantTypes">
+            <summary>
+            Gets a list of the grant types
+            supported by the authorization server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.IdTokenSigningAlgorithms">
+            <summary>
+            Gets a list of the signing algorithms supported by the
+            authorization server for signing the identity tokens.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.IntrospectionEndpointAuthenticationMethods">
+            <summary>
+            Gets a list of the client authentication methods supported by
+            the introspection endpoint provided by the authorization server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.ResponseModes">
+            <summary>
+            Gets a list of the response modes
+            supported by the authorization server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.ResponseTypes">
+            <summary>
+            Gets a list of the response types
+            supported by the authorization server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.RevocationEndpointAuthenticationMethods">
+            <summary>
+            Gets a list of the client authentication methods supported by
+            the revocation endpoint provided by the authorization server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.Scopes">
+            <summary>
+            Gets a list of the scope values
+            supported by the authorization server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.SubjectTypes">
+            <summary>
+            Gets a list of the subject types
+            supported by the authorization server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleConfigurationRequestContext.TokenEndpointAuthenticationMethods">
+            <summary>
+            Gets a list of the client authentication methods supported by
+            the token endpoint provided by the authorization server.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.HandleCryptographyRequestContext">
+            <summary>
+            An event raised before the authorization server handles
+            the request made to the JWKS metadata endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.HandleCryptographyRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Creates an instance of this context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleCryptographyRequestContext.Keys">
+            <summary>
+            Gets a list of the JSON Web Keys found by the authorization server.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext">
+            <summary>
+            An event raised before the authorization server handles
+            the request made to the token introspection endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Creates an instance of this context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.Claims">
+            <summary>
+            Gets the additional claims returned to the caller.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.Active">
+            <summary>
+            Gets or sets the flag indicating
+            whether the token is active or not.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.Audiences">
+            <summary>
+            Gets the list of audiences returned to the caller
+            as part of the "aud" claim, if applicable.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.ExpiresAt">
+            <summary>
+            Gets or sets the "exp" claim
+            returned to the caller, if applicable.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.IssuedAt">
+            <summary>
+            Gets or sets the "iat" claim
+            returned to the caller, if applicable.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.Issuer">
+            <summary>
+            Gets or sets the "iss" claim
+            returned to the caller, if applicable.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.NotBefore">
+            <summary>
+            Gets or sets the "nbf" claim
+            returned to the caller, if applicable.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.Scopes">
+            <summary>
+            Gets the list of scopes returned to the caller
+            as part of the "scope" claim, if applicable.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.Subject">
+            <summary>
+            Gets or sets the "sub" claim
+            returned to the caller, if applicable.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.TokenId">
+            <summary>
+            Gets or sets the "jti" claim
+            returned to the caller, if applicable.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.TokenType">
+            <summary>
+            Gets or sets the "token_type" claim
+            returned to the caller, if applicable.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleIntrospectionRequestContext.Username">
+            <summary>
+            Gets or sets the "username" claim
+            returned to the caller, if applicable.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.HandleLogoutRequestContext">
+            <summary>
+            An event raised after the Authorization Server has processed the logout request, but before it is passed on to the web application.
+            Calling RequestCompleted will prevent the request from passing on to the web application.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.HandleLogoutRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Creates an instance of this context
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.HandleRevocationRequestContext">
+            <summary>
+            An event raised before the authorization server handles
+            the request made to the token revocation endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.HandleRevocationRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Creates an instance of this context.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleRevocationRequestContext.Revoked">
+            <summary>
+            Gets or sets a boolean indicating whether
+            the token was successfully revoked.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.HandleTokenRequestContext">
+            <summary>
+            Provides context information used when processing an OpenIdConnect token request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.HandleTokenRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.HandleTokenRequestContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="ticket"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext">
+            <summary>
+            An event raised after the Authorization Server has processed the request, but before it is passed on to the web application.
+            Calling RequestCompleted will prevent the request from passing on to the web application.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Creates an instance of this context
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.Claims">
+            <summary>
+            Gets the additional claims returned to the client application.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.Address">
+            <summary>
+            Gets or sets the value used for the "address" claim.
+            Note: this value should only be populated if the "address"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.Audiences">
+            <summary>
+            Gets or sets the values used for the "aud" claim.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.BirthDate">
+            <summary>
+            Gets or sets the value used for the "birthdate" claim.
+            Note: this value should only be populated if the "profile"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.Email">
+            <summary>
+            Gets or sets the value used for the "email" claim.
+            Note: this value should only be populated if the "email"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.EmailVerified">
+            <summary>
+            Gets or sets the value used for the "email_verified" claim.
+            Note: this value should only be populated if the "email"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.FamilyName">
+            <summary>
+            Gets or sets the value used for the "family_name" claim.
+            Note: this value should only be populated if the "profile"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.GivenName">
+            <summary>
+            Gets or sets the value used for the "given_name" claim.
+            Note: this value should only be populated if the "profile"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.Issuer">
+            <summary>
+            Gets or sets the value used for the "iss" claim.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.PhoneNumber">
+            <summary>
+            Gets or sets the value used for the "phone_number" claim.
+            Note: this value should only be populated if the "phone"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.PhoneNumberVerified">
+            <summary>
+            Gets or sets the value used for the "phone_number_verified" claim.
+            Note: this value should only be populated if the "phone"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.PreferredUsername">
+            <summary>
+            Gets or sets the value used for the "preferred_username" claim.
+            Note: this value should only be populated if the "profile"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.Profile">
+            <summary>
+            Gets or sets the value used for the "profile" claim.
+            Note: this value should only be populated if the "profile"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.Subject">
+            <summary>
+            Gets or sets the unique value
+            used for the mandatory "sub" claim.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.HandleUserinfoRequestContext.Website">
+            <summary>
+            Gets or sets the value used for the "website" claim.
+            Note: this value should only be populated if the "profile"
+            scope was requested and accepted by the user agent.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext">
+            <summary>
+            Provides context information used when determining the OpenIdConnect flow type based on the request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.IsAuthorizationEndpoint">
+            <summary>
+            Gets whether or not the endpoint is an
+            OAuth2/OpenID Connect authorization endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.IsConfigurationEndpoint">
+            <summary>
+            Gets whether or not the endpoint is an
+            OpenID Connect configuration metadata endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.IsCryptographyEndpoint">
+            <summary>
+            Gets whether or not the endpoint is an
+            OpenID Connect JWKS endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.IsIntrospectionEndpoint">
+            <summary>
+            Gets whether or not the endpoint is an introspection endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.IsLogoutEndpoint">
+            <summary>
+            Gets whether or not the endpoint is a logout endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.IsRevocationEndpoint">
+            <summary>
+            Gets whether or not the endpoint is a revocation endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.IsTokenEndpoint">
+            <summary>
+            Gets whether or not the endpoint is an
+            OAuth2/OpenID Connect token endpoint.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.IsUserinfoEndpoint">
+            <summary>
+            Gets whether or not the endpoint is an userinfo endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.MatchAuthorizationEndpoint">
+            <summary>
+            Sets the endpoint type to the authorization endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.MatchConfigurationEndpoint">
+            <summary>
+            Sets the endpoint type to the configuration endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.MatchCryptographyEndpoint">
+            <summary>
+            Sets the endpoint type to the JWKS endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.MatchIntrospectionEndpoint">
+            <summary>
+            Sets the endpoint type to introspection endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.MatchLogoutEndpoint">
+            <summary>
+            Sets the endpoint type to logout endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.MatchRevocationEndpoint">
+            <summary>
+            Sets the endpoint type to revocation endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.MatchTokenEndpoint">
+            <summary>
+            Sets the endpoint type to token endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.MatchUserinfoEndpoint">
+            <summary>
+            Sets the endpoint type to userinfo endpoint.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.MatchEndpointContext.MatchNothing">
+            <summary>
+            Sets the endpoint type to unknown.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext">
+            <summary>
+            Provides context information used when issuing an access token.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse,Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="response"></param>
+            <param name="ticket"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.Request">
+            <summary>
+            Gets the OpenID Connect request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.Response">
+            <summary>
+            Gets the OpenID Connect response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.Issuer">
+            <summary>
+            Gets or sets the issuer address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.Audiences">
+            <summary>
+            Gets or sets the audiences associated with the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.Presenters">
+            <summary>
+            Gets or sets the presenters associated with the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.Scopes">
+            <summary>
+            Gets or sets the scopes associated with the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.SigningCredentials">
+            <summary>
+            Gets or sets the signing credentials used to sign the access token.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.DataFormat">
+            <summary>
+            Gets or sets the data format used to serialize the authentication ticket.
+            Note: this property is only used when <see cref="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.SecurityTokenHandler"/> is <c>null</c>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.SecurityTokenHandler">
+            <summary>
+            Gets or sets the security token handler used to serialize the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAccessTokenContext.AccessToken">
+            <summary>
+            Gets or sets the access token returned to the client application.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext">
+            <summary>
+            Provides context information used when issuing an authorization code.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse,Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="response"></param>
+            <param name="ticket"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext.Request">
+            <summary>
+            Gets the OpenID Connect request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext.Response">
+            <summary>
+            Gets the OpenID Connect response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext.Presenters">
+            <summary>
+            Gets or sets the presenters associated with the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext.DataFormat">
+            <summary>
+            Gets or sets the data format used to serialize the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeAuthorizationCodeContext.AuthorizationCode">
+            <summary>
+            Gets or sets the authorization code returned to the client application.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext">
+            <summary>
+            Provides context information used when issuing an identity token.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse,Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="response"></param>
+            <param name="ticket"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.Request">
+            <summary>
+            Gets the OpenID Connect request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.Response">
+            <summary>
+            Gets the OpenID Connect response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.Issuer">
+            <summary>
+            Gets or sets the issuer address.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.Audiences">
+            <summary>
+            Gets or sets the audiences associated with the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.Presenters">
+            <summary>
+            Gets or sets the presenters associated with the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.SigningCredentials">
+            <summary>
+            Gets or sets the signing credentials used to sign the identity token.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.SecurityTokenHandler">
+            <summary>
+            Gets or sets the security token handler used to serialize the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeIdentityTokenContext.IdentityToken">
+            <summary>
+            Gets or sets the identity token returned to the client application.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext">
+            <summary>
+            Provides context information used when issuing a refresh token.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse,Microsoft.AspNetCore.Authentication.AuthenticationTicket)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext"/> class
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+            <param name="response"></param>
+            <param name="ticket"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext.Options">
+            <summary>
+            Gets the options used by the OpenID Connect server.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext.Request">
+            <summary>
+            Gets the OpenID Connect request.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext.Response">
+            <summary>
+            Gets the OpenID Connect response.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext.Presenters">
+            <summary>
+            Gets or sets the presenters associated with the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext.DataFormat">
+            <summary>
+            Gets or sets the data format used to serialize the authentication ticket.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.SerializeRefreshTokenContext.RefreshToken">
+            <summary>
+            Gets or sets the refresh token returned to the client application.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext">
+            <summary>
+            Provides context information used when validating an authorization request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext.ClientId">
+            <summary>
+            Gets the client_id specified by the client application.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext.RedirectUri">
+            <summary>
+            Gets the redirect_uri specified by the client application.
+            If it's not provided by the client, it must be set by
+            the user code by calling <see cref="M:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext.Validate(System.String)"/>.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext.Skip">
+            <summary>
+            Marks the context as skipped by the application.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext.Validate">
+            <summary>
+            Marks this context as validated by the application.
+            IsValidated becomes true and HasError becomes false as a result of calling.
+            </summary>>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext.Validate(System.String)">
+            <summary>
+            Checks the redirect URI to determine whether it equals <see cref="P:AspNet.Security.OpenIdConnect.Server.ValidateAuthorizationRequestContext.RedirectUri"/>.
+            </summary>
+            <param name="address"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ValidateConfigurationRequestContext">
+            <summary>
+            Provides context information used when validating a discovery request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateConfigurationRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ValidateConfigurationRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ValidateCryptographyRequestContext">
+            <summary>
+            Provides context information used when validating a cryptography request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateCryptographyRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ValidateCryptographyRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ValidateIntrospectionRequestContext">
+            <summary>
+            Provides context information used when validating an introspection request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateIntrospectionRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ValidateIntrospectionRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ValidateIntrospectionRequestContext.TokenTypeHint">
+            <summary>
+            Gets the optional token_type_hint parameter extracted from the
+            introspection request, or <c>null</c> if it cannot be found.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ValidateLogoutRequestContext">
+            <summary>
+            Provides context information used when validating a logout request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateLogoutRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ValidateLogoutRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ValidateLogoutRequestContext.PostLogoutRedirectUri">
+            <summary>
+            Gets the post_logout_redirect_uri specified by the client application.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateLogoutRequestContext.Skip">
+            <summary>
+            Marks the context as skipped by the application.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateLogoutRequestContext.Validate(System.String)">
+            <summary>
+            Checks the redirect URI to determine whether it equals <see cref="P:AspNet.Security.OpenIdConnect.Server.ValidateLogoutRequestContext.PostLogoutRedirectUri"/>.
+            </summary>
+            <param name="address"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ValidateRevocationRequestContext">
+            <summary>
+            Provides context information used when validating a revocation request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateRevocationRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ValidateRevocationRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="P:AspNet.Security.OpenIdConnect.Server.ValidateRevocationRequestContext.TokenTypeHint">
+            <summary>
+            Gets the optional token_type_hint parameter extracted from the
+            revocation request, or <c>null</c> if it cannot be found.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ValidateTokenRequestContext">
+            <summary>
+            Provides context information used when validating a token request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateTokenRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ValidateTokenRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:AspNet.Security.OpenIdConnect.Server.ValidateUserinfoRequestContext">
+            <summary>
+            Provides context information used when validating a userinfo request.
+            </summary>
+        </member>
+        <member name="M:AspNet.Security.OpenIdConnect.Server.ValidateUserinfoRequestContext.#ctor(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AspNet.Security.OpenIdConnect.Server.ValidateUserinfoRequestContext"/> class.
+            </summary>
+            <param name="context"></param>
+            <param name="options"></param>
+            <param name="request"></param>
+        </member>
+        <member name="T:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions">
+            <summary>
+            Provides extension methods allowing to easily register an
+            ASP.NET-powered OpenID Connect server and to retrieve various
+            OpenID Connect-related contexts from the ASP.NET environment.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.UseOpenIdConnectServer(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions})">
+            <summary>
+            Adds a new OpenID Connect server instance in the ASP.NET pipeline.
+            </summary>
+            <param name="app">The web application builder.</param>
+            <param name="configuration">
+            A delegate allowing to modify the options
+            controlling the behavior of the OpenID Connect server.
+            </param>
+            <returns>The application builder.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.UseOpenIdConnectServer(Microsoft.AspNetCore.Builder.IApplicationBuilder,AspNet.Security.OpenIdConnect.Server.OpenIdConnectServerOptions)">
+            <summary>
+            Adds a new OpenID Connect server instance in the ASP.NET pipeline.
+            </summary>
+            <param name="app">The web application builder.</param>
+            <param name="options">The options controlling the behavior of the OpenID Connect server.</param>
+            <returns>The application builder.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.AddCertificate(System.Collections.Generic.IList{Microsoft.IdentityModel.Tokens.SigningCredentials},System.Security.Cryptography.X509Certificates.X509Certificate2)">
+            <summary>
+            Adds a specific <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2"/> to sign the tokens issued by the OpenID Connect server.
+            </summary>
+            <param name="credentials">The options used to configure the OpenID Connect server.</param>
+            <param name="certificate">The certificate used to sign security tokens issued by the server.</param>
+            <returns>The signing credentials.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.AddCertificate(System.Collections.Generic.IList{Microsoft.IdentityModel.Tokens.SigningCredentials},System.Reflection.Assembly,System.String,System.String)">
+            <summary>
+            Adds a specific <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2"/> retrieved from an
+            embedded resource to sign the tokens issued by the OpenID Connect server.
+            </summary>
+            <param name="credentials">The options used to configure the OpenID Connect server.</param>
+            <param name="assembly">The assembly containing the certificate.</param>
+            <param name="resource">The name of the embedded resource.</param>
+            <param name="password">The password used to open the certificate.</param>
+            <returns>The signing credentials.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.AddCertificate(System.Collections.Generic.IList{Microsoft.IdentityModel.Tokens.SigningCredentials},System.IO.Stream,System.String)">
+            <summary>
+            Adds a specific <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2"/> contained in
+            a stream to sign the tokens issued by the OpenID Connect server.
+            </summary>
+            <param name="credentials">The options used to configure the OpenID Connect server.</param>
+            <param name="stream">The stream containing the certificate.</param>
+            <param name="password">The password used to open the certificate.</param>
+            <returns>The signing credentials.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.AddCertificate(System.Collections.Generic.IList{Microsoft.IdentityModel.Tokens.SigningCredentials},System.IO.Stream,System.String,System.Security.Cryptography.X509Certificates.X509KeyStorageFlags)">
+            <summary>
+            Adds a specific <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2"/> contained in
+            a stream to sign the tokens issued by the OpenID Connect server.
+            </summary>
+            <param name="credentials">The options used to configure the OpenID Connect server.</param>
+            <param name="stream">The stream containing the certificate.</param>
+            <param name="password">The password used to open the certificate.</param>
+            <param name="flags">An enumeration of flags indicating how and where to store the private key of the certificate.</param>
+            <returns>The signing credentials.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.AddCertificate(System.Collections.Generic.IList{Microsoft.IdentityModel.Tokens.SigningCredentials},System.String)">
+            <summary>
+            Adds a specific <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2"/> retrieved from the X.509
+            user/machine store to sign the tokens issued by the OpenID Connect server.
+            </summary>
+            <param name="credentials">The options used to configure the OpenID Connect server.</param>
+            <param name="thumbprint">The thumbprint of the certificate used to identify it in the X.509 store.</param>
+            <returns>The signing credentials.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.AddCertificate(System.Collections.Generic.IList{Microsoft.IdentityModel.Tokens.SigningCredentials},System.String,System.Security.Cryptography.X509Certificates.StoreName,System.Security.Cryptography.X509Certificates.StoreLocation)">
+            <summary>
+            Adds a specific <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2"/> retrieved from the given
+            X.509 store to sign the tokens issued by the OpenID Connect server.
+            </summary>
+            <param name="credentials">The options used to configure the OpenID Connect server.</param>
+            <param name="thumbprint">The thumbprint of the certificate used to identify it in the X.509 store.</param>
+            <param name="name">The name of the X.509 store.</param>
+            <param name="location">The location of the X.509 store.</param>
+            <returns>The signing credentials.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.AddEphemeralKey(System.Collections.Generic.IList{Microsoft.IdentityModel.Tokens.SigningCredentials})">
+            <summary>
+            Adds a new ephemeral key used to sign the tokens issued by the OpenID Connect server:
+            the key is discarded when the application shuts down and tokens signed using this key
+            are automatically invalidated. This method should only be used during development.
+            On production, using a X.509 certificate stored in the machine store is recommended.
+            </summary>
+            <param name="credentials">The signing credentials.</param>
+            <returns>The signing credentials.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.AddEphemeralKey(System.Collections.Generic.IList{Microsoft.IdentityModel.Tokens.SigningCredentials},System.String)">
+            <summary>
+            Adds a new ephemeral key used to sign the tokens issued by the OpenID Connect server:
+            the key is discarded when the application shuts down and tokens signed using this key
+            are automatically invalidated. This method should only be used during development.
+            On production, using a X.509 certificate stored in the machine store is recommended.
+            </summary>
+            <param name="credentials">The signing credentials.</param>
+            <param name="algorithm">The algorithm associated with the signing key.</param>
+            <returns>The signing credentials.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.AddKey(System.Collections.Generic.IList{Microsoft.IdentityModel.Tokens.SigningCredentials},Microsoft.IdentityModel.Tokens.SecurityKey)">
+            <summary>
+            Adds a specific <see cref="T:Microsoft.IdentityModel.Tokens.SecurityKey"/> to sign the tokens issued by the OpenID Connect server.
+            </summary>
+            <param name="credentials">The options used to configure the OpenID Connect server.</param>
+            <param name="key">The key used to sign security tokens issued by the server.</param>
+            <returns>The signing credentials.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.GetOpenIdConnectRequest(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Retrieves the <see cref="T:AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest"/> instance
+            associated with the current request from the ASP.NET context.
+            </summary>
+            <param name="context">The ASP.NET context.</param>
+            <returns>The <see cref="T:AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest"/> associated with the current request.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.GetOpenIdConnectResponse(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Retrieves the <see cref="T:AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse"/> instance
+            associated with the current response from the ASP.NET context.
+            </summary>
+            <param name="context">The ASP.NET context.</param>
+            <returns>The <see cref="T:AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse"/> associated with the current response.</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.SetOpenIdConnectRequest(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest)">
+            <summary>
+            Inserts the ambient <see cref="T:AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest"/> request in the ASP.NET context.
+            </summary>
+            <param name="context">The ASP.NET context.</param>
+            <param name="request">The ambient <see cref="T:AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectRequest"/>.</param>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.OpenIdConnectServerExtensions.SetOpenIdConnectResponse(Microsoft.AspNetCore.Http.HttpContext,AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse)">
+            <summary>
+            Inserts the ambient <see cref="T:AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse"/> response in the ASP.NET context.
+            </summary>
+            <param name="context">The ASP.NET context.</param>
+            <param name="response">The ambient <see cref="T:AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectResponse"/>.</param>
+        </member>
+    </members>
+</doc>
