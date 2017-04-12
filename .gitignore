@@ -2,11 +2,11 @@
 
 # compiled output
 /obj
-/EF/obj
-/CoreApp/obj
+/ECATDataLib/obj
+/ECATWebApp/obj
 /ECATBusinessLib/obj
-/EF/bin
-/CoreApp/bin
+/ECATDataLib/bin
+/ECATWebApp/bin
 /ECATBusinessLib/bin
 
 # dependencies
