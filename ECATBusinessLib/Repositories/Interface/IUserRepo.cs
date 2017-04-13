@@ -16,11 +16,11 @@ namespace Ecat.Business.Repositories.Interface
 
         Person User { get; set; }
         Task<List<object>> GetProfile();
-        Task<Person> LoginUser(string userName, string password);
+        //Task<Person> LoginUser(string userName, string password);
         //Task<Person> ProcessLtiUser(ILtiRequest parsedRequest);
         Task<bool> UniqueEmailCheck(string email);
         //Task<CogInstrument> GetCogInst(string type);
         //Task<List<object>> GetCogResults(bool? all);
-        //Task<List<RoadRunner>> GetRoadRunnerInfo();
+        Task<List<RoadRunner>> GetRoadRunnerInfo();
     }
 }

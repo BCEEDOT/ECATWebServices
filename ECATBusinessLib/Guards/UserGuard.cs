@@ -28,7 +28,7 @@ namespace Ecat.Business.Guards
         //private readonly Type _tCogEsalbResult = typeof(CogEsalbResult);
         //private readonly Type _tCogEtmpreResult = typeof(CogEtmpreResult);
         //private readonly Type _tCogEcmspeResult = typeof(CogEcmspeResult);
-        //private readonly Type _tRoadRunner = typeof(RoadRunner);
+        private readonly Type _tRoadRunner = typeof(RoadRunner);
 
         public UserGuard(EFPersistenceManager<EcatContext> efCtx, Person loggedInUser)
         {
@@ -43,14 +43,14 @@ namespace Ecat.Business.Guards
                                                         //map.Key != _tProfileExternal &&
                                                         map.Key != _tProfileFaculty &&
                                                         map.Key != _tProfileStudent &&
-                                                        map.Key != _tProfileSecurity) //&&
+                                                        map.Key != _tProfileSecurity &&
                                                                                       //map.Key != _tProfileStaff &&
                                                                                       //map.Key != _tCogResponse &&
                                                                                       //map.Key != _tCogEcpeResult &&
                                                                                       //map.Key != _tCogEsalbResult &&
                                                                                       //map.Key != _tCogEtmpreResult &&
                                                                                       //map.Key != _tCogEcmspeResult &&
-                                                                                      //map.Key != _tRoadRunner)
+                                                                                      map.Key != _tRoadRunner)
                                                         .ToList();
 
             saveMap.RemoveMaps(unAuthorizedMaps);

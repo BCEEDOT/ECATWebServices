@@ -9,6 +9,7 @@ using Breeze.Persistence;
 using Newtonsoft.Json.Linq;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Business.Utilities;
+using Ecat.Data.Models.User;
 
 
 namespace Ecat.Web.Controllers
@@ -70,10 +71,10 @@ namespace Ecat.Web.Controllers
         //    return await _userRepo.GetCogResults(all);
         //}
 
-        //[HttpGet]
-        //public async Task<List<RoadRunner>> RoadRunnerInfos()
-        //{
-        //    return await _userRepo.GetRoadRunnerInfo();
-        //}
+        [HttpGet]
+        public async Task<List<RoadRunner>> RoadRunnerInfos()
+        {
+            return await _userRepo.GetRoadRunnerInfo();
+        }
     }
 }

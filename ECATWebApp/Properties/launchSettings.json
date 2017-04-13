@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CoreApp": {
+    "ECATWebApp": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

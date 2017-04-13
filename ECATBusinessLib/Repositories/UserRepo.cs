@@ -59,29 +59,6 @@ namespace Ecat.Business.Repositories
             return profiles;
         }
 
-        public async Task<Person> LoginUser(string userName, string password)
-        {
-            var user = await _efCtx.Context.People
-                .Include(s => s.Security)
-                .Include(s => s.Faculty)
-                .Include(s => s.Student)
-                .SingleOrDefaultAsync(person => person.Email.ToLower() == userName.ToLower());
-
-            if (user == default(Person))
-            {
-                throw new UnauthorizedAccessException("Invalid Username/Password Combination");
-            }
-
-            var isValid = PasswordHash.ValidatePassword(password, user.Security.PasswordHash);
-
-            if (!isValid)
-            {
-                throw new UnauthorizedAccessException("Invalid Username/Password Combination");
-            }
-
-            return user;
-        }
-
         //TODO: Bring in LTI stuff
         /*public async Task<Person> ProcessLtiUser(ILtiRequest parsedRequest)
         {
@@ -238,5 +215,13 @@ namespace Ecat.Business.Repositories
 
             return results;
         }*/
+
+        //retrieves all roadrunner info on user that is logged in
+        public async Task<List<RoadRunner>> GetRoadRunnerInfo()
+        {
+            var personList = new List<RoadRunner>();
+            personList = await _efCtx.Context.RoadRunnerAddresses.Where(e => e.PersonId == User.PersonId).ToListAsync();
+            return personList;
+        }
     }
 }
