@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
-using System.ComponentModel.DataAnnotations;
+using Ecat.Data.Models.School;
 
 namespace Ecat.Data.Models.User
 {
@@ -22,7 +22,7 @@ namespace Ecat.Data.Models.User
 
         public Person Person { get; set; }
 
-        //public ICollection<StudentInCourse> Courses { get; set; }
-        //public ICollection<CrseStudentInGroup> CourseGroupMemberships { get; set; }
+        public ICollection<StudentInCourse> Courses { get; set; }
+        public ICollection<CrseStudentInGroup> CourseGroupMemberships { get; set; }
     }
 }

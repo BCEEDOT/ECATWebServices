@@ -9,6 +9,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
 using System.Reflection;
 using Ecat.Data.Models.User;
+using Ecat.Data.Models.School;
 
 
 namespace Ecat.Data.Contexts
@@ -50,7 +51,9 @@ namespace Ecat.Data.Contexts
 
             //TODO: Put configs under a single namespace? ie Ecat.Data.Config?
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(type => type.IsClass && type.Namespace == "Ecat.Data.Models.User.Config");
+                .Where(type => type.IsClass && 
+                (type.Namespace == "Ecat.Data.Models.User.Config" ||
+                type.Namespace == "Ecat.Data.Models.School.Config"));
 
             foreach (var configurationInstance in typesToRegister.Select(Activator.CreateInstance))
             {
@@ -61,7 +64,7 @@ namespace Ecat.Data.Contexts
                 .Configure(c => c.HasColumnType("datetime2"));
 
 //TODO: Updates as more models implemented
-            //mb.Ignore<Academy>();
+            mb.Ignore<Academy>();
             //mb.Ignore<AcademyCategory>();
             //mb.Ignore<SanitizedSpComment>();
             //mb.Ignore<SanitizedSpResponse>();
@@ -127,11 +130,11 @@ namespace Ecat.Data.Contexts
 
         #region ModelOwner: School
 
-        //public DbSet<StudentInCourse> StudentInCourses { get; set; }
-        //public DbSet<FacultyInCourse> FacultyInCourses { get; set; }
-        //public DbSet<Course> Courses { get; set; }
-        //public DbSet<CrseStudentInGroup> StudentInGroups { get; set; }
-        //public DbSet<WorkGroup> WorkGroups { get; set; }
+        public DbSet<StudentInCourse> StudentInCourses { get; set; }
+        public DbSet<FacultyInCourse> FacultyInCourses { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<CrseStudentInGroup> StudentInGroups { get; set; }
+        public DbSet<WorkGroup> WorkGroups { get; set; }
 
         #endregion
 

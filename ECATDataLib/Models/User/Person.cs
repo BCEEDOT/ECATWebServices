@@ -7,12 +7,18 @@ using Ecat.Data.Models.Interface;
 
 namespace Ecat.Data.Models.User
 {
+    //TODO: Bring over the Person validation class?
+    //[PersonMappedPropValid]
     public class Person: IAuditable
     {
         public int PersonId { get; set; }
+        public bool IsActive { get; set; }
 
-        public string LmsUserId { get; set; }
-        public string LmsUserName { get; set; }
+        public string BbUserId { get; set; }
+        public string BbUserName { get; set; }
+        //TODO: change to LMS 
+        //public string LmsUserId { get; set; }
+        //public string LmsUserName { get; set; }
 
         public string LastName { get; set; }
         public string FirstName { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
-using System.ComponentModel.DataAnnotations;
+using Ecat.Data.Models.School;
 
 namespace Ecat.Data.Models.User
 {
@@ -19,6 +19,6 @@ namespace Ecat.Data.Models.User
         public string AcademyId { get; set; }
 
         public Person Person { get; set; }
-        //public ICollection<FacultyInCourse> Courses { get; set; }
+        public ICollection<FacultyInCourse> Courses { get; set; }
     }
 }

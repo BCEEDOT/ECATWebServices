@@ -55,7 +55,7 @@ namespace Ecat.Web.Providers
                 var person = await ecatCtx.People.Where(p => p.Email == username)
                     .Include(p => p.Security)
                     .Include(p => p.Faculty)
-                    .SingleAsync();
+                    .SingleOrDefaultAsync();
 
                 if (person == null)
                 {
@@ -71,7 +71,7 @@ namespace Ecat.Web.Providers
                         OpenIdConnectServerDefaults.AuthenticationScheme, OpenIdConnectConstants.Claims.Name, OpenIdConnectConstants.Claims.Role);
 
                 //required for ASOS
-                identity.AddClaim(OpenIdConnectConstants.Claims.Subject, "[1]");
+                identity.AddClaim(OpenIdConnectConstants.Claims.Subject, person.Email);
 
                 switch (person.MpInstituteRole)
                 {

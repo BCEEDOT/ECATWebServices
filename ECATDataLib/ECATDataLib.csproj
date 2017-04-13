@@ -247,6 +247,7 @@
       <DependentUpon>201704101604195_UserModels.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Interface\IAuditable.cs" />
+    <Compile Include="Models\Interface\ICompositeEntity.cs" />
     <Compile Include="Models\Interface\IMonitored.cs" />
     <Compile Include="Models\Interface\IProfileBase.cs" />
     <Compile Include="Migrations\201703132037069_InitialCreate.cs" />
@@ -258,6 +259,16 @@
     <Compile Include="Models\IProductRepository.cs" />
     <Compile Include="Models\IUserRepository.cs" />
     <Compile Include="Models\IValueRepository.cs" />
+    <Compile Include="Models\School\Academy.cs" />
+    <Compile Include="Models\School\Config\Course.cs" />
+    <Compile Include="Models\School\Config\PersonInCourse.cs" />
+    <Compile Include="Models\School\Config\StudentInGroup.cs" />
+    <Compile Include="Models\School\Config\WorkGroup.cs" />
+    <Compile Include="Models\School\Course.cs" />
+    <Compile Include="Models\School\CrseStudentInGroup.cs" />
+    <Compile Include="Models\School\FacultyInCourse.cs" />
+    <Compile Include="Models\School\StudentInCourse.cs" />
+    <Compile Include="Models\School\WorkGroup.cs" />
     <Compile Include="Models\User\Config\Person.cs" />
     <Compile Include="Models\User\Config\Profile.cs" />
     <Compile Include="Models\User\Config\RoadRunner.cs" />
@@ -287,5 +298,6 @@
       <DependentUpon>201704101604195_UserModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
