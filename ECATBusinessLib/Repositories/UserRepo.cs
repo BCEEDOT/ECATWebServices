@@ -31,7 +31,7 @@ namespace Ecat.Business.Repositories
         #region breeze methods
         public string MetaData()
         {
-            return _efCtx.Metadata();
+            return new EFPersistenceManager<UserMetadata>().Metadata();
         }
 
         public SaveResult ClientSave(JObject saveBundle)

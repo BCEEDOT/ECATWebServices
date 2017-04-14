@@ -238,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexts\EcatContext.cs" />
+    <Compile Include="Contexts\UserMetadata.cs" />
     <Compile Include="Migrations\201704101604195_UserModels.cs" />
     <Compile Include="Migrations\201704101604195_UserModels.Designer.cs">
       <DependentUpon>201704101604195_UserModels.cs</DependentUpon>
