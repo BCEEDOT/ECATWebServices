@@ -238,10 +238,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexts\EcatContext.cs" />
-    <Compile Include="Contexts\ProductContext.cs" />
-    <Compile Include="Contexts\ProductContextFactory.cs" />
-    <Compile Include="Contexts\ValueContext.cs" />
-    <Compile Include="Contexts\ValueContextFactory.cs" />
     <Compile Include="Migrations\201704101604195_UserModels.cs" />
     <Compile Include="Migrations\201704101604195_UserModels.Designer.cs">
       <DependentUpon>201704101604195_UserModels.cs</DependentUpon>
@@ -273,9 +269,6 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Interface\ISoftDelete.cs" />
-    <Compile Include="Models\IProductRepository.cs" />
-    <Compile Include="Models\IUserRepository.cs" />
-    <Compile Include="Models\IValueRepository.cs" />
     <Compile Include="Models\School\Academy.cs" />
     <Compile Include="Models\School\Config\Course.cs" />
     <Compile Include="Models\School\Config\PersonInCourse.cs" />
@@ -291,16 +284,10 @@
     <Compile Include="Models\User\Config\RoadRunner.cs" />
     <Compile Include="Models\User\Config\Security.cs" />
     <Compile Include="Models\User\Person.cs" />
-    <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ProductRepository.cs" />
     <Compile Include="Models\User\ProfileFaculty.cs" />
     <Compile Include="Models\User\ProfileStudent.cs" />
-    <Compile Include="Models\UserTest.cs" />
-    <Compile Include="Models\UserRepository.cs" />
     <Compile Include="Models\User\RoadRunner.cs" />
     <Compile Include="Models\User\Security.cs" />
-    <Compile Include="Models\ValueItem.cs" />
-    <Compile Include="Models\ValueRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

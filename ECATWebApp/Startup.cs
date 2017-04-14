@@ -40,7 +40,7 @@ namespace Ecat.Web
         {
 
             services.AddAuthorization(options => {
-                options.AddPolicy("ValuesUser",
+                options.AddPolicy("Student",
                                     policy => policy.RequireClaim("Role", "Student"));
             });
 
@@ -56,14 +56,6 @@ namespace Ecat.Web
             });
 
             var connectionString = Configuration["DbConnection"];
-            services.AddScoped(_ => new ValueContext(connectionString));
-            //services.AddSingleton<IValueRepository, ValueRepository>();
-            services.AddScoped<IValueRepository, ValueRepository>();
-            services.AddScoped(_ => new ProductContext(connectionString));
-            //services.AddSingleton<IProductRepository, ProductRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-
             services.AddScoped(_ => new EcatContext(connectionString));
             services.AddScoped<IUserRepo, UserRepo>(); 
             // Add framework services.
