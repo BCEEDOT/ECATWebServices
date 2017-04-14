@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Business.Utilities;
 using Ecat.Data.Models.User;
+using Ecat.Data.Models.Designer;
 
 
 namespace Ecat.Web.Controllers
@@ -58,18 +59,17 @@ namespace Ecat.Web.Controllers
             return await _userRepo.GetProfile();
         }
 
-        //TODO: Update as more is implemented
-        //[HttpGet]
-        //public async Task<CogInstrument> GetCogInst(string type)
-        //{
-        //    return await _userRepo.GetCogInst(type);
-        //}
+        [HttpGet]
+        public async Task<CogInstrument> GetCogInst(string type)
+        {
+            return await _userRepo.GetCogInst(type);
+        }
 
-        //[HttpGet]
-        //public async Task<List<object>> GetCogResults(bool? all)
-        //{
-        //    return await _userRepo.GetCogResults(all);
-        //}
+        [HttpGet]
+        public async Task<List<object>> GetCogResults(bool? all)
+        {
+            return await _userRepo.GetCogResults(all);
+        }
 
         [HttpGet]
         public async Task<List<RoadRunner>> RoadRunnerInfos()

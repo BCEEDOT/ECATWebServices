@@ -9,9 +9,12 @@ using Breeze.Persistence.EF6;
 using Newtonsoft.Json.Linq;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Data.Models.User;
+using Ecat.Data.Models.Designer;
+using Ecat.Data.Models.Cognitive;
 using Ecat.Data.Contexts;
 using Ecat.Business.Utilities;
 using Ecat.Business.Guards;
+using LtiLibrary.Core.Lti1;
 
 namespace Ecat.Business.Repositories
 {
@@ -59,8 +62,7 @@ namespace Ecat.Business.Repositories
             return profiles;
         }
 
-        //TODO: Bring in LTI stuff
-        /*public async Task<Person> ProcessLtiUser(ILtiRequest parsedRequest)
+        public async Task<Person> ProcessLtiUser(ILtiRequest parsedRequest)
         {
             var user = await _efCtx.Context.People
              .Include(s => s.Security)
@@ -95,14 +97,15 @@ namespace Ecat.Business.Repositories
                     throw new InvalidEmailException("The email address associated with your LMS account (" + parsedRequest.LisPersonEmailPrimary + ") is already being used in ECAT.");
                 }
 
+                //TODO: Updates after enum implementations
                 user = new Person
                 {
                     IsActive = true,
-                    MpGender = MpGender.Unk,
-                    MpAffiliation = MpAffiliation.Unk,
-                    MpComponent = MpComponent.Unk,
-                    MpPaygrade = MpPaygrade.Unk,
-                    MpInstituteRole = MpInstituteRoleId.Undefined,
+                    //MpGender = MpGender.Unk,
+                    //MpAffiliation = MpAffiliation.Unk,
+                    //MpComponent = MpComponent.Unk,
+                    //MpPaygrade = MpPaygrade.Unk,
+                    //MpInstituteRole = MpInstituteRoleId.Undefined,
                     RegistrationComplete = false
                 };
 
@@ -113,32 +116,32 @@ namespace Ecat.Business.Repositories
 
             switch (parsedRequest.Parameters["Roles"].ToLower())
             {
-                case "instructor":
-                    userIsCourseAdmin = true;
-                    user.MpInstituteRole = MpInstituteRoleId.Faculty;
-                    break;
-                case "teachingassistant":
-                    user.MpInstituteRole = MpInstituteRoleId.Faculty;
-                    break;
-                case "contentdeveloper":
-                    user.MpInstituteRole = MpInstituteRoleId.Designer;
-                    break;
+                //case "instructor":
+                //    userIsCourseAdmin = true;
+                //    user.MpInstituteRole = MpInstituteRoleId.Faculty;
+                //    break;
+                //case "teachingassistant":
+                //    user.MpInstituteRole = MpInstituteRoleId.Faculty;
+                //    break;
+                //case "contentdeveloper":
+                //    user.MpInstituteRole = MpInstituteRoleId.Designer;
+                //    break;
                 default:
-                    user.MpInstituteRole = MpInstituteRoleId.Student;
+                    //user.MpInstituteRole = MpInstituteRoleId.Student;
                     break;
             }
 
             switch (user.MpInstituteRole)
             {
-                case MpInstituteRoleId.Faculty:
-                    user.Faculty = user.Faculty ?? new ProfileFaculty();
-                    user.Faculty.IsCourseAdmin = userIsCourseAdmin;
-                    user.Faculty.AcademyId = parsedRequest.Parameters["custom_ecat_school"];
-                    break;
-                case MpInstituteRoleId.Designer:
-                    user.Designer = user.Designer ?? new ProfileDesigner();
-                    user.Designer.AssociatedAcademyId = parsedRequest.Parameters["custom_ecat_school"];
-                    break;
+                //case MpInstituteRoleId.Faculty:
+                //    user.Faculty = user.Faculty ?? new ProfileFaculty();
+                //    user.Faculty.IsCourseAdmin = userIsCourseAdmin;
+                //    user.Faculty.AcademyId = parsedRequest.Parameters["custom_ecat_school"];
+                //    break;
+                //case MpInstituteRoleId.Designer:
+                //    user.Designer = user.Designer ?? new ProfileDesigner();
+                //    user.Designer.AssociatedAcademyId = parsedRequest.Parameters["custom_ecat_school"];
+                //    break;
                 default:
                     user.Student = user.Student ?? new ProfileStudent();
                     break;
@@ -157,12 +160,11 @@ namespace Ecat.Business.Repositories
             }
 
             throw new UserUpdateException("Save User Changes did not succeed!");
-        }*/
+        }
 
         public async Task<bool> UniqueEmailCheck(string email) => await _efCtx.Context.People.CountAsync(user => user.Email.ToLower() == email.ToLower()) == 0;
 
-        //TODO: Implement cognitives
-        /*public async Task<CogInstrument> GetCogInst(string type)
+        public async Task<CogInstrument> GetCogInst(string type)
         {
             return await _efCtx.Context.CogInstruments
                 .Where(cog => cog.MpCogInstrumentType == type && cog.IsActive == true)
@@ -214,7 +216,7 @@ namespace Ecat.Business.Repositories
             }
 
             return results;
-        }*/
+        }
 
         //retrieves all roadrunner info on user that is logged in
         public async Task<List<RoadRunner>> GetRoadRunnerInfo()

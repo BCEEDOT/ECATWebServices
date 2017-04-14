@@ -246,8 +246,25 @@
     <Compile Include="Migrations\201704101604195_UserModels.Designer.cs">
       <DependentUpon>201704101604195_UserModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Cognitive\CogEcmspeResult.cs" />
+    <Compile Include="Models\Cognitive\CogEcpeResult.cs" />
+    <Compile Include="Models\Cognitive\CogEsalbResult.cs" />
+    <Compile Include="Models\Cognitive\CogEtmpreResult.cs" />
+    <Compile Include="Models\Cognitive\CogResponse.cs" />
+    <Compile Include="Models\Cognitive\Config\CogResponse.cs" />
+    <Compile Include="Models\Cognitive\Config\CogResult.cs" />
+    <Compile Include="Models\Designer\CogInstrument.cs" />
+    <Compile Include="Models\Designer\CogInventory.cs" />
+    <Compile Include="Models\Designer\Config\Instrument.cs" />
+    <Compile Include="Models\Designer\Config\Inventory.cs" />
+    <Compile Include="Models\Designer\Config\WorkGroupModel.cs" />
+    <Compile Include="Models\Designer\SpInstrument.cs" />
+    <Compile Include="Models\Designer\SpInventory.cs" />
+    <Compile Include="Models\Designer\WorkGroupModel.cs" />
     <Compile Include="Models\Interface\IAuditable.cs" />
     <Compile Include="Models\Interface\ICompositeEntity.cs" />
+    <Compile Include="Models\Interface\IInstrument.cs" />
+    <Compile Include="Models\Interface\IInventory.cs" />
     <Compile Include="Models\Interface\IMonitored.cs" />
     <Compile Include="Models\Interface\IProfileBase.cs" />
     <Compile Include="Migrations\201703132037069_InitialCreate.cs" />

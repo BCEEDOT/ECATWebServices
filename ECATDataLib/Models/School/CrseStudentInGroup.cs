@@ -10,7 +10,7 @@ namespace Ecat.Data.Models.School
 {
     public class CrseStudentInGroup: ICompositeEntity, IAuditable, ISoftDelete
     {
-        //TODO:Update as more implemented
+        //TODO:Update with responses, comments, and results impls
         public string EntityId => $"{StudentId}|{CourseId}|{WorkGroupId}";
         public int StudentId { get; set; }
         public int CourseId { get; set; }

@@ -17,7 +17,7 @@ namespace Ecat.Data.Models.School
         public Course Course { get; set; }
         public ProfileFaculty FacultyProfile { get; set; }
 
-        //TODO:Update as more implemented
+        //TODO:Update with response and comment impls
         //public ICollection<FacSpResponse> FacSpResponses { get; set; }
         //public ICollection<FacSpComment> FacSpComments { get; set; }
         //public ICollection<FacStratResponse> FacStratResponse { get; set; }

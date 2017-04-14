@@ -22,6 +22,8 @@
     <PackageReference Include="aspnet.security.openidconnect.server" Version="1.0.0-rc1-final" />
     <PackageReference Include="Breeze.Composite.AspNetCore.EF6" Version="0.1.3" />
     <PackageReference Include="EntityFramework" Version="6.1.3" />
+    <PackageReference Include="LtiLibrary.AspNet" Version="1.6.2" />
+    <PackageReference Include="LtiLibrary.Core" Version="1.6.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
     <PackageReference Include="microsoft.aspnetcore.authentication.jwtbearer" Version="1.1.1" />

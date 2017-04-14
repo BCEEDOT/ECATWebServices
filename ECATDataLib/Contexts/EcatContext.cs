@@ -10,7 +10,8 @@ using System.Diagnostics;
 using System.Reflection;
 using Ecat.Data.Models.User;
 using Ecat.Data.Models.School;
-
+using Ecat.Data.Models.Designer;
+using Ecat.Data.Models.Cognitive;
 
 namespace Ecat.Data.Contexts
 {
@@ -53,7 +54,9 @@ namespace Ecat.Data.Contexts
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(type => type.IsClass && 
                 (type.Namespace == "Ecat.Data.Models.User.Config" ||
-                type.Namespace == "Ecat.Data.Models.School.Config"));
+                type.Namespace == "Ecat.Data.Models.School.Config" ||
+                type.Namespace == "Ecat.Data.Models.Designer.Config" ||
+                type.Namespace == "Ecat.Data.Models.Cognitive.Config"));
 
             foreach (var configurationInstance in typesToRegister.Select(Activator.CreateInstance))
             {
@@ -83,11 +86,11 @@ namespace Ecat.Data.Contexts
 
         #region ModelOwner: Cog
 
-        //public DbSet<CogResponse> CogResponses { get; set; }
-        //public DbSet<CogEcmspeResult> CogEcmspeResult { get; set; }
-        //public DbSet<CogEcpeResult> CogEcpeResult { get; set; }
-        //public DbSet<CogEsalbResult> CogEsalbResult { get; set; }
-        //public DbSet<CogEtmpreResult> CogEtmpreResult { get; set; }
+        public DbSet<CogResponse> CogResponses { get; set; }
+        public DbSet<CogEcmspeResult> CogEcmspeResult { get; set; }
+        public DbSet<CogEcpeResult> CogEcpeResult { get; set; }
+        public DbSet<CogEsalbResult> CogEsalbResult { get; set; }
+        public DbSet<CogEtmpreResult> CogEtmpreResult { get; set; }
 
 
         #endregion
@@ -102,13 +105,13 @@ namespace Ecat.Data.Contexts
 
         //public DbSet<AssessMap> AssessMaps { get; set; }
         //public DbSet<SpAssessMap> SpAssessMaps { get; set; }
-        //public DbSet<CogInstrument> CogInstruments { get; set; }
-        //public DbSet<CogInventory> CogInventories { get; set; }
+        public DbSet<CogInstrument> CogInstruments { get; set; }
+        public DbSet<CogInventory> CogInventories { get; set; }
         //public DbSet<KcInstrument> KcInstruments { get; set; }
         //public DbSet<KcInventory> KcInventories { get; set; }
-        //public DbSet<SpInstrument> SpInstruments { get; set; }
-        //public DbSet<SpInventory> SpInventories { get; set; }
-        //public DbSet<WorkGroupModel> WgModels { get; set; }
+        public DbSet<SpInstrument> SpInstruments { get; set; }
+        public DbSet<SpInventory> SpInventories { get; set; }
+        public DbSet<WorkGroupModel> WgModels { get; set; }
         #endregion
 
         #region ModelOwner: Faculty

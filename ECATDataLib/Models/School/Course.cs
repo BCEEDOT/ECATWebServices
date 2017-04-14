@@ -17,7 +17,7 @@ namespace Ecat.Data.Models.School
         public bool GradReportPublished { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime GradDate { get; set; }
-        //TODO:Update as more implemented
+        //TODO:Update with results models impl
         //public ICollection<SpResult> SpResults { get; set; }
         //public ICollection<StratResult> StratResults { get; set; }
         public ICollection<StudentInCourse> Students { get; set; }

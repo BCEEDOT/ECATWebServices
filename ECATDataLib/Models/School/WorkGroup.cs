@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
+using Ecat.Data.Models.Designer;
 
 namespace Ecat.Data.Models.School
 {
@@ -24,9 +25,9 @@ namespace Ecat.Data.Models.School
         public string MpSpStatus { get; set; }
         public bool IsPrimary { get; set; }
 
-        //TODO:Update as more implemented
+        //TODO:Update with response, comment,a nd results impls
         public Course Course { get; set; }
-        //public WorkGroupModel WgModel { get; set; }
+        public WorkGroupModel WgModel { get; set; }
         //public GroupReconResult ReconResult { get; set; }
 
         //public ICollection<FacSpResponse> FacSpResponses { get; set; }
@@ -41,8 +42,7 @@ namespace Ecat.Data.Models.School
         //public ICollection<StratResponse> SpStratResponses { get; set; }
         //public ICollection<StratResult> SpStratResults { get; set; }
 
-        //public SpInstrument AssignedSpInstr { get; set; }
-        //public KcInstrument AssignedKcInstr { get; set; }
+        public SpInstrument AssignedSpInstr { get; set; }
         public bool CanPublish { get; set; }
         public int? ModifiedById { get; set; }
         public DateTime? ModifiedDate { get; set; }
