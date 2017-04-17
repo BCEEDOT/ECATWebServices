@@ -14,6 +14,7 @@ using Ecat.Data.Models.School;
 
 namespace Ecat.Data.Contexts
 {
+    //Only used for metadata for breeze, cannot be used to query the database
     public class UserMetadata: DbContext
     {
         static UserMetadata() {

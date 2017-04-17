@@ -91,12 +91,23 @@ namespace Ecat.Web.Providers
                         break;
                 }
 
+                //identity token information
+                identity.AddClaim("LastName", person.LastName, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("FirstName", person.FirstName, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("MpAffiliation", person.MpAffiliation, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("MpComponent", person.MpComponent, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("MpPaygrade", person.MpPaygrade, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("Email", person.Email, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("MpGender", person.MpGender, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("MpInstituteRole", person.MpInstituteRole, OpenIdConnectConstants.Destinations.IdentityToken);
+
                 var ticket = new AuthenticationTicket(
                     new ClaimsPrincipal(identity), new AuthenticationProperties(), context.Options.AuthenticationScheme);
 
                 ticket.Properties.IssuedUtc = DateTime.Now;
                 ticket.Properties.ExpiresUtc = DateTime.Now.Add(TimeSpan.FromHours(1));
 
+                ticket.SetScopes(OpenIdConnectConstants.Scopes.OpenId);
                 ticket.SetResources("ecat_server");
                 context.Validate(ticket);
 
