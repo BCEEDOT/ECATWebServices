@@ -237,7 +237,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contexts\Config\StudentMetadata.cs" />
     <Compile Include="Contexts\EcatContext.cs" />
+    <Compile Include="Contexts\StudentMetadata.cs" />
     <Compile Include="Contexts\UserMetadata.cs" />
     <Compile Include="Migrations\201704101604195_UserModels.cs" />
     <Compile Include="Migrations\201704101604195_UserModels.Designer.cs">
@@ -280,6 +282,18 @@
     <Compile Include="Models\School\FacultyInCourse.cs" />
     <Compile Include="Models\School\StudentInCourse.cs" />
     <Compile Include="Models\School\WorkGroup.cs" />
+    <Compile Include="Models\Student\Config\SpComment.cs" />
+    <Compile Include="Models\Student\Config\SpCommentFlag.cs" />
+    <Compile Include="Models\Student\Config\Response.cs" />
+    <Compile Include="Models\Student\Config\Result.cs" />
+    <Compile Include="Models\Student\SanitizedSpComment.cs" />
+    <Compile Include="Models\Student\SanitizedSpResponse.cs" />
+    <Compile Include="Models\Student\SpResponse.cs" />
+    <Compile Include="Models\Student\SpResult.cs" />
+    <Compile Include="Models\Student\StratResponse.cs" />
+    <Compile Include="Models\Student\StratResult.cs" />
+    <Compile Include="Models\Student\StudSpComment.cs" />
+    <Compile Include="Models\Student\StudSpCommentFlag.cs" />
     <Compile Include="Models\User\Config\Person.cs" />
     <Compile Include="Models\User\Config\Profile.cs" />
     <Compile Include="Models\User\Config\RoadRunner.cs" />

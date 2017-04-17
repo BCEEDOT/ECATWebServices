@@ -12,6 +12,7 @@ using Ecat.Data.Models.User;
 using Ecat.Data.Models.School;
 using Ecat.Data.Models.Designer;
 using Ecat.Data.Models.Cognitive;
+using Ecat.Data.Models.Student;
 
 namespace Ecat.Data.Contexts
 {
@@ -56,7 +57,8 @@ namespace Ecat.Data.Contexts
                 (type.Namespace == "Ecat.Data.Models.User.Config" ||
                 type.Namespace == "Ecat.Data.Models.School.Config" ||
                 type.Namespace == "Ecat.Data.Models.Designer.Config" ||
-                type.Namespace == "Ecat.Data.Models.Cognitive.Config"));
+                type.Namespace == "Ecat.Data.Models.Cognitive.Config" ||
+                type.Namespace == "Ecat.Data.Models.Student.Config"));
 
             foreach (var configurationInstance in typesToRegister.Select(Activator.CreateInstance))
             {
@@ -69,8 +71,8 @@ namespace Ecat.Data.Contexts
 //TODO: Updates as more models implemented
             mb.Ignore<Academy>();
             //mb.Ignore<AcademyCategory>();
-            //mb.Ignore<SanitizedSpComment>();
-            //mb.Ignore<SanitizedSpResponse>();
+            mb.Ignore<SanitizedSpComment>();
+            mb.Ignore<SanitizedSpResponse>();
             //mb.Ignore<CourseReconResult>();
             //mb.Ignore<MemReconResult>();
             //mb.Ignore<GroupMemReconResult>();
@@ -103,8 +105,6 @@ namespace Ecat.Data.Contexts
 
         #region ModelOwner: Designer
 
-        //public DbSet<AssessMap> AssessMaps { get; set; }
-        //public DbSet<SpAssessMap> SpAssessMaps { get; set; }
         public DbSet<CogInstrument> CogInstruments { get; set; }
         public DbSet<CogInventory> CogInventories { get; set; }
         //public DbSet<KcInstrument> KcInstruments { get; set; }
@@ -144,11 +144,11 @@ namespace Ecat.Data.Contexts
 
         #region ModelOwner: Student
 
-        //public DbSet<SpResponse> SpResponses { get; set; }
-        //public DbSet<SpResult> SpResults { get; set; }
-        //public DbSet<StudSpComment> StudSpComments { get; set; }
-        //public DbSet<StratResponse> SpStratResponses { get; set; }
-        //public DbSet<StratResult> SpStratResults { get; set; }
+        public DbSet<SpResponse> SpResponses { get; set; }
+        public DbSet<SpResult> SpResults { get; set; }
+        public DbSet<StudSpComment> StudSpComments { get; set; }
+        public DbSet<StratResponse> SpStratResponses { get; set; }
+        public DbSet<StratResult> SpStratResults { get; set; }
         //public DbSet<KcResponse> KcResponses { get; set; }
         //public DbSet<KcResult> KcResults { get; set; }
 

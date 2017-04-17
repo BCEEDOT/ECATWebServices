@@ -37,13 +37,13 @@ namespace Ecat.Data.Models.School.Config
             Ignore(p => p.NumOfStratIncomplete);
             Ignore(p => p.NumberOfAuthorComments);
 
-            //TODO:Update with results models impl
-            //HasOptional(p => p.SpResult)
-            //    .WithRequired(p => p.ResultFor);
+            HasOptional(p => p.SpResult)
+                .WithRequired(p => p.ResultFor);
 
-            //HasOptional(p => p.StratResult)
-            //    .WithRequired(p => p.ResultFor);
+            HasOptional(p => p.StratResult)
+               .WithRequired(p => p.ResultFor);
 
+            //TODO:Update with fac strat impl
             //HasOptional(p => p.FacultyStrat)
             //    .WithRequired(p => p.StudentAssessee);
         }

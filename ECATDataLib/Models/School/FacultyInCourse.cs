@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.User;
+using Ecat.Data.Models.Student;
 
 namespace Ecat.Data.Models.School
 {
@@ -17,11 +18,11 @@ namespace Ecat.Data.Models.School
         public Course Course { get; set; }
         public ProfileFaculty FacultyProfile { get; set; }
 
-        //TODO:Update with response and comment impls
+        //TODO:Update with fac response and comment impls
         //public ICollection<FacSpResponse> FacSpResponses { get; set; }
         //public ICollection<FacSpComment> FacSpComments { get; set; }
         //public ICollection<FacStratResponse> FacStratResponse { get; set; }
-        //public ICollection<StudSpCommentFlag> FlaggedSpComments { get; set; }
+        public ICollection<StudSpCommentFlag> FlaggedSpComments { get; set; }
 
         public bool IsDeleted { get; set; }
         public int? DeletedById { get; set; }

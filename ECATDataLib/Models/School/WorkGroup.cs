@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.Designer;
+using Ecat.Data.Models.Student;
 
 namespace Ecat.Data.Models.School
 {
@@ -25,7 +26,7 @@ namespace Ecat.Data.Models.School
         public string MpSpStatus { get; set; }
         public bool IsPrimary { get; set; }
 
-        //TODO:Update with response, comment,a nd results impls
+        //TODO:Update with fac response and comment impls
         public Course Course { get; set; }
         public WorkGroupModel WgModel { get; set; }
         //public GroupReconResult ReconResult { get; set; }
@@ -36,11 +37,11 @@ namespace Ecat.Data.Models.School
 
         public ICollection<CrseStudentInGroup> GroupMembers { get; set; }
 
-        //public ICollection<StudSpComment> SpComments { get; set; }
-        //public ICollection<SpResponse> SpResponses { get; set; }
-        //public ICollection<SpResult> SpResults { get; set; }
-        //public ICollection<StratResponse> SpStratResponses { get; set; }
-        //public ICollection<StratResult> SpStratResults { get; set; }
+        public ICollection<StudSpComment> SpComments { get; set; }
+        public ICollection<SpResponse> SpResponses { get; set; }
+        public ICollection<SpResult> SpResults { get; set; }
+        public ICollection<StratResponse> SpStratResponses { get; set; }
+        public ICollection<StratResult> SpStratResults { get; set; }
 
         public SpInstrument AssignedSpInstr { get; set; }
         public bool CanPublish { get; set; }

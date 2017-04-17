@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.User;
+using Ecat.Data.Models.Student;
 
 namespace Ecat.Data.Models.School
 {
     public class CrseStudentInGroup: ICompositeEntity, IAuditable, ISoftDelete
     {
-        //TODO:Update with responses, comments, and results impls
+        //TODO:Update with fac responses, comments, and results impls
         public string EntityId => $"{StudentId}|{CourseId}|{WorkGroupId}";
         public int StudentId { get; set; }
         public int CourseId { get; set; }
@@ -25,16 +26,16 @@ namespace Ecat.Data.Models.School
         public StudentInCourse StudentInCourse { get; set; }
         //public GroupMemReconResult ReconResult { get; set; }
         public ICollection<CrseStudentInGroup> GroupPeers { get; set; }
-        //public ICollection<SpResponse> AssessorSpResponses { get; set; }
-        //public ICollection<SpResponse> AssesseeSpResponses { get; set; }
-        //public ICollection<StudSpComment> AuthorOfComments { get; set; }
-        //public ICollection<StudSpComment> RecipientOfComments { get; set; }
-        //public ICollection<StratResponse> AssessorStratResponse { get; set; }
-        //public ICollection<StratResponse> AssesseeStratResponse { get; set; }
+        public ICollection<SpResponse> AssessorSpResponses { get; set; }
+        public ICollection<SpResponse> AssesseeSpResponses { get; set; }
+        public ICollection<StudSpComment> AuthorOfComments { get; set; }
+        public ICollection<StudSpComment> RecipientOfComments { get; set; }
+        public ICollection<StratResponse> AssessorStratResponse { get; set; }
+        public ICollection<StratResponse> AssesseeStratResponse { get; set; }
         //public ICollection<FacSpResponse> FacultySpResponses { get; set; }
 
-        //public SpResult SpResult { get; set; }
-        //public StratResult StratResult { get; set; }
+        public SpResult SpResult { get; set; }
+        public StratResult StratResult { get; set; }
         //public FacSpComment FacultyComment { get; set; }
         //public FacStratResponse FacultyStrat { get; set; }
 

@@ -32,8 +32,7 @@ namespace Ecat.Data.Models.School.Config
         public ConfigFacultyInCourse()
         {
             HasKey(p => new { p.FacultyPersonId, p.CourseId });
-            //TODO:Update with comment implementation
-            //Ignore(p => p.FlaggedSpComments);
+            Ignore(p => p.FlaggedSpComments);
 
             HasRequired(p => p.FacultyProfile)
                 .WithMany(p => p.Courses)

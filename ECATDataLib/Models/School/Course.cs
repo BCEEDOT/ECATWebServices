@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ecat.Data.Models.Student;
 
 namespace Ecat.Data.Models.School
 {
@@ -17,17 +18,17 @@ namespace Ecat.Data.Models.School
         public bool GradReportPublished { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime GradDate { get; set; }
-        //TODO:Update with results models impl
-        //public ICollection<SpResult> SpResults { get; set; }
-        //public ICollection<StratResult> StratResults { get; set; }
+        
+        public ICollection<SpResult> SpResults { get; set; }
+        public ICollection<StratResult> StratResults { get; set; }
         public ICollection<StudentInCourse> Students { get; set; }
         public ICollection<CrseStudentInGroup> StudentInCrseGroups { get; set; }
-        //public ICollection<SpResponse> SpResponses { get; set; }
+        public ICollection<SpResponse> SpResponses { get; set; }
         public ICollection<FacultyInCourse> Faculty { get; set; }
         public ICollection<WorkGroup> WorkGroups { get; set; }
 
-
         public Guid? ReconResultId { get; set; }
+        //TODO:Update with api impl
         //public CourseReconResult ReconResult { get; set; }
     }
 }

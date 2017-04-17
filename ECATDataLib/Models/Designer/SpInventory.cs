@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
+using Ecat.Data.Models.Student;
 
 namespace Ecat.Data.Models.Designer
 {
@@ -20,7 +21,6 @@ namespace Ecat.Data.Models.Designer
         public DateTime? ModifiedDate { get; set; }
 
         public SpInstrument Instrument { get; set; }
-        //TODO: Update with SpResponse implementation
-        //public ICollection<SpResponse> ItemResponses { get; set; }
+        public ICollection<SpResponse> ItemResponses { get; set; }
     }
 }
