@@ -17,7 +17,8 @@ namespace Ecat.Business.Guards
     {
         //TODO: Update as more profiles are implemented
         private readonly EFPersistenceManager<EcatContext> _efCtx;
-        private readonly Person _loggedInUser;
+        //private readonly Person _loggedInUser;
+        private readonly int loggedInUserId;
         private readonly Type _tPerson = typeof(Person);
         //private readonly Type _tProfileExternal = typeof(ProfileExternal);
         private readonly Type _tProfileFaculty = typeof(ProfileFaculty);
@@ -31,10 +32,11 @@ namespace Ecat.Business.Guards
         private readonly Type _tCogEcmspeResult = typeof(CogEcmspeResult);
         private readonly Type _tRoadRunner = typeof(RoadRunner);
 
-        public UserGuard(EFPersistenceManager<EcatContext> efCtx, Person loggedInUser)
+        public UserGuard(EFPersistenceManager<EcatContext> efCtx, int userId)
         {
             _efCtx = efCtx;
-            _loggedInUser = loggedInUser;
+            //_loggedInUser = loggedInUser;
+            loggedInUserId = userId;
         }
 
         public SaveMap BeforeSaveEntities(SaveMap saveMap)
@@ -56,8 +58,8 @@ namespace Ecat.Business.Guards
 
             saveMap.RemoveMaps(unAuthorizedMaps);
 
-            saveMap.AuditMap(_loggedInUser.PersonId);
-            saveMap.SoftDeleteMap(_loggedInUser.PersonId);
+            saveMap.AuditMap(loggedInUserId);
+            saveMap.SoftDeleteMap(loggedInUserId);
             return saveMap;
         }
     }

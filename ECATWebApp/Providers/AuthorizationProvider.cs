@@ -47,7 +47,7 @@ namespace Ecat.Web.Providers
                 var username = context.Request.Username;
                 var password = context.Request.Password;
 
-                //TODO: Fix so it reads connection string from app.config
+                //TODO: Fix so it reads connection string from app.config -- injecting not working due to newing in startup
                 //var ecatCtx = new EcatContext();
                 var ecatCtx = new EcatContext("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ecatlocaldev;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
@@ -71,7 +71,7 @@ namespace Ecat.Web.Providers
                         OpenIdConnectServerDefaults.AuthenticationScheme, OpenIdConnectConstants.Claims.Name, OpenIdConnectConstants.Claims.Role);
 
                 //required for ASOS
-                identity.AddClaim(OpenIdConnectConstants.Claims.Subject, person.Email);
+                identity.AddClaim(OpenIdConnectConstants.Claims.Subject, person.PersonId.ToString());
 
                 switch (person.MpInstituteRole)
                 {
@@ -94,6 +94,7 @@ namespace Ecat.Web.Providers
                 //identity token information
                 identity.AddClaim("LastName", person.LastName, OpenIdConnectConstants.Destinations.IdentityToken);
                 identity.AddClaim("FirstName", person.FirstName, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("Email", person.Email, OpenIdConnectConstants.Destinations.IdentityToken);
                 identity.AddClaim("MpAffiliation", person.MpAffiliation, OpenIdConnectConstants.Destinations.IdentityToken);
                 identity.AddClaim("MpComponent", person.MpComponent, OpenIdConnectConstants.Destinations.IdentityToken);
                 identity.AddClaim("MpPaygrade", person.MpPaygrade, OpenIdConnectConstants.Destinations.IdentityToken);

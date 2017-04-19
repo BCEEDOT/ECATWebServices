@@ -11,22 +11,26 @@ using Ecat.Business.Repositories.Interface;
 using Ecat.Business.Utilities;
 using Ecat.Data.Models.User;
 using Ecat.Data.Models.Designer;
-
+using Microsoft.AspNetCore.Http;
 
 namespace Ecat.Web.Controllers
 {
     [Route("breeze/[controller]/[action]")]
     [BreezeQueryFilter]
-    //TODO: How are we defining auth policy on controllers?
-    //[Authorize(Policy = "User")]
-    //[EcatRolesAuthorized]
+    [Authorize(Policy = "LoggedInUser")]
     public class UserController: Controller
     {
         private readonly IUserRepo _userRepo;
+        private IHttpContextAccessor httpCtx;
 
-        public UserController(IUserRepo userRepo)
+        public UserController(IUserRepo userRepo, IHttpContextAccessor accessor)
         {
             _userRepo = userRepo;
+            //get the userId out of the token and set the userid in the repo
+            httpCtx = accessor;
+            int usrId;
+            int.TryParse(httpCtx.HttpContext.User.Claims.First(c => c.Type == "sub").Value, out usrId);
+            _userRepo.loggedInUserId = usrId;
         }
 
         #region breeze methods

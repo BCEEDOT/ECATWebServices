@@ -20,7 +20,7 @@ namespace Ecat.Business.Repositories
 {
     public class UserRepo: IUserRepo
     {
-        public Person User { get; set; }
+        public int loggedInUserId { get; set; }
         private readonly EFPersistenceManager<EcatContext> _efCtx;
 
         public UserRepo(EcatContext ecatCtx)
@@ -36,7 +36,7 @@ namespace Ecat.Business.Repositories
 
         public SaveResult ClientSave(JObject saveBundle)
         {
-            var guardian = new UserGuard(_efCtx, User);
+            var guardian = new UserGuard(_efCtx, loggedInUserId);
             _efCtx.BeforeSaveEntitiesDelegate += guardian.BeforeSaveEntities;
             return _efCtx.SaveChanges(saveBundle);
         }
@@ -44,7 +44,7 @@ namespace Ecat.Business.Repositories
 
         public async Task<List<object>> GetProfile()
         {
-            var userWithProfiles = await _efCtx.Context.People.Where(p => p.PersonId == User.PersonId)
+            var userWithProfiles = await _efCtx.Context.People.Where(p => p.PersonId == loggedInUserId)
                 .Include(p => p.Student)
                 .Include(p => p.Faculty).SingleAsync();
                 //.Include(p => p.Designer)
@@ -177,25 +177,25 @@ namespace Ecat.Business.Repositories
             var results = new List<object>();
 
             var ecpe = await _efCtx.Context.CogEcpeResult
-                .Where(cog => cog.PersonId == User.PersonId)
+                .Where(cog => cog.PersonId == loggedInUserId)
                 .Include(cog => cog.Instrument)
                 .OrderByDescending(cog => cog.Attempt)
                 .ToListAsync();
 
             var etmpre = await _efCtx.Context.CogEtmpreResult
-                .Where(cog => cog.PersonId == User.PersonId)
+                .Where(cog => cog.PersonId == loggedInUserId)
                 .Include(cog => cog.Instrument)
                 .OrderByDescending(cog => cog.Attempt)
                 .ToListAsync();
 
             var esalb = await _efCtx.Context.CogEsalbResult
-                .Where(cog => cog.PersonId == User.PersonId)
+                .Where(cog => cog.PersonId == loggedInUserId)
                 .Include(cog => cog.Instrument)
                 .OrderByDescending(cog => cog.Attempt)
                 .ToListAsync();
 
             var ecmspe = await _efCtx.Context.CogEcmspeResult
-                .Where(cog => cog.PersonId == User.PersonId)
+                .Where(cog => cog.PersonId == loggedInUserId)
                 .Include(cog => cog.Instrument)
                 .OrderByDescending(cog => cog.Attempt)
                 .ToListAsync();
@@ -222,7 +222,7 @@ namespace Ecat.Business.Repositories
         public async Task<List<RoadRunner>> GetRoadRunnerInfo()
         {
             var personList = new List<RoadRunner>();
-            personList = await _efCtx.Context.RoadRunnerAddresses.Where(e => e.PersonId == User.PersonId).ToListAsync();
+            personList = await _efCtx.Context.RoadRunnerAddresses.Where(e => e.PersonId == loggedInUserId).ToListAsync();
             return personList;
         }
     }

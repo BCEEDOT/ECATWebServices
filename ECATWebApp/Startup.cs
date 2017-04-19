@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Ecat.Data.Contexts;
 using Ecat.Data.Models;
@@ -18,6 +19,8 @@ using System.IdentityModel.Tokens.Jwt;
 using AspNet.Security.OpenIdConnect.Primitives;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Business.Repositories;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Ecat.Web
 {
@@ -40,8 +43,8 @@ namespace Ecat.Web
         {
 
             services.AddAuthorization(options => {
-                options.AddPolicy("Student",
-                                    policy => policy.RequireClaim("Role", "Student"));
+                options.AddPolicy("Faculty", policy => policy.RequireClaim("Role", "Faculty"));
+                options.AddPolicy("LoggedInUser", policy => policy.Requirements.Add(new LoggedInUserRequirement()));
             });
 
 
@@ -57,13 +60,19 @@ namespace Ecat.Web
 
             var connectionString = Configuration["DbConnection"];
             services.AddScoped(_ => new EcatContext(connectionString));
-            services.AddScoped<IUserRepo, UserRepo>(); 
+            services.AddScoped<IUserRepo, UserRepo>();
+
+            //Controllers need to have the httpContext injected
+            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAuthorizationHandler, LoggedInUserPolicy>();
+
             // Add framework services.
-
-           
-
-
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options => {
+                //JSON Serializer options
+                //ReferenceLoopHandling.Ignore stops serialization of self-referencing objects (ie Person > ProfileFaculty > Person > etc)
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

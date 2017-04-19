@@ -15,7 +15,8 @@ namespace Ecat.Business.Repositories.Interface
         string MetaData();
         SaveResult ClientSave(JObject saveBundle);
 
-        Person User { get; set; }
+        int loggedInUserId { get; set; }
+        //Person User { get; set; }
         Task<List<object>> GetProfile();
         //Task<Person> LoginUser(string userName, string password);
         //Task<Person> ProcessLtiUser(ILtiRequest parsedRequest);

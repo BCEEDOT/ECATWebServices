@@ -10,8 +10,8 @@
     <ApplicationIcon />
     <OutputTypeEx>exe</OutputTypeEx>
     <StartupObject />
-    <AssemblyName>ECATWebApp</AssemblyName>
-    <RootNamespace>ECATWebApp</RootNamespace>
+    <AssemblyName>Ecat.Web</AssemblyName>
+    <RootNamespace>Ecat.Web</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
