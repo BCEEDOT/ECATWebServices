@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.User;
 using Ecat.Data.Models.Student;
+using Ecat.Data.Models.Faculty;
 
 namespace Ecat.Data.Models.School
 {
@@ -18,10 +19,9 @@ namespace Ecat.Data.Models.School
         public Course Course { get; set; }
         public ProfileFaculty FacultyProfile { get; set; }
 
-        //TODO:Update with fac response and comment impls
-        //public ICollection<FacSpResponse> FacSpResponses { get; set; }
-        //public ICollection<FacSpComment> FacSpComments { get; set; }
-        //public ICollection<FacStratResponse> FacStratResponse { get; set; }
+        public ICollection<FacSpResponse> FacSpResponses { get; set; }
+        public ICollection<FacSpComment> FacSpComments { get; set; }
+        public ICollection<FacStratResponse> FacStratResponse { get; set; }
         public ICollection<StudSpCommentFlag> FlaggedSpComments { get; set; }
 
         public bool IsDeleted { get; set; }
@@ -29,6 +29,7 @@ namespace Ecat.Data.Models.School
         public DateTime? DeletedDate { get; set; }
 
         public Guid? ReconResultId { get; set; }
+        //TODO: Update with api impl
         //public MemReconResult ReconResult { get; set; }
     }
 }

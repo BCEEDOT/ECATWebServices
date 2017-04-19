@@ -14,8 +14,7 @@ namespace Ecat.Data.Models.Student.Config
             HasKey(p => new { p.StudentId, p.CourseId, p.WorkGroupId });
 
             Ignore(p => p.SpResponses);
-            //TODO: Update with fac resp impl
-            //Ignore(p => p.FacultyResponses);
+            Ignore(p => p.FacultyResponses);
 
             HasRequired(p => p.Course)
               .WithMany(p => p.SpResults)
@@ -43,8 +42,7 @@ namespace Ecat.Data.Models.Student.Config
             Property(p => p.StudStratAwardedScore).HasPrecision(18, 3);
             Property(p => p.FacStratAwardedScore).HasPrecision(18, 3);
             Ignore(p => p.StratResponses);
-            //TODO: Update with fac strat impl
-            //Ignore(p => p.FacStrat);
+            Ignore(p => p.FacStrat);
 
             HasRequired(p => p.Course)
                 .WithMany(p => p.StratResults)

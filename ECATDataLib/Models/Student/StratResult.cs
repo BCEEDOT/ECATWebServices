@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.School;
+using Ecat.Data.Models.Faculty;
 
 namespace Ecat.Data.Models.Student
 {
     public class StratResult : ICompositeEntity, IAuditable
     {
-        //TODO: Fac strat impl
         public string EntityId => $"{StudentId}|{CourseId}|{WorkGroupId}";
         public int CourseId { get; set; }
         public int StudentId { get; set; }
@@ -24,7 +24,7 @@ namespace Ecat.Data.Models.Student
 
         public Course Course { get; set; }
         public CrseStudentInGroup ResultFor { get; set; }
-        //public FacStratResponse FacStrat { get; set; }
+        public FacStratResponse FacStrat { get; set; }
         public ICollection<StratResponse> StratResponses { get; set; }
 
         public int? ModifiedById { get; set; }

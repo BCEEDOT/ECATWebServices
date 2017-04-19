@@ -13,6 +13,7 @@ using Ecat.Data.Models.School;
 using Ecat.Data.Models.Designer;
 using Ecat.Data.Models.Cognitive;
 using Ecat.Data.Models.Student;
+using Ecat.Data.Models.Faculty;
 
 namespace Ecat.Data.Contexts
 {
@@ -58,7 +59,8 @@ namespace Ecat.Data.Contexts
                 type.Namespace == "Ecat.Data.Models.School.Config" ||
                 type.Namespace == "Ecat.Data.Models.Designer.Config" ||
                 type.Namespace == "Ecat.Data.Models.Cognitive.Config" ||
-                type.Namespace == "Ecat.Data.Models.Student.Config"));
+                type.Namespace == "Ecat.Data.Models.Student.Config" ||
+                type.Namespace == "Ecat.Data.Models.Faculty.Config"));
 
             foreach (var configurationInstance in typesToRegister.Select(Activator.CreateInstance))
             {
@@ -116,9 +118,9 @@ namespace Ecat.Data.Contexts
 
         #region ModelOwner: Faculty
 
-        //public DbSet<FacSpResponse> FacSpResponses { get; set; }
-        //public DbSet<FacSpComment> FacSpComments { get; set; }
-        //public DbSet<FacStratResponse> FacStratResponses { get; set; }
+        public DbSet<FacSpResponse> FacSpResponses { get; set; }
+        public DbSet<FacSpComment> FacSpComments { get; set; }
+        public DbSet<FacStratResponse> FacStratResponses { get; set; }
 
         #endregion
 

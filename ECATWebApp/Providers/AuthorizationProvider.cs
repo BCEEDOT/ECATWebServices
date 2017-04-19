@@ -98,7 +98,6 @@ namespace Ecat.Web.Providers
                 identity.AddClaim("MpAffiliation", person.MpAffiliation, OpenIdConnectConstants.Destinations.IdentityToken);
                 identity.AddClaim("MpComponent", person.MpComponent, OpenIdConnectConstants.Destinations.IdentityToken);
                 identity.AddClaim("MpPaygrade", person.MpPaygrade, OpenIdConnectConstants.Destinations.IdentityToken);
-                identity.AddClaim("Email", person.Email, OpenIdConnectConstants.Destinations.IdentityToken);
                 identity.AddClaim("MpGender", person.MpGender, OpenIdConnectConstants.Destinations.IdentityToken);
                 identity.AddClaim("MpInstituteRole", person.MpInstituteRole, OpenIdConnectConstants.Destinations.IdentityToken);
 

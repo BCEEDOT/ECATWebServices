@@ -14,6 +14,7 @@ using Ecat.Data.Models.School.Config;
 using Ecat.Data.Models.Student;
 using Ecat.Data.Models.Student.Config;
 using Ecat.Data.Contexts.Config;
+using Ecat.Data.Models.Faculty;
 
 namespace Ecat.Data.Contexts
 {
@@ -54,9 +55,9 @@ namespace Ecat.Data.Contexts
                 typeof (Security),
                 //typeof (ProfileStaff),
                 typeof (FacultyInCourse),
-                //typeof (FacSpResponse),
-                //typeof (FacStratResponse),
-                //typeof (FacSpComment),
+                typeof (FacSpResponse),
+                typeof (FacStratResponse),
+                typeof (FacSpComment),
                 //typeof (KcResponse),
                 //typeof (KcResult)
             });

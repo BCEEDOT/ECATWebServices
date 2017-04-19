@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.User;
 using Ecat.Data.Models.Student;
+using Ecat.Data.Models.Faculty;
 
 namespace Ecat.Data.Models.School
 {
     public class CrseStudentInGroup: ICompositeEntity, IAuditable, ISoftDelete
     {
-        //TODO:Update with fac responses, comments, and results impls
+        //TODO:Update with api impl
         public string EntityId => $"{StudentId}|{CourseId}|{WorkGroupId}";
         public int StudentId { get; set; }
         public int CourseId { get; set; }
@@ -32,12 +33,12 @@ namespace Ecat.Data.Models.School
         public ICollection<StudSpComment> RecipientOfComments { get; set; }
         public ICollection<StratResponse> AssessorStratResponse { get; set; }
         public ICollection<StratResponse> AssesseeStratResponse { get; set; }
-        //public ICollection<FacSpResponse> FacultySpResponses { get; set; }
+        public ICollection<FacSpResponse> FacultySpResponses { get; set; }
 
         public SpResult SpResult { get; set; }
         public StratResult StratResult { get; set; }
-        //public FacSpComment FacultyComment { get; set; }
-        //public FacStratResponse FacultyStrat { get; set; }
+        public FacSpComment FacultyComment { get; set; }
+        public FacStratResponse FacultyStrat { get; set; }
 
         public int NumberOfAuthorComments { get; set; }
 

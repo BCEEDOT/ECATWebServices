@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.Designer;
 using Ecat.Data.Models.School;
+using Ecat.Data.Models.Faculty;
 
 namespace Ecat.Data.Models.Student
 {
     public class SpResult : ICompositeEntity, IAuditable, IWorkGroupMonitored, ICourseMonitored
     {
-        //TODO: Fac resposne impl
         public string EntityId => $"{StudentId}|{CourseId}|{WorkGroupId}";
         public int CourseId { get; set; }
         public int WorkGroupId { get; set; }
@@ -24,7 +24,7 @@ namespace Ecat.Data.Models.Student
         public SpInstrument AssignedInstrument { get; set; }
         public WorkGroup WorkGroup { get; set; }
         public Course Course { get; set; }
-        //public ICollection<FacSpResponse> FacultyResponses { get; set; }
+        public ICollection<FacSpResponse> FacultyResponses { get; set; }
         public ICollection<SpResponse> SpResponses { get; set; }
         public ICollection<SanitizedSpResponse> SanitizedResponses { get; set; }
         public ICollection<SanitizedSpComment> SanitizedComments { get; set; }

@@ -8,6 +8,7 @@ using Ecat.Data.Models.User;
 using Ecat.Data.Models.Designer;
 using Ecat.Data.Models.School;
 using Ecat.Data.Models.Student;
+using Ecat.Data.Models.Faculty;
 
 namespace Ecat.Data.Contexts.Config
 {
@@ -65,10 +66,9 @@ namespace Ecat.Data.Contexts.Config
         public StudConfigStudWrkGrp()
         {
             Ignore(p => p.WgModel);
-            //TODO: Update with fac impls
-            //Ignore(p => p.FacSpComments);
-            //Ignore(p => p.FacSpResponses);
-            //Ignore(p => p.FacStratResponses);
+            Ignore(p => p.FacSpComments);
+            Ignore(p => p.FacSpResponses);
+            Ignore(p => p.FacStratResponses);
             Ignore(p => p.BbGroupId);
             Ignore(p => p.CanPublish);
         }

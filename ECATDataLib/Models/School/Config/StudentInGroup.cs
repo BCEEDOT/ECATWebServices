@@ -43,9 +43,8 @@ namespace Ecat.Data.Models.School.Config
             HasOptional(p => p.StratResult)
                .WithRequired(p => p.ResultFor);
 
-            //TODO:Update with fac strat impl
-            //HasOptional(p => p.FacultyStrat)
-            //    .WithRequired(p => p.StudentAssessee);
+            HasOptional(p => p.FacultyStrat)
+               .WithRequired(p => p.StudentAssessee);
         }
     }
 }

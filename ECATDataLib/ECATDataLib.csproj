@@ -237,8 +237,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contexts\Config\FacultyMetadata.cs" />
     <Compile Include="Contexts\Config\StudentMetadata.cs" />
     <Compile Include="Contexts\EcatContext.cs" />
+    <Compile Include="Contexts\FacultyMetadata.cs" />
     <Compile Include="Contexts\StudentMetadata.cs" />
     <Compile Include="Contexts\UserMetadata.cs" />
     <Compile Include="Migrations\201704101604195_UserModels.cs" />
@@ -260,6 +262,14 @@
     <Compile Include="Models\Designer\SpInstrument.cs" />
     <Compile Include="Models\Designer\SpInventory.cs" />
     <Compile Include="Models\Designer\WorkGroupModel.cs" />
+    <Compile Include="Models\Faculty\Config\FacSpComment.cs" />
+    <Compile Include="Models\Faculty\Config\FacSpCommentFlag.cs" />
+    <Compile Include="Models\Faculty\Config\FacSpResponse.cs" />
+    <Compile Include="Models\Faculty\Config\FacStratResponse.cs" />
+    <Compile Include="Models\Faculty\FacSpComment.cs" />
+    <Compile Include="Models\Faculty\FacSpCommentFlag.cs" />
+    <Compile Include="Models\Faculty\FacSpResponse.cs" />
+    <Compile Include="Models\Faculty\FacStratResponse.cs" />
     <Compile Include="Models\Interface\IAuditable.cs" />
     <Compile Include="Models\Interface\ICompositeEntity.cs" />
     <Compile Include="Models\Interface\IInstrument.cs" />
