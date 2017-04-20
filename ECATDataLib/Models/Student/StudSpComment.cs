@@ -8,7 +8,7 @@ using Ecat.Data.Models.School;
 
 namespace Ecat.Data.Models.Student
 {
-    //TODO: Implement deleteguard
+    //TODO: Implement deleteableguard attribute?
     //[DeletableGuard(AuthorizedDeleters = new[] { RoleMap.Student })]
     public class StudSpComment : IAuditable, IWorkGroupMonitored, ICourseMonitored
     {

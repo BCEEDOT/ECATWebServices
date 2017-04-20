@@ -22,11 +22,11 @@ namespace Ecat.Business.Repositories
     public class UserRepo: IUserRepo
     {
         public int loggedInUserId { get; set; }
-        private readonly EFPersistenceManager<EcatContext> _efCtx;
+        private readonly EFPersistenceManager<EcatContext> ctxManager;
 
-        public UserRepo(EcatContext ecatCtx)
+        public UserRepo(EcatContext context)
         {
-            _efCtx = new EFPersistenceManager<EcatContext>(ecatCtx);
+            ctxManager = new EFPersistenceManager<EcatContext>(context);
         }
 
         #region breeze methods
@@ -37,15 +37,15 @@ namespace Ecat.Business.Repositories
 
         public SaveResult ClientSave(JObject saveBundle)
         {
-            var guardian = new UserGuard(_efCtx, loggedInUserId);
-            _efCtx.BeforeSaveEntitiesDelegate += guardian.BeforeSaveEntities;
-            return _efCtx.SaveChanges(saveBundle);
+            var guardian = new UserGuard(ctxManager, loggedInUserId);
+            ctxManager.BeforeSaveEntitiesDelegate += guardian.BeforeSaveEntities;
+            return ctxManager.SaveChanges(saveBundle);
         }
         #endregion breeze methods
 
         public async Task<List<object>> GetProfile()
         {
-            var userWithProfiles = await _efCtx.Context.People.Where(p => p.PersonId == loggedInUserId)
+            var userWithProfiles = await ctxManager.Context.People.Where(p => p.PersonId == loggedInUserId)
                 .Include(p => p.Student)
                 .Include(p => p.Faculty).SingleAsync();
                 //.Include(p => p.Designer)
@@ -65,7 +65,7 @@ namespace Ecat.Business.Repositories
 
         public async Task<Person> ProcessLtiUser(ILtiRequest parsedRequest)
         {
-            var user = await _efCtx.Context.People
+            var user = await ctxManager.Context.People
              .Include(s => s.Security)
              .Include(s => s.Faculty)
              .Include(s => s.Student)
@@ -109,7 +109,7 @@ namespace Ecat.Business.Repositories
                     RegistrationComplete = false
                 };
 
-                _efCtx.Context.People.Add(user);
+                ctxManager.Context.People.Add(user);
             }
 
             var userIsCourseAdmin = false;
@@ -154,7 +154,7 @@ namespace Ecat.Business.Repositories
             user.BbUserId = parsedRequest.UserId;
             user.ModifiedDate = DateTime.Now;
 
-            if (await _efCtx.Context.SaveChangesAsync() > 0)
+            if (await ctxManager.Context.SaveChangesAsync() > 0)
             {
                 return user;
             }
@@ -162,11 +162,11 @@ namespace Ecat.Business.Repositories
             throw new UserUpdateException("Save User Changes did not succeed!");
         }
 
-        public async Task<bool> UniqueEmailCheck(string email) => await _efCtx.Context.People.CountAsync(user => user.Email.ToLower() == email.ToLower()) == 0;
+        public async Task<bool> UniqueEmailCheck(string email) => await ctxManager.Context.People.CountAsync(user => user.Email.ToLower() == email.ToLower()) == 0;
 
         public async Task<CogInstrument> GetCogInst(string type)
         {
-            return await _efCtx.Context.CogInstruments
+            return await ctxManager.Context.CogInstruments
                 .Where(cog => cog.MpCogInstrumentType == type && cog.IsActive == true)
                 .Include(cog => cog.InventoryCollection)
                 .FirstOrDefaultAsync();
@@ -176,25 +176,25 @@ namespace Ecat.Business.Repositories
         {
             var results = new List<object>();
 
-            var ecpe = await _efCtx.Context.CogEcpeResult
+            var ecpe = await ctxManager.Context.CogEcpeResult
                 .Where(cog => cog.PersonId == loggedInUserId)
                 .Include(cog => cog.Instrument)
                 .OrderByDescending(cog => cog.Attempt)
                 .ToListAsync();
 
-            var etmpre = await _efCtx.Context.CogEtmpreResult
+            var etmpre = await ctxManager.Context.CogEtmpreResult
                 .Where(cog => cog.PersonId == loggedInUserId)
                 .Include(cog => cog.Instrument)
                 .OrderByDescending(cog => cog.Attempt)
                 .ToListAsync();
 
-            var esalb = await _efCtx.Context.CogEsalbResult
+            var esalb = await ctxManager.Context.CogEsalbResult
                 .Where(cog => cog.PersonId == loggedInUserId)
                 .Include(cog => cog.Instrument)
                 .OrderByDescending(cog => cog.Attempt)
                 .ToListAsync();
 
-            var ecmspe = await _efCtx.Context.CogEcmspeResult
+            var ecmspe = await ctxManager.Context.CogEcmspeResult
                 .Where(cog => cog.PersonId == loggedInUserId)
                 .Include(cog => cog.Instrument)
                 .OrderByDescending(cog => cog.Attempt)
@@ -222,7 +222,7 @@ namespace Ecat.Business.Repositories
         public async Task<List<RoadRunner>> GetRoadRunnerInfo()
         {
             var personList = new List<RoadRunner>();
-            personList = await _efCtx.Context.RoadRunnerAddresses.Where(e => e.PersonId == loggedInUserId).ToListAsync();
+            personList = await ctxManager.Context.RoadRunnerAddresses.Where(e => e.PersonId == loggedInUserId).ToListAsync();
             return personList;
         }
     }

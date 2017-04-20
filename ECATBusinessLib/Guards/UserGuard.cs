@@ -16,25 +16,25 @@ namespace Ecat.Business.Guards
     public class UserGuard
     {
         //TODO: Update as more profiles are implemented
-        private readonly EFPersistenceManager<EcatContext> _efCtx;
+        private readonly EFPersistenceManager<EcatContext> ctxManager;
         //private readonly Person _loggedInUser;
         private readonly int loggedInUserId;
-        private readonly Type _tPerson = typeof(Person);
+        private readonly Type tPerson = typeof(Person);
         //private readonly Type _tProfileExternal = typeof(ProfileExternal);
-        private readonly Type _tProfileFaculty = typeof(ProfileFaculty);
+        private readonly Type tProfileFaculty = typeof(ProfileFaculty);
         //private readonly Type _tProfileStaff = typeof(ProfileStaff);
-        private readonly Type _tProfileStudent = typeof(ProfileStudent);
-        private readonly Type _tProfileSecurity = typeof(Security);
-        private readonly Type _tCogResponse = typeof(CogResponse);
-        private readonly Type _tCogEcpeResult = typeof(CogEcpeResult);
-        private readonly Type _tCogEsalbResult = typeof(CogEsalbResult);
-        private readonly Type _tCogEtmpreResult = typeof(CogEtmpreResult);
-        private readonly Type _tCogEcmspeResult = typeof(CogEcmspeResult);
-        private readonly Type _tRoadRunner = typeof(RoadRunner);
+        private readonly Type tProfileStudent = typeof(ProfileStudent);
+        private readonly Type tProfileSecurity = typeof(Security);
+        private readonly Type tCogResponse = typeof(CogResponse);
+        private readonly Type tCogEcpeResult = typeof(CogEcpeResult);
+        private readonly Type tCogEsalbResult = typeof(CogEsalbResult);
+        private readonly Type tCogEtmpreResult = typeof(CogEtmpreResult);
+        private readonly Type tCogEcmspeResult = typeof(CogEcmspeResult);
+        private readonly Type tRoadRunner = typeof(RoadRunner);
 
         public UserGuard(EFPersistenceManager<EcatContext> efCtx, int userId)
         {
-            _efCtx = efCtx;
+            ctxManager = efCtx;
             //_loggedInUser = loggedInUser;
             loggedInUserId = userId;
         }
@@ -42,18 +42,18 @@ namespace Ecat.Business.Guards
         public SaveMap BeforeSaveEntities(SaveMap saveMap)
         {
 
-            var unAuthorizedMaps = saveMap.Where(map => map.Key != _tPerson &&
+            var unAuthorizedMaps = saveMap.Where(map => map.Key != tPerson &&
                                                         //map.Key != _tProfileExternal &&
-                                                        map.Key != _tProfileFaculty &&
-                                                        map.Key != _tProfileStudent &&
-                                                        map.Key != _tProfileSecurity &&
+                                                        map.Key != tProfileFaculty &&
+                                                        map.Key != tProfileStudent &&
+                                                        map.Key != tProfileSecurity &&
                                                                                       //map.Key != _tProfileStaff &&
-                                                                                      map.Key != _tCogResponse &&
-                                                                                      map.Key != _tCogEcpeResult &&
-                                                                                      map.Key != _tCogEsalbResult &&
-                                                                                      map.Key != _tCogEtmpreResult &&
-                                                                                      map.Key != _tCogEcmspeResult &&
-                                                                                      map.Key != _tRoadRunner)
+                                                                                      map.Key != tCogResponse &&
+                                                                                      map.Key != tCogEcpeResult &&
+                                                                                      map.Key != tCogEsalbResult &&
+                                                                                      map.Key != tCogEtmpreResult &&
+                                                                                      map.Key != tCogEcmspeResult &&
+                                                                                      map.Key != tRoadRunner)
                                                         .ToList();
 
             saveMap.RemoveMaps(unAuthorizedMaps);

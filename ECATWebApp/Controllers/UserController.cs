@@ -20,12 +20,12 @@ namespace Ecat.Web.Controllers
     [Authorize(Policy = "LoggedInUser")]
     public class UserController: Controller
     {
-        private readonly IUserRepo _userRepo;
+        private readonly IUserRepo userRepo;
         private IHttpContextAccessor httpCtx;
 
-        public UserController(IUserRepo userRepo, IHttpContextAccessor accessor)
+        public UserController(IUserRepo repo, IHttpContextAccessor accessor)
         {
-            _userRepo = userRepo;
+            userRepo = repo;
             //get the userId out of the token and set the userid in the repo
             //if we get to this point we already know the the sub claim exists and the value is an int because it checks in it auth policy handler
             httpCtx = accessor;
@@ -36,13 +36,13 @@ namespace Ecat.Web.Controllers
         [HttpGet]
         public string Metadata()
         {
-            return _userRepo.MetaData();
+            return userRepo.MetaData();
         }
 
         [HttpPost]
         public SaveResult SaveChanges(JObject saveBundle)
         {
-            return _userRepo.ClientSave(saveBundle);
+            return userRepo.ClientSave(saveBundle);
         }
         #endregion breeze methods
 
@@ -50,31 +50,31 @@ namespace Ecat.Web.Controllers
         public async Task<bool> CheckUserEmail(string email)
         {
             var emailChecker = new ValidEmailChecker();
-            return !emailChecker.IsValidEmail(email) && await _userRepo.UniqueEmailCheck(email);
+            return !emailChecker.IsValidEmail(email) && await userRepo.UniqueEmailCheck(email);
         }
 
         [HttpGet]
         public async Task<object> Profiles()
         {
-            return await _userRepo.GetProfile();
+            return await userRepo.GetProfile();
         }
 
         [HttpGet]
         public async Task<CogInstrument> GetCogInst(string type)
         {
-            return await _userRepo.GetCogInst(type);
+            return await userRepo.GetCogInst(type);
         }
 
         [HttpGet]
         public async Task<List<object>> GetCogResults(bool? all)
         {
-            return await _userRepo.GetCogResults(all);
+            return await userRepo.GetCogResults(all);
         }
 
         [HttpGet]
         public async Task<List<RoadRunner>> RoadRunnerInfos()
         {
-            return await _userRepo.GetRoadRunnerInfo();
+            return await userRepo.GetRoadRunnerInfo();
         }
     }
 }

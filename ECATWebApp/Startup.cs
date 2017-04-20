@@ -44,6 +44,7 @@ namespace Ecat.Web
 
             services.AddAuthorization(options => {
                 options.AddPolicy("Faculty", policy => policy.RequireClaim("Role", "Faculty"));
+                options.AddPolicy("Student", policy => policy.RequireClaim("Role", "Student"));
                 options.AddPolicy("LoggedInUser", policy => policy.Requirements.Add(new LoggedInUserRequirement()));
             });
 
@@ -61,6 +62,7 @@ namespace Ecat.Web
             var connectionString = Configuration["DbConnection"];
             services.AddScoped(_ => new EcatContext(connectionString));
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IStudentRepo, StudentRepo>();
 
             //Controllers need to have the httpContext injected
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
