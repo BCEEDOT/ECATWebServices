@@ -23,8 +23,6 @@ namespace Ecat.Data.Contexts
 
         protected override void OnModelCreating(DbModelBuilder mb)
         {
-
-            //TODO: Update as more implemented
             mb.Configurations.Add(new ConfigPerson());
             mb.Configurations.Add(new ConfigProfileStudent());
             mb.Configurations.Add(new ConfigProfileFaculty());

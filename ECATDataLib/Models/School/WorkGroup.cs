@@ -7,6 +7,7 @@ using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.Designer;
 using Ecat.Data.Models.Student;
 using Ecat.Data.Models.Faculty;
+using Ecat.Data.Models.Common;
 
 namespace Ecat.Data.Models.School
 {
@@ -27,10 +28,9 @@ namespace Ecat.Data.Models.School
         public string MpSpStatus { get; set; }
         public bool IsPrimary { get; set; }
 
-        //TODO:Update with api impl
         public Course Course { get; set; }
         public WorkGroupModel WgModel { get; set; }
-        //public GroupReconResult ReconResult { get; set; }
+        public GroupReconResult ReconResult { get; set; }
 
         public ICollection<FacSpResponse> FacSpResponses { get; set; }
         public ICollection<FacStratResponse> FacStratResponses { get; set; }

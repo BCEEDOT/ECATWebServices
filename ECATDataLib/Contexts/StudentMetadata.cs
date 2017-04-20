@@ -15,6 +15,7 @@ using Ecat.Data.Models.Student;
 using Ecat.Data.Models.Student.Config;
 using Ecat.Data.Contexts.Config;
 using Ecat.Data.Models.Faculty;
+using Ecat.Data.Models.Common;
 
 namespace Ecat.Data.Contexts
 {
@@ -48,7 +49,6 @@ namespace Ecat.Data.Contexts
 
             mb.Ignore(new List<Type>
             {
-                //TODO: Update with model impls
                 //typeof (ProfileExternal),
                 //typeof (ProfileDesigner),
                 typeof (ProfileFaculty),
@@ -81,11 +81,10 @@ namespace Ecat.Data.Contexts
             //    mb.Configurations.Add((dynamic)configurationInstance);
             //}
 
-            //TODO: Update with api impl
-            //mb.Ignore<CourseReconResult>();
-            //mb.Ignore<MemReconResult>();
-            //mb.Ignore<GroupMemReconResult>();
-            //mb.Ignore<GroupReconResult>();
+            mb.Ignore<CourseReconResult>();
+            mb.Ignore<MemReconResult>();
+            mb.Ignore<GroupMemReconResult>();
+            mb.Ignore<GroupReconResult>();
             mb.Entity<FacultyInCourse>().Ignore(p => p.ReconResultId);
             mb.Entity<StudentInCourse>().Ignore(p => p.ReconResultId);
             mb.Entity<CrseStudentInGroup>().Ignore(p => p.ReconResultId);

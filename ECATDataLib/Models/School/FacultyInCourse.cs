@@ -7,6 +7,7 @@ using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.User;
 using Ecat.Data.Models.Student;
 using Ecat.Data.Models.Faculty;
+using Ecat.Data.Models.Common;
 
 namespace Ecat.Data.Models.School
 {
@@ -29,7 +30,6 @@ namespace Ecat.Data.Models.School
         public DateTime? DeletedDate { get; set; }
 
         public Guid? ReconResultId { get; set; }
-        //TODO: Update with api impl
-        //public MemReconResult ReconResult { get; set; }
+        public MemReconResult ReconResult { get; set; }
     }
 }

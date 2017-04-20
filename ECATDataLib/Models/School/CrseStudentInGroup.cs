@@ -7,12 +7,12 @@ using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.User;
 using Ecat.Data.Models.Student;
 using Ecat.Data.Models.Faculty;
+using Ecat.Data.Models.Common;
 
 namespace Ecat.Data.Models.School
 {
     public class CrseStudentInGroup: ICompositeEntity, IAuditable, ISoftDelete
     {
-        //TODO:Update with api impl
         public string EntityId => $"{StudentId}|{CourseId}|{WorkGroupId}";
         public int StudentId { get; set; }
         public int CourseId { get; set; }
@@ -25,7 +25,7 @@ namespace Ecat.Data.Models.School
         public ProfileStudent StudentProfile { get; set; }
         public Course Course { get; set; }
         public StudentInCourse StudentInCourse { get; set; }
-        //public GroupMemReconResult ReconResult { get; set; }
+        public GroupMemReconResult ReconResult { get; set; }
         public ICollection<CrseStudentInGroup> GroupPeers { get; set; }
         public ICollection<SpResponse> AssessorSpResponses { get; set; }
         public ICollection<SpResponse> AssesseeSpResponses { get; set; }

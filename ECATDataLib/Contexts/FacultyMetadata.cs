@@ -13,6 +13,7 @@ using Ecat.Data.Models.Student.Config;
 using Ecat.Data.Models.Faculty;
 using Ecat.Data.Models.Faculty.Config;
 using Ecat.Data.Contexts.Config;
+using Ecat.Data.Models.Common;
 using System.Reflection;
 using System.Data.Entity.ModelConfiguration;
 
@@ -74,11 +75,10 @@ namespace Ecat.Data.Contexts
                 typeof (SanitizedSpResponse)
             });
 
-            //TODO: Update with api impl
-            //mb.Ignore<CourseReconResult>();
-            //mb.Ignore<MemReconResult>();
-            //mb.Ignore<GroupMemReconResult>();
-            //mb.Ignore<GroupReconResult>();
+            mb.Ignore<CourseReconResult>();
+            mb.Ignore<MemReconResult>();
+            mb.Ignore<GroupMemReconResult>();
+            mb.Ignore<GroupReconResult>();
             mb.Entity<FacultyInCourse>().Ignore(p => p.ReconResultId);
             mb.Entity<StudentInCourse>().Ignore(p => p.ReconResultId);
             mb.Entity<CrseStudentInGroup>().Ignore(p => p.ReconResultId);
@@ -102,9 +102,9 @@ namespace Ecat.Data.Contexts
         public IDbSet<StudSpComment> StudSpComments { get; set; }
         public IDbSet<SpResult> SpResults { get; set; }
         public IDbSet<StratResult> SpStratResults { get; set; }
-        //public IDbSet<CourseReconResult> CourseRecon { get; set; }
-        //public IDbSet<MemReconResult> MemRecon { get; set; }
-        //public IDbSet<GroupReconResult> GroupRecon { get; set; }
-        //public IDbSet<GroupMemReconResult> GroupMemRecon { get; set; }
+        public IDbSet<CourseReconResult> CourseRecon { get; set; }
+        public IDbSet<MemReconResult> MemRecon { get; set; }
+        public IDbSet<GroupReconResult> GroupRecon { get; set; }
+        public IDbSet<GroupMemReconResult> GroupMemRecon { get; set; }
     }
 }

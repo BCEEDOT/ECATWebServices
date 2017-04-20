@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Student;
+using Ecat.Data.Models.Common;
 
 namespace Ecat.Data.Models.School
 {
@@ -28,7 +29,6 @@ namespace Ecat.Data.Models.School
         public ICollection<WorkGroup> WorkGroups { get; set; }
 
         public Guid? ReconResultId { get; set; }
-        //TODO:Update with api impl
-        //public CourseReconResult ReconResult { get; set; }
+        public CourseReconResult ReconResult { get; set; }
     }
 }

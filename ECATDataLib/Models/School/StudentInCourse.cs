@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.User;
+using Ecat.Data.Models.Common;
 
 namespace Ecat.Data.Models.School
 {
     public class StudentInCourse: ICompositeEntity, ISoftDelete
     {
-        //TODO:Update with api impl
         public string EntityId => $"{StudentPersonId}|{CourseId}";
         public int CourseId { get; set; }
         public int StudentPersonId { get; set; }
@@ -27,6 +27,6 @@ namespace Ecat.Data.Models.School
         public DateTime? DeletedDate { get; set; }
 
         public Guid? ReconResultId { get; set; }
-        //public MemReconResult ReconResult { get; set; }
+        public MemReconResult ReconResult { get; set; }
     }
 }

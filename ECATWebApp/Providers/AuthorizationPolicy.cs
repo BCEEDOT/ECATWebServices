@@ -25,7 +25,7 @@ namespace Ecat.Web.Providers
             //Check to see if the token can be read and has a subject claim on it
             var principal = context.User as ClaimsPrincipal;
             var subClaim = principal.Claims.FirstOrDefault(claim => claim.Type == OpenIdConnectConstants.Claims.Subject);
-            if (subClaim != null) //&& subClaim.Issuer == )
+            if (subClaim != null && int.TryParse(subClaim.Value, out int result)) //&& subClaim.Issuer == )
             {
                 context.Succeed(requirement);
             }

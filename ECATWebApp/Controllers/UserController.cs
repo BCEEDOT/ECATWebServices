@@ -27,22 +27,19 @@ namespace Ecat.Web.Controllers
         {
             _userRepo = userRepo;
             //get the userId out of the token and set the userid in the repo
+            //if we get to this point we already know the the sub claim exists and the value is an int because it checks in it auth policy handler
             httpCtx = accessor;
-            int usrId;
-            int.TryParse(httpCtx.HttpContext.User.Claims.First(c => c.Type == "sub").Value, out usrId);
-            _userRepo.loggedInUserId = usrId;
+            userRepo.loggedInUserId = int.Parse(httpCtx.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
         }
 
         #region breeze methods
         [HttpGet]
-        [AllowAnonymous]
         public string Metadata()
         {
             return _userRepo.MetaData();
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public SaveResult SaveChanges(JObject saveBundle)
         {
             return _userRepo.ClientSave(saveBundle);
@@ -50,7 +47,6 @@ namespace Ecat.Web.Controllers
         #endregion breeze methods
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<bool> CheckUserEmail(string email)
         {
             var emailChecker = new ValidEmailChecker();

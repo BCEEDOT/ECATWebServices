@@ -14,6 +14,7 @@ using Ecat.Data.Models.Designer;
 using Ecat.Data.Models.Cognitive;
 using Ecat.Data.Models.Student;
 using Ecat.Data.Models.Faculty;
+using Ecat.Data.Models.Common;
 
 namespace Ecat.Data.Contexts
 {
@@ -52,7 +53,6 @@ namespace Ecat.Data.Contexts
                 .Where(type => type.Name.StartsWith("Ec"))
                 .Configure(type => type.ToTable(type.ClrType.Name.Substring(2)));
 
-            //TODO: Put configs under a single namespace? ie Ecat.Data.Config?
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(type => type.IsClass && 
                 (type.Namespace == "Ecat.Data.Models.User.Config" ||
@@ -75,15 +75,15 @@ namespace Ecat.Data.Contexts
             //mb.Ignore<AcademyCategory>();
             mb.Ignore<SanitizedSpComment>();
             mb.Ignore<SanitizedSpResponse>();
-            //mb.Ignore<CourseReconResult>();
-            //mb.Ignore<MemReconResult>();
-            //mb.Ignore<GroupMemReconResult>();
-            //mb.Ignore<GroupReconResult>();
-            //mb.Entity<FacultyInCourse>().Ignore(p => p.ReconResultId);
-            //mb.Entity<StudentInCourse>().Ignore(p => p.ReconResultId);
-            //mb.Entity<CrseStudentInGroup>().Ignore(p => p.ReconResultId);
-            //mb.Entity<WorkGroup>().Ignore(p => p.ReconResultId);
-            //mb.Entity<Course>().Ignore(p => p.ReconResultId);
+            mb.Ignore<CourseReconResult>();
+            mb.Ignore<MemReconResult>();
+            mb.Ignore<GroupMemReconResult>();
+            mb.Ignore<GroupReconResult>();
+            mb.Entity<FacultyInCourse>().Ignore(p => p.ReconResultId);
+            mb.Entity<StudentInCourse>().Ignore(p => p.ReconResultId);
+            mb.Entity<CrseStudentInGroup>().Ignore(p => p.ReconResultId);
+            mb.Entity<WorkGroup>().Ignore(p => p.ReconResultId);
+            mb.Entity<Course>().Ignore(p => p.ReconResultId);
 
 
         }
