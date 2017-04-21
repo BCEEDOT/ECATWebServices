@@ -51,7 +51,7 @@ namespace Ecat.Business.Guards
             {
                 var monitorGuard = new MonitoredGuard(ctxManager);
                 if (courseMonitorEntities != null) monitorGuard.ProcessCourseMonitoredMaps(courseMonitorEntities);
-                if (workGroupMonitorEntities != null) monitorGuard.ProcessWorkGroupMonitoredMaps(workGroupMonitorEntities);
+                if (workGroupMonitorEntities != null) monitorGuard.ProcessStudentWorkGroupMonitoredMaps(workGroupMonitorEntities);
             }
 
             //Process studInGroup to ensure that only the logged student' is being handled.

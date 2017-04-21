@@ -63,6 +63,7 @@ namespace Ecat.Web
             services.AddScoped(_ => new EcatContext(connectionString));
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IStudentRepo, StudentRepo>();
+            services.AddScoped<IFacultyRepo, FacultyRepo>();
 
             //Controllers need to have the httpContext injected
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();

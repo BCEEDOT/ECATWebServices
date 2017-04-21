@@ -40,7 +40,8 @@ namespace Ecat.Business.Guards
             throw new EntityErrorsException(errors);
         }
 
-        public void ProcessWorkGroupMonitoredMaps(List<EntityInfo> infos)
+        //for workgroups students and faculty are seperate because faculty can still save to Under Review groups, but students can't
+        public void ProcessStudentWorkGroupMonitoredMaps(List<EntityInfo> infos)
         {
             var wgMonitorEntities = infos.Select(info => info.Entity).OfType<IWorkGroupMonitored>();
             var wgIds = wgMonitorEntities.Select(wgme => wgme.WorkGroupId);
@@ -56,6 +57,27 @@ namespace Ecat.Business.Guards
                          where wgEntity != null && pubWgIds.Contains(wgEntity.WorkGroupId)
                          select new EFEntityError(info, MpEntityError.WgNotOpen,
                                      "There was a problem saving the requested items, the workGroup is in a non-open state!", "WorkGroup");
+
+            throw new EntityErrorsException(errors);
+        }
+
+        public void ProcessFacultyWorkGroupMonitoredMaps(List<EntityInfo> infos)
+        {
+            var wgMonitorEntities = infos.Select(info => info.Entity).OfType<IWorkGroupMonitored>();
+            var wgIds = wgMonitorEntities.Select(wgme => wgme.WorkGroupId);
+
+            var pubWgIds = ctxManager.Context.WorkGroups
+                .Where(wg => wgIds.Contains(wg.WorkGroupId) && wg.MpSpStatus == MpSpStatus.Published)
+                .Select(wg => wg.WorkGroupId);
+
+            if (!pubWgIds.Any()) return;
+
+            var errors = from info in infos
+                         let wgEntity = (IWorkGroupMonitored)info.Entity
+                         where pubWgIds.Contains(wgEntity.WorkGroupId)
+                         select new EFEntityError(info, "WorkGroup Error Validation",
+                                     "There was a problem saving the requested items", "WorkGroup");
+
 
             throw new EntityErrorsException(errors);
         }
