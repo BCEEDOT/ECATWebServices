@@ -18,6 +18,7 @@ namespace Ecat.Web.Controllers
     [Route("breeze/[controller]/[action]")]
     [BreezeQueryFilter]
     [Authorize(Policy = "LoggedInUser")]
+    [Authorize(Policy = "Student")]
     public class UserController: Controller
     {
         private readonly IUserRepo userRepo;
@@ -46,7 +47,15 @@ namespace Ecat.Web.Controllers
         }
         #endregion breeze methods
 
+
+        //TODO: Remove for production
         [HttpGet]
+        public IEnumerable<Person> GetUsers() {
+            return userRepo.GetUsers();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<bool> CheckUserEmail(string email)
         {
             var emailChecker = new ValidEmailChecker();

@@ -24,5 +24,6 @@ namespace Ecat.Business.Repositories.Interface
         Task<CogInstrument> GetCogInst(string type);
         Task<List<object>> GetCogResults(bool? all);
         Task<List<RoadRunner>> GetRoadRunnerInfo();
+        IEnumerable<Person> GetUsers();
     }
 }

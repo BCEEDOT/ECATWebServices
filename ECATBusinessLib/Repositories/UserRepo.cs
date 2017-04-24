@@ -43,6 +43,10 @@ namespace Ecat.Business.Repositories
         }
         #endregion breeze methods
 
+        public IEnumerable<Person> GetUsers() {
+            return _efCtx.Context.People;
+        }
+
         public async Task<List<object>> GetProfile()
         {
             var userWithProfiles = await ctxManager.Context.People.Where(p => p.PersonId == loggedInUserId)

@@ -122,7 +122,7 @@ namespace Ecat.Web
                     OutboundClaimTypeMap = new Dictionary<string, string>()
                 };
 
-                //add certificate in production
+                //TODO: Replace with real certifcate for production
                 options.SigningCredentials.AddEphemeralKey();
 
             });

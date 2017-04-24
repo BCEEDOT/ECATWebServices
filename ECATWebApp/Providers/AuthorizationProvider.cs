@@ -59,12 +59,19 @@ namespace Ecat.Web.Providers
 
                 if (person == null)
                 {
-                    throw new UnauthorizedAccessException("Username not found");
+
+                    context.Reject(
+                        error: OpenIdConnectConstants.Errors.InvalidGrant,
+                        description: "Username not found");
+                    return;
                 }
 
                 var validPass = PasswordHash.ValidatePassword(password, person.Security.PasswordHash);
                 if (!validPass) {
-                    throw new UnauthorizedAccessException("Invalid Username/Password Combination");
+                    context.Reject(
+                        error: OpenIdConnectConstants.Errors.InvalidGrant,
+                        description: "Invalid Credentials");
+                    return;
                 }
 
                 var identity = new ClaimsIdentity(
@@ -115,13 +122,6 @@ namespace Ecat.Web.Providers
             }
            
         }
-
-        //public override Task ApplyTokenResponse(ApplyTokenResponseContext context)
-        //{
-        //    context.Response["CUSTOM"] = "CUSTOMVALUE";
-
-        //    return base.ApplyTokenResponse(context);
-        //}
 
     }
 }
