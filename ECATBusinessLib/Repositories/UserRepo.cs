@@ -44,7 +44,7 @@ namespace Ecat.Business.Repositories
         #endregion breeze methods
 
         public IEnumerable<Person> GetUsers() {
-            return _efCtx.Context.People;
+            return ctxManager.Context.People;
         }
 
         public async Task<List<object>> GetProfile()
