@@ -183,8 +183,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\FacultyRepo.cs" />
     <Compile Include="Repositories\Interface\IFacultyRepo.cs" />
+    <Compile Include="Repositories\Interface\ILmsAdminRepo.cs" />
     <Compile Include="Repositories\Interface\IStudentRepo.cs" />
     <Compile Include="Repositories\Interface\IUserRepo.cs" />
+    <Compile Include="Repositories\LmsAdminCourseRepo.cs" />
+    <Compile Include="Repositories\LmsAdminGroupRepo.cs" />
     <Compile Include="Repositories\StudentRepo.cs" />
     <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Utilities\EmailValidator.cs" />

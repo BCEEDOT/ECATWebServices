@@ -241,6 +241,7 @@
     <Compile Include="Contexts\Config\StudentMetadata.cs" />
     <Compile Include="Contexts\EcatContext.cs" />
     <Compile Include="Contexts\FacultyMetadata.cs" />
+    <Compile Include="Contexts\LmsAdminMetadata.cs" />
     <Compile Include="Contexts\StudentMetadata.cs" />
     <Compile Include="Contexts\UserMetadata.cs" />
     <Compile Include="Migrations\201704201420271_Init_ECAT.cs" />

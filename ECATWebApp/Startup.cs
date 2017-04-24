@@ -45,6 +45,7 @@ namespace Ecat.Web
             services.AddAuthorization(options => {
                 options.AddPolicy("Faculty", policy => policy.RequireClaim("Role", "Faculty"));
                 options.AddPolicy("Student", policy => policy.RequireClaim("Role", "Student"));
+                options.AddPolicy("LMSAdmin", policy => policy.RequireClaim("Role", "ISA"));
                 options.AddPolicy("LoggedInUser", policy => policy.Requirements.Add(new LoggedInUserRequirement()));
             });
 
@@ -64,6 +65,8 @@ namespace Ecat.Web
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IStudentRepo, StudentRepo>();
             services.AddScoped<IFacultyRepo, FacultyRepo>();
+            services.AddScoped<ILmsAdminCourseRepo, LmsAdminCourseRepo>();
+            services.AddScoped<ILmsAdminGroupRepo, LmsAdminGroupRepo>();
 
             //Controllers need to have the httpContext injected
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();

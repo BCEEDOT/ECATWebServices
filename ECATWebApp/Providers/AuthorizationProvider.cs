@@ -92,14 +92,14 @@ namespace Ecat.Web.Providers
                 }
 
                 //identity token information
-                identity.AddClaim("LastName", person.LastName, OpenIdConnectConstants.Destinations.IdentityToken);
-                identity.AddClaim("FirstName", person.FirstName, OpenIdConnectConstants.Destinations.IdentityToken);
-                identity.AddClaim("Email", person.Email, OpenIdConnectConstants.Destinations.IdentityToken);
-                identity.AddClaim("MpAffiliation", person.MpAffiliation, OpenIdConnectConstants.Destinations.IdentityToken);
-                identity.AddClaim("MpComponent", person.MpComponent, OpenIdConnectConstants.Destinations.IdentityToken);
-                identity.AddClaim("MpPaygrade", person.MpPaygrade, OpenIdConnectConstants.Destinations.IdentityToken);
-                identity.AddClaim("MpGender", person.MpGender, OpenIdConnectConstants.Destinations.IdentityToken);
-                identity.AddClaim("MpInstituteRole", person.MpInstituteRole, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("lastName", person.LastName, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("firstName", person.FirstName, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("email", person.Email, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("mpAffiliation", person.MpAffiliation, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("mpComponent", person.MpComponent, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("mpPaygrade", person.MpPaygrade, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("mpGender", person.MpGender, OpenIdConnectConstants.Destinations.IdentityToken);
+                identity.AddClaim("mpInstituteRole", person.MpInstituteRole, OpenIdConnectConstants.Destinations.IdentityToken);
 
                 var ticket = new AuthenticationTicket(
                     new ClaimsPrincipal(identity), new AuthenticationProperties(), context.Options.AuthenticationScheme);
