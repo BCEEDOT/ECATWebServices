@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Breeze.AspNetCore;
 using Breeze.Persistence;
+using Breeze.WebApi2;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ using Ecat.Data.Models.Student;
 namespace Ecat.Web.Controllers
 {
     [Route("breeze/[controller]/[action]")]
-    [BreezeQueryFilter]
+    [BreezeController]
     [Authorize(Policy = "LoggedInUser")]
     [Authorize(Policy = "Faculty")]
     public class FacultyController: Controller
