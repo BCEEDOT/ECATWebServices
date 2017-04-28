@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Breeze.AspNetCore;
 using Breeze.Persistence;
-using Breeze.WebApi2;
 using Newtonsoft.Json.Linq;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Data.Models.School;
@@ -16,7 +15,6 @@ using Ecat.Data.Models.Common;
 namespace Ecat.Web.Controllers
 {
     [Route("breeze/[controller]/[action]")]
-    [BreezeController]
     [Authorize(Policy = "LoggedInUser")]
     [Authorize(Policy = "LMSAdmin")]
     public class LmsAdminController: Controller

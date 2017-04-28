@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Breeze.AspNetCore;
 using Breeze.Persistence;
-using Breeze.WebApi2;
 using Newtonsoft.Json.Linq;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Business.Utilities;
@@ -17,7 +16,6 @@ using Microsoft.AspNetCore.Http;
 namespace Ecat.Web.Controllers
 {
     [Route("breeze/[controller]/[action]")]
-    [BreezeController]
     [Authorize(Policy = "LoggedInUser")]
     [Authorize(Policy = "Student")]
     public class UserController: Controller

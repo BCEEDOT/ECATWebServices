@@ -75,9 +75,18 @@ namespace Ecat.Web
             // Add framework services.
             services.AddMvc().AddJsonOptions(options => {
                 //JSON Serializer options
+                //options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                //don't want to send back as camelcase because breeze is expecting pascal
+                var resolver = options.SerializerSettings.ContractResolver;
+                if (resolver != null)
+                {
+                    var res = resolver as DefaultContractResolver;
+                    res.NamingStrategy = null;
+                }
                 //ReferenceLoopHandling.Ignore stops serialization of self-referencing objects (ie Person > ProfileFaculty > Person > etc)
-                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //sends back $type on all objects, but not collections
+                options.SerializerSettings.TypeNameHandling = TypeNameHandling.Objects;
             });
         }
 
