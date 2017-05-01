@@ -40,7 +40,8 @@ namespace Ecat.Web.Controllers
         }
 
         [HttpPost]
-        public SaveResult SaveChanges(JObject saveBundle)
+        //[FromBody] makes ASPNet Core model binding read the model from the request body
+        public SaveResult SaveChanges([FromBody] JObject saveBundle)
         {
             return userRepo.ClientSave(saveBundle);
         }
