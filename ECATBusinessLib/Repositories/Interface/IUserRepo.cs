@@ -7,6 +7,7 @@ using Ecat.Data.Models.User;
 using Ecat.Data.Models.Designer;
 using Breeze.Persistence;
 using Newtonsoft.Json.Linq;
+using LtiLibrary.NetCore.Lti1;
 
 namespace Ecat.Business.Repositories.Interface
 {
@@ -17,9 +18,10 @@ namespace Ecat.Business.Repositories.Interface
 
         int loggedInUserId { get; set; }
         //Person User { get; set; }
+        Task<Person> GetUserInfoByEmail(string email);
         Task<List<object>> GetProfile();
         //Task<Person> LoginUser(string userName, string password);
-        //Task<Person> ProcessLtiUser(ILtiRequest parsedRequest);
+        Task<Person> ProcessLtiUser(LtiRequest parsedRequest);
         Task<bool> UniqueEmailCheck(string email);
         Task<CogInstrument> GetCogInst(string type);
         Task<List<object>> GetCogResults(bool? all);

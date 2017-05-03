@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Breeze.AspNetCore;
 using Breeze.Persistence;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Business.Utilities;
 using Ecat.Data.Models.User;

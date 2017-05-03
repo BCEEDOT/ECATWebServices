@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -70,6 +70,7 @@ namespace Ecat.Web
 
             //Controllers need to have the httpContext injected
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<AuthorizationProvider>();
             services.AddScoped<IAuthorizationHandler, LoggedInUserPolicy>();
 
             // Add framework services.
@@ -120,7 +121,7 @@ namespace Ecat.Web
 
             app.UseOpenIdConnectServer(options =>
             {
-                options.Provider = new AuthorizationProvider();
+                options.Provider = app.ApplicationServices.GetService<AuthorizationProvider>();
                 options.ApplicationCanDisplayErrors = true;
                 options.AllowInsecureHttp = true;
                 options.AuthorizationEndpointPath = PathString.Empty;

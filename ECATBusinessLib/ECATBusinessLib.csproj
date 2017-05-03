@@ -52,6 +52,9 @@
     <Reference Include="LtiLibrary.Core, Version=1.6.6154.21256, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LtiLibrary.Core.1.6.2\lib\net45\LtiLibrary.Core.dll</HintPath>
     </Reference>
+    <Reference Include="LtiLibrary.NetCore, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LtiLibrary.NetCore.2.0.3\lib\net451\LtiLibrary.NetCore.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Authorization, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Authorization.1.1.1\lib\net451\Microsoft.AspNetCore.Authorization.dll</HintPath>
     </Reference>
@@ -141,7 +144,7 @@
       <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Http.4.3.0\lib\net46\System.Net.Http.dll</HintPath>
+      <HintPath>..\packages\System.Net.Http.4.3.1\lib\net46\System.Net.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

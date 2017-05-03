@@ -15,7 +15,7 @@ using Ecat.Data.Contexts;
 using Ecat.Data.Static;
 using Ecat.Business.Utilities;
 using Ecat.Business.Guards;
-using LtiLibrary.Core.Lti1;
+using LtiLibrary.NetCore.Lti1;
 
 namespace Ecat.Business.Repositories
 {
@@ -47,6 +47,15 @@ namespace Ecat.Business.Repositories
             return ctxManager.Context.People;
         }
 
+        public async Task<Person> GetUserInfoByEmail(string email)
+        {
+            return await ctxManager.Context.People
+                .Include(p => p.Security)
+                .Include(p => p.Faculty)
+                .Include(p => p.Student)
+                .SingleOrDefaultAsync(p => p.Email == email);
+        }
+
         public async Task<List<object>> GetProfile()
         {
             var userWithProfiles = await ctxManager.Context.People.Where(p => p.PersonId == loggedInUserId)
@@ -67,7 +76,7 @@ namespace Ecat.Business.Repositories
             return profiles;
         }
 
-        public async Task<Person> ProcessLtiUser(ILtiRequest parsedRequest)
+        public async Task<Person> ProcessLtiUser(LtiRequest parsedRequest)
         {
             var user = await ctxManager.Context.People
              .Include(s => s.Security)
