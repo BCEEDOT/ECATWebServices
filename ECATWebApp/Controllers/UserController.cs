@@ -17,7 +17,7 @@ namespace Ecat.Web.Controllers
 {
     [Route("breeze/[controller]/[action]")]
     [Authorize(Policy = "LoggedInUser")]
-    [Authorize(Policy = "Student")]
+    //[Authorize(Policy = "Student")]
     public class UserController: Controller
     {
         private readonly IUserRepo userRepo;

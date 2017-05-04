@@ -8,6 +8,8 @@
 /ECATDataLib/bin
 /ECATWebApp/bin
 /ECATBusinessLib/bin
+/ECATDevOps/bin
+/ECATDevOps/obj
 
 # dependencies
 /packages
