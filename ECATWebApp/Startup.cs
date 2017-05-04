@@ -87,6 +87,8 @@ namespace Ecat.Web
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 //sends back $type on all objects, but not collections
                 options.SerializerSettings.TypeNameHandling = TypeNameHandling.Objects;
+                //adds $id and $ref, making the formatter properly read object references
+                options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
             });
         }
 
