@@ -18,7 +18,7 @@ namespace Ecat.Web.Controllers
 {
     [Route("breeze/[controller]/[action]")]
     [Authorize(Policy = "LoggedInUser")]
-    [Authorize(Policy = "Student")]
+    //[Authorize(Policy = "Student")]
     public class UserController: Controller
     {
         private readonly IUserRepo userRepo;
@@ -41,7 +41,8 @@ namespace Ecat.Web.Controllers
         }
 
         [HttpPost]
-        public SaveResult SaveChanges(JObject saveBundle)
+        //[FromBody] makes ASPNet Core model binding read the model from the request body
+        public SaveResult SaveChanges([FromBody] JObject saveBundle)
         {
             return userRepo.ClientSave(saveBundle);
         }

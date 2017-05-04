@@ -40,7 +40,7 @@ namespace Ecat.Web.Controllers
         }
 
         [HttpPost]
-        public SaveResult SaveChanges(JObject saveBundle)
+        public SaveResult SaveChanges([FromBody] JObject saveBundle)
         {
             return facultyRepo.ClientSave(saveBundle);
         }
