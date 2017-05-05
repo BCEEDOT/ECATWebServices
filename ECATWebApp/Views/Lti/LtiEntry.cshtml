@@ -1,0 +1,29 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECAT</title>
+    <base href="/">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
+    <meta name="theme-color" content="#000000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div #usertoken data-user-string="@ViewBag.User" data-error-string="@ViewBag.Error"></div>
+    <ecat-app>
+        <div style="padding: 20%;text-align:center;">
+            <!--<img src="assets/icons/covalent.svg" width="200">-->
+            <div>ECAT Loading...</div>
+        </div>
+    </ecat-app>
+    <script type="text/javascript" src="~/inline.bundle.js"></script>
+    <script type="text/javascript" src="~/polyfills.bundle.js"></script>
+    <script type="text/javascript" src="~/scripts.bundle.js"></script>
+    <script type="text/javascript" src="~/styles.bundle.js"></script>
+    <script type="text/javascript" src="~/vendor.bundle.js"></script>
+    <script type="text/javascript" src="~/main.bundle.js"></script>
+    <!--div ui-view id="user-token" data-user-string="@ViewBag.User" data-error-string="@ViewBag.Error"></div-->
+</body>
+</html>
+

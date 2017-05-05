@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace Ecat.Web.Controllers
 {
@@ -19,7 +20,7 @@ namespace Ecat.Web.Controllers
         public string roles { get; set; }
         public string lis_person_name_given { get; set; }
         public string lis_person_name_family { get; set; }
-        public string redirect_uri { get; set; }
+        public string custom_ecat_school { get; set; }
     }
 
     [Route("[controller]/[action]")]
@@ -37,7 +38,7 @@ namespace Ecat.Web.Controllers
 
             //form up all the LTI information to be put into the httpContent header for the post to the token endpoint
             var headList = new List<KeyValuePair<string, string>>();
-            headList.Add(new KeyValuePair<string, string>("grant_type", req.grant_type));
+            headList.Add(new KeyValuePair<string, string>("grant_type", "lti"));
             headList.Add(new KeyValuePair<string, string>("lti_message_type", req.lti_message_type));
             headList.Add(new KeyValuePair<string, string>("lti_version", req.lti_version));
             headList.Add(new KeyValuePair<string, string>("lis_person_contact_email_primary", req.lis_person_contact_email_primary));
@@ -45,13 +46,15 @@ namespace Ecat.Web.Controllers
             headList.Add(new KeyValuePair<string, string>("roles", req.roles));
             headList.Add(new KeyValuePair<string, string>("lis_person_name_given", req.lis_person_name_given));
             headList.Add(new KeyValuePair<string, string>("lis_person_name_family", req.lis_person_name_family));
-            headList.Add(new KeyValuePair<string, string>("redirect_uri", req.redirect_uri));
+            headList.Add(new KeyValuePair<string, string>("custom_ecat_school", req.custom_ecat_school));
 
             var content = new FormUrlEncodedContent(headList.AsEnumerable());
 
             var response = await client.PostAsync("connect/token", content);
             var respString = await response.Content.ReadAsStringAsync();
-            //var jsonStr = JsonConvert.SerializeObject(respString);
+            var split = respString.Split(',');
+            ViewBag.User = JsonConvert.DeserializeObject(respString);
+            ViewBag.Error = JsonConvert.SerializeObject(respString);
 
             return View();
 

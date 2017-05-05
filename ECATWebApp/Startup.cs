@@ -70,7 +70,7 @@ namespace Ecat.Web
 
             //Controllers need to have the httpContext injected
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<AuthorizationProvider>();
+            services.AddScoped<AuthorizationProvider>();
             services.AddScoped<IAuthorizationHandler, LoggedInUserPolicy>();
 
             // Add framework services.
@@ -139,6 +139,7 @@ namespace Ecat.Web
 
             });
 
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

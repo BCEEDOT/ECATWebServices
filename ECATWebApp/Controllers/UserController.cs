@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +18,6 @@ namespace Ecat.Web.Controllers
 {
     [Route("breeze/[controller]/[action]")]
     [Authorize(Policy = "LoggedInUser")]
-    //[Authorize(Policy = "Student")]
     public class UserController: Controller
     {
         private readonly IUserRepo userRepo;
