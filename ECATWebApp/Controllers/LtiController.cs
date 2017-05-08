@@ -50,11 +50,23 @@ namespace Ecat.Web.Controllers
 
             var content = new FormUrlEncodedContent(headList.AsEnumerable());
 
+            //TODO: Error handling. Figure out how to read the error messages and context.Reject stuff from auth provider
             var response = await client.PostAsync("connect/token", content);
             var respString = await response.Content.ReadAsStringAsync();
-            var split = respString.Split(',');
-            ViewBag.User = JsonConvert.DeserializeObject(respString);
-            ViewBag.Error = JsonConvert.SerializeObject(respString);
+            if (respString == "")
+            {
+                respString = response.ToString();
+            }
+
+
+            if (respString.Contains("Error"))
+            {
+                ViewBag.Error = respString;
+                //ViewBag.Error = JsonConvert.DeserializeObject(respString);
+            } else
+            {
+                ViewBag.User = JsonConvert.DeserializeObject(respString);
+            }
 
             return View();
 

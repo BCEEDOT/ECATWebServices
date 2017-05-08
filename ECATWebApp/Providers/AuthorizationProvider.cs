@@ -74,14 +74,26 @@ namespace Ecat.Web.Providers
             if (isLti)
             {
                 var ltiRequest = await context.HttpContext.Request.ParseLtiRequestAsync();
-                person = await userRepo.ProcessLtiUser(ltiRequest);
+                try
+                {
+                    person = await userRepo.ProcessLtiUser(ltiRequest);
+                }
+                catch (InvalidEmailException ex)
+                {
+                    context.Reject("Invalid Credentials", ex.Message + "\n\n Please update your email address in both the LMS and AU Portal to use ECAT.");
+                    await Task.FromException(ex);
+                }
+                catch (UserUpdateException)
+                {
+                    context.Reject("Update Error", "There was an error updating your account with the information from the LMS. Please try again.");
+                    return;
+                }
             }
 
             if (isPassword)
             {
                 username = context.Request.Username;
                 password = context.Request.Password;
-
                 person = await userRepo.GetUserInfoByEmail(username);
             }
 
