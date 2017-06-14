@@ -21,6 +21,6 @@ namespace Ecat.Data.Models.Designer
         public DateTime? ModifiedDate { get; set; }
 
         public SpInstrument Instrument { get; set; }
-        public ICollection<SpResponse> ItemResponses { get; set; }
+        //public ICollection<SpResponse> ItemResponses { get; set; }
     }
 }

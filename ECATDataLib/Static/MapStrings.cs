@@ -213,8 +213,10 @@ namespace Ecat.Data.Static
     public static class MpSpStatus
     {
         public const string Unk = "Uknown",
+            Created = "Created",
             Open = "Open",
             UnderReview = "Under Review",
+            Reviewed = "Reviewed",
             Published = "Published",
             Arch = "ArchiveE";
     }

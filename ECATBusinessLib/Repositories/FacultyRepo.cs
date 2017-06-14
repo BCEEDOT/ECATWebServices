@@ -168,7 +168,9 @@ namespace Ecat.Business.Repositories
                                              MissingStratCount = wg.GroupMembers.Where(peer => !peer.IsDeleted).Count(
                                                  peer => peer.AssesseeStratResponse.Count(strat => strat.AssessorPersonId == gm.StudentId && strat.StratPosition <= activeGroupCount) == 0),
                                              StratSum = gm.AssessorStratResponse.Where(aos => !aos.Assessee.IsDeleted).Sum(strat => (int?)strat.StratPosition) ?? 0
-                                         })
+                                         }),
+
+                                         InstrumentId = (int?)wg.AssignedSpInstrId ?? 0
                                      }).SingleAsync();
 
             var workGroup = requestedWg.ActiveWg;
@@ -191,6 +193,16 @@ namespace Ecat.Business.Repositories
                 }
                 grpMem.NumberOfAuthorComments = studInGroup.CommentCount;
             }
+
+            var test = await ctxManager.Context.SpInstruments
+                .Where(instr => instr.Id == requestedWg.InstrumentId)
+                .Select(instr => new
+                {
+                    instr,
+                    inventory = instr.InventoryCollection.Where(collection => collection.IsDisplayed)
+                }).SingleAsync();
+
+            workGroup.AssignedSpInstr = test.instr;
 
             return workGroup;
         }

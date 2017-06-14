@@ -31,7 +31,7 @@ namespace Ecat.Data.Models.Student.Config
                 .WillCascadeOnDelete(false);
 
             HasRequired(p => p.InventoryItem)
-                .WithMany(p => p.ItemResponses)
+                .WithMany()
                 .HasForeignKey(p => p.InventoryItemId)
                 .WillCascadeOnDelete(false);
 
