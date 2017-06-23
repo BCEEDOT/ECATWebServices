@@ -215,11 +215,11 @@ namespace Ecat.Business.Repositories
             return requestedResult;
         }
 
-        private static async Task<FacResultForStudent> GetFacSpResult(int studId, int wgId)
+        private async Task<FacResultForStudent> GetFacSpResult(int studId, int wgId)
         {
-            using (var mainCtx = new EcatContext())
+
             {
-                var result = await mainCtx.WorkGroups
+                var result = await ctxManager.Context.WorkGroups
                     .Where(wg => wg.WorkGroupId == wgId)
                     .Select(wg => new FacResultForStudent
                     {

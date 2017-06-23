@@ -95,7 +95,7 @@ namespace Ecat.Business.Guards
             }
 
             saveMap.AuditMap(loggedInUserId);
-            saveMap.SoftDeleteMap(loggedInUserId);
+            //saveMap.SoftDeleteMap(loggedInUserId);
             return saveMap;
         }
     }

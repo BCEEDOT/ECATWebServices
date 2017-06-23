@@ -206,7 +206,7 @@ namespace Ecat.Business.Guards
             var pubWgData = (from wg in ctxManager.Context.WorkGroups
                              let prundedGm = wg.GroupMembers.Where(gm => !gm.IsDeleted)
                              where ids.Contains(wg.WorkGroupId) &&
-                                   wg.MpSpStatus == MpSpStatus.UnderReview &&
+                                   wg.MpSpStatus == MpSpStatus.Reviewed &&
                                    wg.SpComments.Where(spc => !spc.Author.IsDeleted && !spc.Recipient.IsDeleted).All(comment => comment.Flag.MpFaculty != null)
                              select new PubWg
                              {
