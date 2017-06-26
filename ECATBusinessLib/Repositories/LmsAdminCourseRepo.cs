@@ -45,8 +45,20 @@ namespace Ecat.Business.Repositories
         }
         #endregion breeze methods
 
+        public async Task GetProfile()
+        {
+            if (Faculty == null || Faculty.PersonId == 0)
+            {
+                Faculty = await ctxManager.Context.Faculty
+                .Where(fac => fac.PersonId == loggedInUserId)
+                .SingleOrDefaultAsync();
+            }            
+        }
+
         public async Task<List<Course>> GetAllCourses()
         {
+            await GetProfile();
+
             return await ctxManager.Context.Courses
                 .Where(course => course.AcademyId == Faculty.AcademyId)
                 .ToListAsync();
