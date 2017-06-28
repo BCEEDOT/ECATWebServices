@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using Ecat.Data.Models.User;
 using Ecat.Data.Models.Common;
 using Ecat.Data.Models.School;
+using Ecat.Data.Models.Designer;
 
 namespace Ecat.Business.Repositories.Interface
 {
@@ -20,6 +21,7 @@ namespace Ecat.Business.Repositories.Interface
         int loggedInUserId { get; set; }
         //ProfileFaculty Faculty { get; set; }
         Task<List<Course>> GetAllCourses();
+        Task<List<WorkGroupModel>> GetCourseModels(int courseId);
         //Task<CourseReconResult> ReconcileCourses();
         Task<Course> GetAllCourseMembers(int courseId);
         //Task<MemReconResult> ReconcileCourseMembers(int courseId);

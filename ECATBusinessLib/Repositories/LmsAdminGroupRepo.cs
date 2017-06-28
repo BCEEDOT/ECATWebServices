@@ -53,6 +53,14 @@ namespace Ecat.Business.Repositories
 
             var course = query.crse;
             course.Faculty = query.Faculty.Select(f => f.fic).ToList();
+            //var list = course.WorkGroups.GroupBy(grp => grp.WgModelId).ToList();
+            //var ids = new List<int>();
+            //list.ForEach(group => ids.Add(group.Key));
+            //var models = await ctxManager.Context.WgModels
+            //    .Where(wgm => ids.Contains(wgm.Id))
+            //    .ToListAsync();
+            //course.WorkGroups.ToList().ForEach(grp => grp.WgModel = models.Find(mdl => mdl.Id == grp.WgModelId));
+
             return course;
         }
 

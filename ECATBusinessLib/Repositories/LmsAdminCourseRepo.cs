@@ -14,6 +14,7 @@ using Ecat.Data.Models.User;
 using Ecat.Data.Models.School;
 using Ecat.Data.Models.Common;
 using Ecat.Data.Static;
+using Ecat.Data.Models.Designer;
 
 namespace Ecat.Business.Repositories
 {
@@ -62,6 +63,28 @@ namespace Ecat.Business.Repositories
             return await ctxManager.Context.Courses
                 .Where(course => course.AcademyId == Faculty.AcademyId)
                 .ToListAsync();
+        }
+
+        public async Task<List<WorkGroupModel>> GetCourseModels(int courseId)
+        {
+            var course = await ctxManager.Context.Courses
+                .Where(crs => crs.Id == courseId)
+                .Include(crse => crse.WorkGroups)
+                .SingleAsync();
+
+            var edLevel = StaticAcademy.AcadLookupById
+                .Where(acad => acad.Key == course.AcademyId)
+                .Single()
+                .Value
+                .MpEdLevel;
+
+            var models = await ctxManager.Context.WgModels
+                .Where(mdl => mdl.MpEdLevel == edLevel && mdl.IsActive)
+                .ToListAsync();
+
+            models.ForEach(mdl => mdl.WorkGroups = course.WorkGroups.Where(grp => grp.WgModelId == mdl.Id).ToList());
+
+            return models;
         }
 
         //TODO: Implement lms web service stuff... Bb specific in here

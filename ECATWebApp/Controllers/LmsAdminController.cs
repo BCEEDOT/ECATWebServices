@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Data.Models.School;
 using Ecat.Data.Models.Common;
+using Ecat.Data.Models.Designer;
 
 namespace Ecat.Web.Controllers
 {
@@ -53,6 +54,12 @@ namespace Ecat.Web.Controllers
         public async Task<List<Course>> GetAllCourses()
         {
             return await courseRepo.GetAllCourses();
+        }
+
+        [HttpGet]
+        public async Task<List<WorkGroupModel>> GetCourseModels(int courseId)
+        {
+            return await courseRepo.GetCourseModels(courseId);
         }
 
         [HttpGet]
