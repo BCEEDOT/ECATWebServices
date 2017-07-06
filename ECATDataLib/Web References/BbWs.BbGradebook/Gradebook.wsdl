@@ -1,0 +1,1201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://gradebook.ws.blackboard" xmlns:ns0="http://gradebook.ws.blackboard/xsd" xmlns:axis2="http://gradebook.ws.blackboard/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns1="http://ws.platform.blackboard/xsd" targetNamespace="http://gradebook.ws.blackboard/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema xmlns:ax216="http://gradebook.ws.blackboard/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://gradebook.ws.blackboard/xsd">
+      <xs:complexType name="AttemptFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="filterType" type="xs:int" />
+          <xs:element minOccurs="0" name="gradeId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ids" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AttemptVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="attemptDate" type="xs:long" />
+          <xs:element minOccurs="0" name="creationDate" type="xs:long" />
+          <xs:element minOccurs="0" name="displayGrade" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="exempt" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="feedbackToUser" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="grade" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="gradeId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="groupAttemptId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="instructorNotes" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="override" type="xs:boolean" />
+          <xs:element minOccurs="0" name="publicFeedbackToUser" type="xs:boolean" />
+          <xs:element minOccurs="0" name="score" type="xs:double" />
+          <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="studentComments" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="studentSubmission" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="studentSubmissionTextType" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ColumnFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="externalGrade" type="xs:boolean" />
+          <xs:element minOccurs="0" name="filterType" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ids" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="names" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ColumnVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="aggregationModel" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="analysisUrl" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="calculationType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="columnDisplayName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="columnName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="contentId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="dateCreated" type="xs:long" />
+          <xs:element minOccurs="0" name="dateModified" type="xs:long" />
+          <xs:element minOccurs="0" name="deleted" type="xs:boolean" />
+          <xs:element minOccurs="0" name="description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="descriptionType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="dueDate" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="externalGrade" type="xs:boolean" />
+          <xs:element minOccurs="0" name="gradebookTypeId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="hideAttempt" type="xs:boolean" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="multipleAttempts" type="xs:int" />
+          <xs:element minOccurs="0" name="position" type="xs:int" />
+          <xs:element minOccurs="0" name="possible" type="xs:double" />
+          <xs:element minOccurs="0" name="scaleId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="scorable" type="xs:boolean" />
+          <xs:element minOccurs="0" name="showStatsToStudent" type="xs:boolean" />
+          <xs:element minOccurs="0" name="visible" type="xs:boolean" />
+          <xs:element minOccurs="0" name="visibleInBook" type="xs:boolean" />
+          <xs:element minOccurs="0" name="weight" type="xs:float" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GradebookTypeFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="filterType" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ids" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GradebookTypeVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="calculated" type="xs:boolean" />
+          <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="displayedDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="displayedTitle" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="scorable" type="xs:boolean" />
+          <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="userDefined" type="xs:boolean" />
+          <xs:element minOccurs="0" name="weight" type="xs:float" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GradingSchemaFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="filterType" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ids" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GradingSchemaVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="numeric" type="xs:boolean" />
+          <xs:element minOccurs="0" name="percentage" type="xs:boolean" />
+          <xs:element minOccurs="0" name="scaleType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="symbols" nillable="true" type="ax216:GradingSchemaSymbolVO" />
+          <xs:element minOccurs="0" name="tabular" type="xs:boolean" />
+          <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="userDefined" type="xs:boolean" />
+          <xs:element minOccurs="0" name="version" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GradingSchemaSymbolVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="absoluteTranslation" type="xs:double" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="gradingSchemaId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="lowerBound" type="xs:double" />
+          <xs:element minOccurs="0" name="symbol" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="upperBound" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ScoreFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="columnFilters" nillable="true" type="ax216:ColumnFilter" />
+          <xs:element minOccurs="0" name="columnId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="filterType" type="xs:int" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="memberIds" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="rawScore" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="userIds" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ScoreVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="averageScore" nillable="true" type="xs:double" />
+          <xs:element minOccurs="0" name="columnId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="exempt" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="firstAttemptId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="grade" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="highestAttemptId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="instructorComments" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="lastAttemptId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="lowestAttemptId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="manualGrade" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="manualScore" nillable="true" type="xs:double" />
+          <xs:element minOccurs="0" name="memberId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="schemaGradeValue" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="shortInstructorComments" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="shortStudentComments" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="status" type="xs:int" />
+          <xs:element minOccurs="0" name="studentComments" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="userId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema xmlns:ax215="http://ws.platform.blackboard/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.platform.blackboard/xsd">
+      <xs:complexType name="VersionVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="version" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema xmlns:ns="http://gradebook.ws.blackboard" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://gradebook.ws.blackboard">
+      <xs:element name="getServerVersion">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="unused" nillable="true" type="ns1:VersionVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getServerVersionResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="ns1:VersionVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAttempts">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="filter" nillable="true" type="ns0:AttemptFilter" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAttemptsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns0:AttemptVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getGradebookColumns">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="filter" nillable="true" type="ns0:ColumnFilter" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getGradebookColumnsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns0:ColumnVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getGradebookTypes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="filter" nillable="true" type="ns0:GradebookTypeFilter" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getGradebookTypesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns0:GradebookTypeVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getGradingSchemas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="filter" nillable="true" type="ns0:GradingSchemaFilter" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getGradingSchemasResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns0:GradingSchemaVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getGrades">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="filter" nillable="true" type="ns0:ScoreFilter" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getGradesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns0:ScoreVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="initializeGradebookWS">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="ignore" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="initializeGradebookWSResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteAttempts">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="idsToDelete" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteAttemptsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteColumns">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="idsToDelete" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="onlyIfEmpty" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteColumnsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteGradebookTypes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="idsToDelete" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteGradebookTypesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteGrades">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="idsToDelete" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteGradesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteGradingSchemas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="idsToDelete" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteGradingSchemasResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getRequiredEntitlements">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="method" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getRequiredEntitlementsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveAttempts">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="attempts" nillable="true" type="ns0:AttemptVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveAttemptsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveColumns">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="columns" nillable="true" type="ns0:ColumnVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveColumnsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveGradebookTypes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="gradebookTypes" nillable="true" type="ns0:GradebookTypeVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveGradebookTypesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveGrades">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="grades" nillable="true" type="ns0:ScoreVO" />
+            <xs:element minOccurs="0" name="overrideIfManual" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveGradesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveGradingSchemas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="schemas" nillable="true" type="ns0:GradingSchemaVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveGradingSchemasResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updateColumnAttribute">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="courseId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="columns" nillable="true" type="ns0:ColumnVO" />
+            <xs:element minOccurs="0" name="attributeId" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="updateColumnAttributeResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="deleteGradingSchemasRequest">
+    <wsdl:part name="parameters" element="ns2:deleteGradingSchemas" />
+  </wsdl:message>
+  <wsdl:message name="deleteGradingSchemasResponse">
+    <wsdl:part name="parameters" element="ns2:deleteGradingSchemasResponse" />
+  </wsdl:message>
+  <wsdl:message name="saveAttemptsRequest">
+    <wsdl:part name="parameters" element="ns2:saveAttempts" />
+  </wsdl:message>
+  <wsdl:message name="saveAttemptsResponse">
+    <wsdl:part name="parameters" element="ns2:saveAttemptsResponse" />
+  </wsdl:message>
+  <wsdl:message name="getGradingSchemasRequest">
+    <wsdl:part name="parameters" element="ns2:getGradingSchemas" />
+  </wsdl:message>
+  <wsdl:message name="getGradingSchemasResponse">
+    <wsdl:part name="parameters" element="ns2:getGradingSchemasResponse" />
+  </wsdl:message>
+  <wsdl:message name="initializeGradebookWSRequest">
+    <wsdl:part name="parameters" element="ns2:initializeGradebookWS" />
+  </wsdl:message>
+  <wsdl:message name="initializeGradebookWSResponse">
+    <wsdl:part name="parameters" element="ns2:initializeGradebookWSResponse" />
+  </wsdl:message>
+  <wsdl:message name="saveColumnsRequest">
+    <wsdl:part name="parameters" element="ns2:saveColumns" />
+  </wsdl:message>
+  <wsdl:message name="saveColumnsResponse">
+    <wsdl:part name="parameters" element="ns2:saveColumnsResponse" />
+  </wsdl:message>
+  <wsdl:message name="getServerVersionRequest">
+    <wsdl:part name="parameters" element="ns2:getServerVersion" />
+  </wsdl:message>
+  <wsdl:message name="getServerVersionResponse">
+    <wsdl:part name="parameters" element="ns2:getServerVersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="saveGradingSchemasRequest">
+    <wsdl:part name="parameters" element="ns2:saveGradingSchemas" />
+  </wsdl:message>
+  <wsdl:message name="saveGradingSchemasResponse">
+    <wsdl:part name="parameters" element="ns2:saveGradingSchemasResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteAttemptsRequest">
+    <wsdl:part name="parameters" element="ns2:deleteAttempts" />
+  </wsdl:message>
+  <wsdl:message name="deleteAttemptsResponse">
+    <wsdl:part name="parameters" element="ns2:deleteAttemptsResponse" />
+  </wsdl:message>
+  <wsdl:message name="getGradebookTypesRequest">
+    <wsdl:part name="parameters" element="ns2:getGradebookTypes" />
+  </wsdl:message>
+  <wsdl:message name="getGradebookTypesResponse">
+    <wsdl:part name="parameters" element="ns2:getGradebookTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAttemptsRequest">
+    <wsdl:part name="parameters" element="ns2:getAttempts" />
+  </wsdl:message>
+  <wsdl:message name="getAttemptsResponse">
+    <wsdl:part name="parameters" element="ns2:getAttemptsResponse" />
+  </wsdl:message>
+  <wsdl:message name="saveGradesRequest">
+    <wsdl:part name="parameters" element="ns2:saveGrades" />
+  </wsdl:message>
+  <wsdl:message name="saveGradesResponse">
+    <wsdl:part name="parameters" element="ns2:saveGradesResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteGradesRequest">
+    <wsdl:part name="parameters" element="ns2:deleteGrades" />
+  </wsdl:message>
+  <wsdl:message name="deleteGradesResponse">
+    <wsdl:part name="parameters" element="ns2:deleteGradesResponse" />
+  </wsdl:message>
+  <wsdl:message name="saveGradebookTypesRequest">
+    <wsdl:part name="parameters" element="ns2:saveGradebookTypes" />
+  </wsdl:message>
+  <wsdl:message name="saveGradebookTypesResponse">
+    <wsdl:part name="parameters" element="ns2:saveGradebookTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteColumnsRequest">
+    <wsdl:part name="parameters" element="ns2:deleteColumns" />
+  </wsdl:message>
+  <wsdl:message name="deleteColumnsResponse">
+    <wsdl:part name="parameters" element="ns2:deleteColumnsResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteGradebookTypesRequest">
+    <wsdl:part name="parameters" element="ns2:deleteGradebookTypes" />
+  </wsdl:message>
+  <wsdl:message name="deleteGradebookTypesResponse">
+    <wsdl:part name="parameters" element="ns2:deleteGradebookTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateColumnAttributeRequest">
+    <wsdl:part name="parameters" element="ns2:updateColumnAttribute" />
+  </wsdl:message>
+  <wsdl:message name="updateColumnAttributeResponse">
+    <wsdl:part name="parameters" element="ns2:updateColumnAttributeResponse" />
+  </wsdl:message>
+  <wsdl:message name="getGradesRequest">
+    <wsdl:part name="parameters" element="ns2:getGrades" />
+  </wsdl:message>
+  <wsdl:message name="getGradesResponse">
+    <wsdl:part name="parameters" element="ns2:getGradesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getGradebookColumnsRequest">
+    <wsdl:part name="parameters" element="ns2:getGradebookColumns" />
+  </wsdl:message>
+  <wsdl:message name="getGradebookColumnsResponse">
+    <wsdl:part name="parameters" element="ns2:getGradebookColumnsResponse" />
+  </wsdl:message>
+  <wsdl:message name="getRequiredEntitlementsRequest">
+    <wsdl:part name="parameters" element="ns2:getRequiredEntitlements" />
+  </wsdl:message>
+  <wsdl:message name="getRequiredEntitlementsResponse">
+    <wsdl:part name="parameters" element="ns2:getRequiredEntitlementsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Gradebook.WSPortType">
+    <wsdl:operation name="deleteGradingSchemas">
+      <wsdl:input wsaw:Action="deleteGradingSchemas" message="axis2:deleteGradingSchemasRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/deleteGradingSchemasResponse" message="axis2:deleteGradingSchemasResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="saveAttempts">
+      <wsdl:input wsaw:Action="saveAttempts" message="axis2:saveAttemptsRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/saveAttemptsResponse" message="axis2:saveAttemptsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getGradingSchemas">
+      <wsdl:input wsaw:Action="getGradingSchemas" message="axis2:getGradingSchemasRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/getGradingSchemasResponse" message="axis2:getGradingSchemasResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="initializeGradebookWS">
+      <wsdl:input wsaw:Action="initializeGradebookWS" message="axis2:initializeGradebookWSRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/initializeGradebookWSResponse" message="axis2:initializeGradebookWSResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="saveColumns">
+      <wsdl:input wsaw:Action="saveColumns" message="axis2:saveColumnsRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/saveColumnsResponse" message="axis2:saveColumnsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getServerVersion">
+      <wsdl:input wsaw:Action="getServerVersion" message="axis2:getServerVersionRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/getServerVersionResponse" message="axis2:getServerVersionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="saveGradingSchemas">
+      <wsdl:input wsaw:Action="saveGradingSchemas" message="axis2:saveGradingSchemasRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/saveGradingSchemasResponse" message="axis2:saveGradingSchemasResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteAttempts">
+      <wsdl:input wsaw:Action="deleteAttempts" message="axis2:deleteAttemptsRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/deleteAttemptsResponse" message="axis2:deleteAttemptsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getGradebookTypes">
+      <wsdl:input wsaw:Action="getGradebookTypes" message="axis2:getGradebookTypesRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/getGradebookTypesResponse" message="axis2:getGradebookTypesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getAttempts">
+      <wsdl:input wsaw:Action="getAttempts" message="axis2:getAttemptsRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/getAttemptsResponse" message="axis2:getAttemptsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="saveGrades">
+      <wsdl:input wsaw:Action="saveGrades" message="axis2:saveGradesRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/saveGradesResponse" message="axis2:saveGradesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteGrades">
+      <wsdl:input wsaw:Action="deleteGrades" message="axis2:deleteGradesRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/deleteGradesResponse" message="axis2:deleteGradesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="saveGradebookTypes">
+      <wsdl:input wsaw:Action="saveGradebookTypes" message="axis2:saveGradebookTypesRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/saveGradebookTypesResponse" message="axis2:saveGradebookTypesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteColumns">
+      <wsdl:input wsaw:Action="deleteColumns" message="axis2:deleteColumnsRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/deleteColumnsResponse" message="axis2:deleteColumnsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteGradebookTypes">
+      <wsdl:input wsaw:Action="deleteGradebookTypes" message="axis2:deleteGradebookTypesRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/deleteGradebookTypesResponse" message="axis2:deleteGradebookTypesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="updateColumnAttribute">
+      <wsdl:input wsaw:Action="updateColumnAttribute" message="axis2:updateColumnAttributeRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/updateColumnAttributeResponse" message="axis2:updateColumnAttributeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getGrades">
+      <wsdl:input wsaw:Action="getGrades" message="axis2:getGradesRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/getGradesResponse" message="axis2:getGradesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getGradebookColumns">
+      <wsdl:input wsaw:Action="getGradebookColumns" message="axis2:getGradebookColumnsRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/getGradebookColumnsResponse" message="axis2:getGradebookColumnsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getRequiredEntitlements">
+      <wsdl:input wsaw:Action="getRequiredEntitlements" message="axis2:getRequiredEntitlementsRequest" />
+      <wsdl:output wsaw:Action="http://gradebook.ws.blackboard/Gradebook/getRequiredEntitlementsResponse" message="axis2:getRequiredEntitlementsResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Gradebook.WSSOAP11Binding" type="axis2:Gradebook.WSPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="deleteGradingSchemas">
+      <soap:operation soapAction="deleteGradingSchemas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveAttempts">
+      <soap:operation soapAction="saveAttempts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGradingSchemas">
+      <soap:operation soapAction="getGradingSchemas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initializeGradebookWS">
+      <soap:operation soapAction="initializeGradebookWS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveColumns">
+      <soap:operation soapAction="saveColumns" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerVersion">
+      <soap:operation soapAction="getServerVersion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveGradingSchemas">
+      <soap:operation soapAction="saveGradingSchemas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAttempts">
+      <soap:operation soapAction="deleteAttempts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGradebookTypes">
+      <soap:operation soapAction="getGradebookTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAttempts">
+      <soap:operation soapAction="getAttempts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveGrades">
+      <soap:operation soapAction="saveGrades" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteGrades">
+      <soap:operation soapAction="deleteGrades" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveGradebookTypes">
+      <soap:operation soapAction="saveGradebookTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteColumns">
+      <soap:operation soapAction="deleteColumns" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteGradebookTypes">
+      <soap:operation soapAction="deleteGradebookTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateColumnAttribute">
+      <soap:operation soapAction="updateColumnAttribute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGrades">
+      <soap:operation soapAction="getGrades" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGradebookColumns">
+      <soap:operation soapAction="getGradebookColumns" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRequiredEntitlements">
+      <soap:operation soapAction="getRequiredEntitlements" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Gradebook.WSSOAP12Binding" type="axis2:Gradebook.WSPortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="deleteGradingSchemas">
+      <soap12:operation soapAction="deleteGradingSchemas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveAttempts">
+      <soap12:operation soapAction="saveAttempts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGradingSchemas">
+      <soap12:operation soapAction="getGradingSchemas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initializeGradebookWS">
+      <soap12:operation soapAction="initializeGradebookWS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveColumns">
+      <soap12:operation soapAction="saveColumns" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerVersion">
+      <soap12:operation soapAction="getServerVersion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveGradingSchemas">
+      <soap12:operation soapAction="saveGradingSchemas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAttempts">
+      <soap12:operation soapAction="deleteAttempts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGradebookTypes">
+      <soap12:operation soapAction="getGradebookTypes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAttempts">
+      <soap12:operation soapAction="getAttempts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveGrades">
+      <soap12:operation soapAction="saveGrades" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteGrades">
+      <soap12:operation soapAction="deleteGrades" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveGradebookTypes">
+      <soap12:operation soapAction="saveGradebookTypes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteColumns">
+      <soap12:operation soapAction="deleteColumns" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteGradebookTypes">
+      <soap12:operation soapAction="deleteGradebookTypes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateColumnAttribute">
+      <soap12:operation soapAction="updateColumnAttribute" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGrades">
+      <soap12:operation soapAction="getGrades" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGradebookColumns">
+      <soap12:operation soapAction="getGradebookColumns" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRequiredEntitlements">
+      <soap12:operation soapAction="getRequiredEntitlements" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Gradebook.WSHttpBinding" type="axis2:Gradebook.WSPortType">
+    <http:binding verb="POST" />
+    <wsdl:operation name="deleteGradingSchemas">
+      <http:operation location="Gradebook.WS/deleteGradingSchemas" />
+      <wsdl:input>
+        <mime:content part="deleteGradingSchemas" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="deleteGradingSchemas" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveAttempts">
+      <http:operation location="Gradebook.WS/saveAttempts" />
+      <wsdl:input>
+        <mime:content part="saveAttempts" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="saveAttempts" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGradingSchemas">
+      <http:operation location="Gradebook.WS/getGradingSchemas" />
+      <wsdl:input>
+        <mime:content part="getGradingSchemas" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getGradingSchemas" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initializeGradebookWS">
+      <http:operation location="Gradebook.WS/initializeGradebookWS" />
+      <wsdl:input>
+        <mime:content part="initializeGradebookWS" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="initializeGradebookWS" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveColumns">
+      <http:operation location="Gradebook.WS/saveColumns" />
+      <wsdl:input>
+        <mime:content part="saveColumns" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="saveColumns" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerVersion">
+      <http:operation location="Gradebook.WS/getServerVersion" />
+      <wsdl:input>
+        <mime:content part="getServerVersion" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getServerVersion" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveGradingSchemas">
+      <http:operation location="Gradebook.WS/saveGradingSchemas" />
+      <wsdl:input>
+        <mime:content part="saveGradingSchemas" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="saveGradingSchemas" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAttempts">
+      <http:operation location="Gradebook.WS/deleteAttempts" />
+      <wsdl:input>
+        <mime:content part="deleteAttempts" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="deleteAttempts" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGradebookTypes">
+      <http:operation location="Gradebook.WS/getGradebookTypes" />
+      <wsdl:input>
+        <mime:content part="getGradebookTypes" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getGradebookTypes" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAttempts">
+      <http:operation location="Gradebook.WS/getAttempts" />
+      <wsdl:input>
+        <mime:content part="getAttempts" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getAttempts" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveGrades">
+      <http:operation location="Gradebook.WS/saveGrades" />
+      <wsdl:input>
+        <mime:content part="saveGrades" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="saveGrades" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteGrades">
+      <http:operation location="Gradebook.WS/deleteGrades" />
+      <wsdl:input>
+        <mime:content part="deleteGrades" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="deleteGrades" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveGradebookTypes">
+      <http:operation location="Gradebook.WS/saveGradebookTypes" />
+      <wsdl:input>
+        <mime:content part="saveGradebookTypes" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="saveGradebookTypes" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteColumns">
+      <http:operation location="Gradebook.WS/deleteColumns" />
+      <wsdl:input>
+        <mime:content part="deleteColumns" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="deleteColumns" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteGradebookTypes">
+      <http:operation location="Gradebook.WS/deleteGradebookTypes" />
+      <wsdl:input>
+        <mime:content part="deleteGradebookTypes" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="deleteGradebookTypes" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateColumnAttribute">
+      <http:operation location="Gradebook.WS/updateColumnAttribute" />
+      <wsdl:input>
+        <mime:content part="updateColumnAttribute" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="updateColumnAttribute" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGrades">
+      <http:operation location="Gradebook.WS/getGrades" />
+      <wsdl:input>
+        <mime:content part="getGrades" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getGrades" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getGradebookColumns">
+      <http:operation location="Gradebook.WS/getGradebookColumns" />
+      <wsdl:input>
+        <mime:content part="getGradebookColumns" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getGradebookColumns" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRequiredEntitlements">
+      <http:operation location="Gradebook.WS/getRequiredEntitlements" />
+      <wsdl:input>
+        <mime:content part="getRequiredEntitlements" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getRequiredEntitlements" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Gradebook.WS">
+    <wsdl:port name="Gradebook.WSSOAP11port_http" binding="axis2:Gradebook.WSSOAP11Binding">
+      <soap:address location="http://barnescenter.blackboard.com:8080/webapps/ws/services/Gradebook.WS" />
+    </wsdl:port>
+    <wsdl:port name="Gradebook.WSSOAP11port_https1" binding="axis2:Gradebook.WSSOAP11Binding">
+      <soap:address location="https://barnescenter.blackboard.com:443/webapps/ws/services/Gradebook.WS" />
+    </wsdl:port>
+    <wsdl:port name="Gradebook.WSSOAP12port_http" binding="axis2:Gradebook.WSSOAP12Binding">
+      <soap12:address location="http://barnescenter.blackboard.com:8080/webapps/ws/services/Gradebook.WS" />
+    </wsdl:port>
+    <wsdl:port name="Gradebook.WSSOAP12port_https1" binding="axis2:Gradebook.WSSOAP12Binding">
+      <soap12:address location="https://barnescenter.blackboard.com:443/webapps/ws/services/Gradebook.WS" />
+    </wsdl:port>
+    <wsdl:port name="Gradebook.WSHttpport" binding="axis2:Gradebook.WSHttpBinding">
+      <http:address location="http://barnescenter.blackboard.com:8080/webapps/ws/services/Gradebook.WS" />
+    </wsdl:port>
+    <wsdl:port name="Gradebook.WSHttpport1" binding="axis2:Gradebook.WSHttpBinding">
+      <http:address location="https://barnescenter.blackboard.com:443/webapps/ws/services/Gradebook.WS" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

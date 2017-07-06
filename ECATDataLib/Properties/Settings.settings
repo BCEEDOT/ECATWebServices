@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Ecat.Data.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Ecat_Data_BbWs_BbContext_Context_WS" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://barnescenter.blackboard.com:8080/webapps/ws/services/Context.WS</Value>
+    </Setting>
+    <Setting Name="Ecat_Data_BbWs_BbCourse_Course_WS" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://barnescenter.blackboard.com:8080/webapps/ws/services/Course.WS</Value>
+    </Setting>
+    <Setting Name="Ecat_Data_BbWs_BbCourseMembership_CourseMembership_WS" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://barnescenter.blackboard.com:8080/webapps/ws/services/CourseMembership.WS</Value>
+    </Setting>
+    <Setting Name="Ecat_Data_BbWs_BbGradebook_Gradebook_WS" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://barnescenter.blackboard.com:8080/webapps/ws/services/Gradebook.WS</Value>
+    </Setting>
+    <Setting Name="Ecat_Data_BbWs_BbUser_User_WS" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://barnescenter.blackboard.com:8080/webapps/ws/services/User.WS</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
