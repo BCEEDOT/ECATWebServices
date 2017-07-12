@@ -1,0 +1,1008 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://user.ws.blackboard/xsd" xmlns:ns0="http://ws.platform.blackboard/xsd" xmlns:axis2="http://user.ws.blackboard/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ns1="http://user.ws.blackboard" targetNamespace="http://user.ws.blackboard/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema xmlns:ax217="http://ws.platform.blackboard/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.platform.blackboard/xsd">
+      <xs:complexType name="VersionVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="version" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema xmlns:ns="http://user.ws.blackboard" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://user.ws.blackboard">
+      <xs:element name="getServerVersion">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="unused" nillable="true" type="ns0:VersionVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getServerVersionResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="ns0:VersionVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAddressBookEntry">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="filter" nillable="true" type="ns2:UserFilter" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAddressBookEntryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns2:AddressBookEntryVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getObservee">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="observerId" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getObserveeResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns2:ObserverAssociationVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getInstitutionRoles">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="ids" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getInstitutionRolesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns2:PortalRoleVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getUserInstitutionRoles">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="userId" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getUserInstitutionRolesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns2:UserRoleVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getUser">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="filter" nillable="true" type="ns2:UserFilter" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getUserResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="ns2:UserVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="changeUserBatchUid">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="originalBatchUid" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="batchUid" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="changeUserBatchUidResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="changeUserDataSourceId">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="userId" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="dataSourceId" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="changeUserDataSourceIdResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="initializeUserWS">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="ignore" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="initializeUserWSResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteAddressBookEntry">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="entryId" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteAddressBookEntryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteObserverAssociation">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="association" nillable="true" type="ns2:ObserverAssociationVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteObserverAssociationResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteUser">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="userId" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteUserResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteUserByInstitutionRole">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="insRoleId" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteUserByInstitutionRoleResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getSystemRoles">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="filter" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getSystemRolesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveAddressBookEntry">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="user" nillable="true" type="ns2:AddressBookEntryVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveAddressBookEntryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveObserverAssociation">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="association" nillable="true" type="ns2:ObserverAssociationVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveObserverAssociationResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveUser">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="user" nillable="true" type="ns2:UserVO" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="saveUserResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="return" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema xmlns:ax218="http://user.ws.blackboard/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://user.ws.blackboard/xsd">
+      <xs:complexType name="UserFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="available" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="batchId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="courseId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="filterType" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="groupId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="systemRoles" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AddressBookEntryVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="addressBookEntry" nillable="true" type="ax218:UserExtendedInfoVO" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="userId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="UserExtendedInfoVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="businessFax" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="businessPhone1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="businessPhone2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="city" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="company" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="country" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="department" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="emailAddress" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="familyName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="givenName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="homeFax" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="homePhone1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="homePhone2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="jobTitle" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="middleName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="mobilePhone" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="state" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="street1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="street2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="webPage" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="zipCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ObserverAssociationVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="observeeId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="observeeIdByName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="observerId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PortalRoleVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="dataSourceId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="roleName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="UserRoleVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="insRoleId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="userId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="UserVO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="birthDate" nillable="true" type="xs:long" />
+          <xs:element minOccurs="0" name="dataSourceId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="educationLevel" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="expansionData" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="extendedInfo" nillable="true" type="ax218:UserExtendedInfoVO" />
+          <xs:element minOccurs="0" name="genderType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="insRoles" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="isAvailable" type="xs:boolean" />
+          <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="studentId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="systemRoles" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="userBatchUid" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="changeUserBatchUidRequest">
+    <wsdl:part name="parameters" element="ns1:changeUserBatchUid" />
+  </wsdl:message>
+  <wsdl:message name="changeUserBatchUidResponse">
+    <wsdl:part name="parameters" element="ns1:changeUserBatchUidResponse" />
+  </wsdl:message>
+  <wsdl:message name="getSystemRolesRequest">
+    <wsdl:part name="parameters" element="ns1:getSystemRoles" />
+  </wsdl:message>
+  <wsdl:message name="getSystemRolesResponse">
+    <wsdl:part name="parameters" element="ns1:getSystemRolesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getUserRequest">
+    <wsdl:part name="parameters" element="ns1:getUser" />
+  </wsdl:message>
+  <wsdl:message name="getUserResponse">
+    <wsdl:part name="parameters" element="ns1:getUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="getServerVersionRequest">
+    <wsdl:part name="parameters" element="ns1:getServerVersion" />
+  </wsdl:message>
+  <wsdl:message name="getServerVersionResponse">
+    <wsdl:part name="parameters" element="ns1:getServerVersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="saveObserverAssociationRequest">
+    <wsdl:part name="parameters" element="ns1:saveObserverAssociation" />
+  </wsdl:message>
+  <wsdl:message name="saveObserverAssociationResponse">
+    <wsdl:part name="parameters" element="ns1:saveObserverAssociationResponse" />
+  </wsdl:message>
+  <wsdl:message name="getUserInstitutionRolesRequest">
+    <wsdl:part name="parameters" element="ns1:getUserInstitutionRoles" />
+  </wsdl:message>
+  <wsdl:message name="getUserInstitutionRolesResponse">
+    <wsdl:part name="parameters" element="ns1:getUserInstitutionRolesResponse" />
+  </wsdl:message>
+  <wsdl:message name="changeUserDataSourceIdRequest">
+    <wsdl:part name="parameters" element="ns1:changeUserDataSourceId" />
+  </wsdl:message>
+  <wsdl:message name="changeUserDataSourceIdResponse">
+    <wsdl:part name="parameters" element="ns1:changeUserDataSourceIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteObserverAssociationRequest">
+    <wsdl:part name="parameters" element="ns1:deleteObserverAssociation" />
+  </wsdl:message>
+  <wsdl:message name="deleteObserverAssociationResponse">
+    <wsdl:part name="parameters" element="ns1:deleteObserverAssociationResponse" />
+  </wsdl:message>
+  <wsdl:message name="initializeUserWSRequest">
+    <wsdl:part name="parameters" element="ns1:initializeUserWS" />
+  </wsdl:message>
+  <wsdl:message name="initializeUserWSResponse">
+    <wsdl:part name="parameters" element="ns1:initializeUserWSResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteAddressBookEntryRequest">
+    <wsdl:part name="parameters" element="ns1:deleteAddressBookEntry" />
+  </wsdl:message>
+  <wsdl:message name="deleteAddressBookEntryResponse">
+    <wsdl:part name="parameters" element="ns1:deleteAddressBookEntryResponse" />
+  </wsdl:message>
+  <wsdl:message name="saveAddressBookEntryRequest">
+    <wsdl:part name="parameters" element="ns1:saveAddressBookEntry" />
+  </wsdl:message>
+  <wsdl:message name="saveAddressBookEntryResponse">
+    <wsdl:part name="parameters" element="ns1:saveAddressBookEntryResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteUserByInstitutionRoleRequest">
+    <wsdl:part name="parameters" element="ns1:deleteUserByInstitutionRole" />
+  </wsdl:message>
+  <wsdl:message name="deleteUserByInstitutionRoleResponse">
+    <wsdl:part name="parameters" element="ns1:deleteUserByInstitutionRoleResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteUserRequest">
+    <wsdl:part name="parameters" element="ns1:deleteUser" />
+  </wsdl:message>
+  <wsdl:message name="deleteUserResponse">
+    <wsdl:part name="parameters" element="ns1:deleteUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInstitutionRolesRequest">
+    <wsdl:part name="parameters" element="ns1:getInstitutionRoles" />
+  </wsdl:message>
+  <wsdl:message name="getInstitutionRolesResponse">
+    <wsdl:part name="parameters" element="ns1:getInstitutionRolesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAddressBookEntryRequest">
+    <wsdl:part name="parameters" element="ns1:getAddressBookEntry" />
+  </wsdl:message>
+  <wsdl:message name="getAddressBookEntryResponse">
+    <wsdl:part name="parameters" element="ns1:getAddressBookEntryResponse" />
+  </wsdl:message>
+  <wsdl:message name="getObserveeRequest">
+    <wsdl:part name="parameters" element="ns1:getObservee" />
+  </wsdl:message>
+  <wsdl:message name="getObserveeResponse">
+    <wsdl:part name="parameters" element="ns1:getObserveeResponse" />
+  </wsdl:message>
+  <wsdl:message name="saveUserRequest">
+    <wsdl:part name="parameters" element="ns1:saveUser" />
+  </wsdl:message>
+  <wsdl:message name="saveUserResponse">
+    <wsdl:part name="parameters" element="ns1:saveUserResponse" />
+  </wsdl:message>
+  <wsdl:portType name="User.WSPortType">
+    <wsdl:operation name="changeUserBatchUid">
+      <wsdl:input wsaw:Action="changeUserBatchUid" message="axis2:changeUserBatchUidRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/changeUserBatchUidResponse" message="axis2:changeUserBatchUidResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getSystemRoles">
+      <wsdl:input wsaw:Action="getSystemRoles" message="axis2:getSystemRolesRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/getSystemRolesResponse" message="axis2:getSystemRolesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getUser">
+      <wsdl:input wsaw:Action="getUser" message="axis2:getUserRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/getUserResponse" message="axis2:getUserResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getServerVersion">
+      <wsdl:input wsaw:Action="getServerVersion" message="axis2:getServerVersionRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/getServerVersionResponse" message="axis2:getServerVersionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="saveObserverAssociation">
+      <wsdl:input wsaw:Action="saveObserverAssociation" message="axis2:saveObserverAssociationRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/saveObserverAssociationResponse" message="axis2:saveObserverAssociationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getUserInstitutionRoles">
+      <wsdl:input wsaw:Action="getUserInstitutionRoles" message="axis2:getUserInstitutionRolesRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/getUserInstitutionRolesResponse" message="axis2:getUserInstitutionRolesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="changeUserDataSourceId">
+      <wsdl:input wsaw:Action="changeUserDataSourceId" message="axis2:changeUserDataSourceIdRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/changeUserDataSourceIdResponse" message="axis2:changeUserDataSourceIdResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteObserverAssociation">
+      <wsdl:input wsaw:Action="deleteObserverAssociation" message="axis2:deleteObserverAssociationRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/deleteObserverAssociationResponse" message="axis2:deleteObserverAssociationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="initializeUserWS">
+      <wsdl:input wsaw:Action="initializeUserWS" message="axis2:initializeUserWSRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/initializeUserWSResponse" message="axis2:initializeUserWSResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteAddressBookEntry">
+      <wsdl:input wsaw:Action="deleteAddressBookEntry" message="axis2:deleteAddressBookEntryRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/deleteAddressBookEntryResponse" message="axis2:deleteAddressBookEntryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="saveAddressBookEntry">
+      <wsdl:input wsaw:Action="saveAddressBookEntry" message="axis2:saveAddressBookEntryRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/saveAddressBookEntryResponse" message="axis2:saveAddressBookEntryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteUserByInstitutionRole">
+      <wsdl:input wsaw:Action="deleteUserByInstitutionRole" message="axis2:deleteUserByInstitutionRoleRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/deleteUserByInstitutionRoleResponse" message="axis2:deleteUserByInstitutionRoleResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteUser">
+      <wsdl:input wsaw:Action="deleteUser" message="axis2:deleteUserRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/deleteUserResponse" message="axis2:deleteUserResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getInstitutionRoles">
+      <wsdl:input wsaw:Action="getInstitutionRoles" message="axis2:getInstitutionRolesRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/getInstitutionRolesResponse" message="axis2:getInstitutionRolesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getAddressBookEntry">
+      <wsdl:input wsaw:Action="getAddressBookEntry" message="axis2:getAddressBookEntryRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/getAddressBookEntryResponse" message="axis2:getAddressBookEntryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getObservee">
+      <wsdl:input wsaw:Action="getObservee" message="axis2:getObserveeRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/getObserveeResponse" message="axis2:getObserveeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="saveUser">
+      <wsdl:input wsaw:Action="saveUser" message="axis2:saveUserRequest" />
+      <wsdl:output wsaw:Action="http://user.ws.blackboard/User/saveUserResponse" message="axis2:saveUserResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="User.WSSOAP11Binding" type="axis2:User.WSPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="changeUserBatchUid">
+      <soap:operation soapAction="changeUserBatchUid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSystemRoles">
+      <soap:operation soapAction="getSystemRoles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUser">
+      <soap:operation soapAction="getUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerVersion">
+      <soap:operation soapAction="getServerVersion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveObserverAssociation">
+      <soap:operation soapAction="saveObserverAssociation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUserInstitutionRoles">
+      <soap:operation soapAction="getUserInstitutionRoles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeUserDataSourceId">
+      <soap:operation soapAction="changeUserDataSourceId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteObserverAssociation">
+      <soap:operation soapAction="deleteObserverAssociation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initializeUserWS">
+      <soap:operation soapAction="initializeUserWS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAddressBookEntry">
+      <soap:operation soapAction="deleteAddressBookEntry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveAddressBookEntry">
+      <soap:operation soapAction="saveAddressBookEntry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteUserByInstitutionRole">
+      <soap:operation soapAction="deleteUserByInstitutionRole" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteUser">
+      <soap:operation soapAction="deleteUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInstitutionRoles">
+      <soap:operation soapAction="getInstitutionRoles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAddressBookEntry">
+      <soap:operation soapAction="getAddressBookEntry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getObservee">
+      <soap:operation soapAction="getObservee" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveUser">
+      <soap:operation soapAction="saveUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="User.WSSOAP12Binding" type="axis2:User.WSPortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="changeUserBatchUid">
+      <soap12:operation soapAction="changeUserBatchUid" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSystemRoles">
+      <soap12:operation soapAction="getSystemRoles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUser">
+      <soap12:operation soapAction="getUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerVersion">
+      <soap12:operation soapAction="getServerVersion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveObserverAssociation">
+      <soap12:operation soapAction="saveObserverAssociation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUserInstitutionRoles">
+      <soap12:operation soapAction="getUserInstitutionRoles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeUserDataSourceId">
+      <soap12:operation soapAction="changeUserDataSourceId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteObserverAssociation">
+      <soap12:operation soapAction="deleteObserverAssociation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initializeUserWS">
+      <soap12:operation soapAction="initializeUserWS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAddressBookEntry">
+      <soap12:operation soapAction="deleteAddressBookEntry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveAddressBookEntry">
+      <soap12:operation soapAction="saveAddressBookEntry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteUserByInstitutionRole">
+      <soap12:operation soapAction="deleteUserByInstitutionRole" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteUser">
+      <soap12:operation soapAction="deleteUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInstitutionRoles">
+      <soap12:operation soapAction="getInstitutionRoles" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAddressBookEntry">
+      <soap12:operation soapAction="getAddressBookEntry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getObservee">
+      <soap12:operation soapAction="getObservee" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveUser">
+      <soap12:operation soapAction="saveUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="User.WSHttpBinding" type="axis2:User.WSPortType">
+    <http:binding verb="POST" />
+    <wsdl:operation name="changeUserBatchUid">
+      <http:operation location="User.WS/changeUserBatchUid" />
+      <wsdl:input>
+        <mime:content part="changeUserBatchUid" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="changeUserBatchUid" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSystemRoles">
+      <http:operation location="User.WS/getSystemRoles" />
+      <wsdl:input>
+        <mime:content part="getSystemRoles" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getSystemRoles" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUser">
+      <http:operation location="User.WS/getUser" />
+      <wsdl:input>
+        <mime:content part="getUser" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getUser" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerVersion">
+      <http:operation location="User.WS/getServerVersion" />
+      <wsdl:input>
+        <mime:content part="getServerVersion" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getServerVersion" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveObserverAssociation">
+      <http:operation location="User.WS/saveObserverAssociation" />
+      <wsdl:input>
+        <mime:content part="saveObserverAssociation" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="saveObserverAssociation" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getUserInstitutionRoles">
+      <http:operation location="User.WS/getUserInstitutionRoles" />
+      <wsdl:input>
+        <mime:content part="getUserInstitutionRoles" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getUserInstitutionRoles" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeUserDataSourceId">
+      <http:operation location="User.WS/changeUserDataSourceId" />
+      <wsdl:input>
+        <mime:content part="changeUserDataSourceId" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="changeUserDataSourceId" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteObserverAssociation">
+      <http:operation location="User.WS/deleteObserverAssociation" />
+      <wsdl:input>
+        <mime:content part="deleteObserverAssociation" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="deleteObserverAssociation" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initializeUserWS">
+      <http:operation location="User.WS/initializeUserWS" />
+      <wsdl:input>
+        <mime:content part="initializeUserWS" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="initializeUserWS" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAddressBookEntry">
+      <http:operation location="User.WS/deleteAddressBookEntry" />
+      <wsdl:input>
+        <mime:content part="deleteAddressBookEntry" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="deleteAddressBookEntry" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveAddressBookEntry">
+      <http:operation location="User.WS/saveAddressBookEntry" />
+      <wsdl:input>
+        <mime:content part="saveAddressBookEntry" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="saveAddressBookEntry" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteUserByInstitutionRole">
+      <http:operation location="User.WS/deleteUserByInstitutionRole" />
+      <wsdl:input>
+        <mime:content part="deleteUserByInstitutionRole" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="deleteUserByInstitutionRole" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteUser">
+      <http:operation location="User.WS/deleteUser" />
+      <wsdl:input>
+        <mime:content part="deleteUser" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="deleteUser" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInstitutionRoles">
+      <http:operation location="User.WS/getInstitutionRoles" />
+      <wsdl:input>
+        <mime:content part="getInstitutionRoles" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getInstitutionRoles" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAddressBookEntry">
+      <http:operation location="User.WS/getAddressBookEntry" />
+      <wsdl:input>
+        <mime:content part="getAddressBookEntry" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getAddressBookEntry" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getObservee">
+      <http:operation location="User.WS/getObservee" />
+      <wsdl:input>
+        <mime:content part="getObservee" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="getObservee" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="saveUser">
+      <http:operation location="User.WS/saveUser" />
+      <wsdl:input>
+        <mime:content part="saveUser" type="text/xml" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="saveUser" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="User.WS">
+    <wsdl:port name="User.WSSOAP11port_http" binding="axis2:User.WSSOAP11Binding">
+      <soap:address location="http://barnescenter.blackboard.com:8080/webapps/ws/services/User.WS" />
+    </wsdl:port>
+    <wsdl:port name="User.WSSOAP11port_https1" binding="axis2:User.WSSOAP11Binding">
+      <soap:address location="https://barnescenter.blackboard.com:443/webapps/ws/services/User.WS" />
+    </wsdl:port>
+    <wsdl:port name="User.WSSOAP12port_http" binding="axis2:User.WSSOAP12Binding">
+      <soap12:address location="http://barnescenter.blackboard.com:8080/webapps/ws/services/User.WS" />
+    </wsdl:port>
+    <wsdl:port name="User.WSSOAP12port_https1" binding="axis2:User.WSSOAP12Binding">
+      <soap12:address location="https://barnescenter.blackboard.com:443/webapps/ws/services/User.WS" />
+    </wsdl:port>
+    <wsdl:port name="User.WSHttpport" binding="axis2:User.WSHttpBinding">
+      <http:address location="http://barnescenter.blackboard.com:8080/webapps/ws/services/User.WS" />
+    </wsdl:port>
+    <wsdl:port name="User.WSHttpport1" binding="axis2:User.WSHttpBinding">
+      <http:address location="https://barnescenter.blackboard.com:443/webapps/ws/services/User.WS" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

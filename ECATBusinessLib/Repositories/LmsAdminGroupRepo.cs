@@ -13,22 +13,26 @@ using Ecat.Data.Models.Common;
 using Ecat.Data.Models.User;
 using Ecat.Data.Models.School;
 using Ecat.Data.Static;
+using Ecat.Business.BbWs.BbCourse;
+using Ecat.Business.Utilities;
+using Ecat.Business.BbWs.BbCourseMembership;
+using Ecat.Business.BbWs.BbGradebook;
 
 namespace Ecat.Business.Repositories
 {
-    //using GroupMemberMap = Dictionary<GmrGroup, List<GroupMembershipVO>>;
+    using GroupMemberMap = Dictionary<GmrGroup, List<GroupMembershipVO>>;
     public class LmsAdminGroupRepo: ILmsAdminGroupRepo
     {
         private readonly EFPersistenceManager<EcatContext> ctxManager;
-        //private readonly BbWsCnet _bbWs;
+        private readonly BbWsCnet bbWs;
 
         public int loggedInUserId { get; set; }
         private ProfileFaculty Faculty { get; set; }
 
-        public LmsAdminGroupRepo(EcatContext mainCtx)//, BbWsCnet bbWs)
+        public LmsAdminGroupRepo(EcatContext mainCtx, BbWsCnet bbWsCnet)
         {
             ctxManager = new EFPersistenceManager<EcatContext>(mainCtx);
-            //_bbWs = bbWs;
+            bbWs = bbWsCnet;
 
             Faculty = ctxManager.Context.Faculty.Where(f => f.PersonId == loggedInUserId).SingleOrDefault();
         }
@@ -53,14 +57,6 @@ namespace Ecat.Business.Repositories
 
             var course = query.crse;
             course.Faculty = query.Faculty.Select(f => f.fic).ToList();
-            //var list = course.WorkGroups.GroupBy(grp => grp.WgModelId).ToList();
-            //var ids = new List<int>();
-            //list.ForEach(group => ids.Add(group.Key));
-            //var models = await ctxManager.Context.WgModels
-            //    .Where(wgm => ids.Contains(wgm.Id))
-            //    .ToListAsync();
-            //course.WorkGroups.ToList().ForEach(grp => grp.WgModel = models.Find(mdl => mdl.Id == grp.WgModelId));
-
             return course;
         }
 
@@ -85,8 +81,7 @@ namespace Ecat.Business.Repositories
             return workGroup;
         }
 
-        //TODO: Implement lms web service stuff... Bb specific here
-        /*public async Task<GroupReconResult> ReconcileGroups(int courseId)
+        public async Task<GroupReconResult> ReconcileGroups(int courseId)
         {
             var ecatCourse = await ctxManager.Context.Courses
                 .Where(course => course.Id == courseId)
@@ -102,7 +97,7 @@ namespace Ecat.Business.Repositories
             };
 
             var autoRetry = new Retrier<GroupVO[]>();
-            var bbGroups = await autoRetry.Try(() => _bbWs.BbWorkGroups(ecatCourse.BbCourseId, groupFilter), 3);
+            var bbGroups = await autoRetry.Try(() => bbWs.BbWorkGroups(ecatCourse.BbCourseId, groupFilter), 3);
 
             var courseGroups = ecatCourse.WorkGroups;
 
@@ -175,9 +170,9 @@ namespace Ecat.Business.Repositories
             }
             await ctxManager.Context.SaveChangesAsync();
             return reconResult;
-        }*/
+        }
 
-        /*public async Task<GroupMemReconResult> ReconcileGroupMembers(int wgId)
+        public async Task<GroupMemReconResult> ReconcileGroupMembers(int wgId)
         {
             var crseWithWorkgroup = await ctxManager.Context.Courses
                 .Where(crse => crse.WorkGroups.Any(wg => wg.WorkGroupId == wgId))
@@ -213,9 +208,9 @@ namespace Ecat.Business.Repositories
             var reconResults = await DoReconciliation(crseWithWorkgroup);
 
             return reconResults.SingleOrDefault();
-        }*/
+        }
 
-        /*public async Task<List<GroupMemReconResult>> ReconcileGroupMembers(int courseId, string groupCategory)
+        public async Task<List<GroupMemReconResult>> ReconcileGroupMembers(int courseId, string groupCategory)
         {
             var crseWithWorkgroup = await ctxManager.Context.Courses
                 .Where(crse => crse.Id == courseId)
@@ -250,9 +245,9 @@ namespace Ecat.Business.Repositories
                 .FirstAsync();
 
             return await DoReconciliation(crseWithWorkgroup);
-        }*/
+        }
 
-        /*private async Task<List<GroupMemReconResult>> DoReconciliation(GroupMemberReconcile crseGroupToReconcile)
+        private async Task<List<GroupMemReconResult>> DoReconciliation(GroupMemberReconcile crseGroupToReconcile)
         {
             var allGroupBbIds = crseGroupToReconcile.WorkGroups.Select(wg => wg.BbWgId).ToArray();
 
@@ -264,7 +259,7 @@ namespace Ecat.Business.Repositories
                 groupIds = allGroupBbIds
             };
 
-            var allBbGrpMems = await autoRetry.Try(() => _bbWs.BbGroupMembership(crseGroupToReconcile.BbCrseId, filter), 3);
+            var allBbGrpMems = await autoRetry.Try(() => bbWs.BbGroupMembership(crseGroupToReconcile.BbCrseId, filter), 3);
 
             var wgsWithChanges = new Dictionary<GmrGroup, List<GroupMembershipVO>>();
 
@@ -371,9 +366,9 @@ namespace Ecat.Business.Repositories
             var reconResults = wgsWithChanges.Select(wg => wg.Key.ReconResult).ToList();
 
             return reconResults;
-        }*/
+        }
 
-        /*private async Task<GroupMemberMap> AddGroupMembers(int crseId, GroupMemberMap grpsWithMemToAdd)
+        private async Task<GroupMemberMap> AddGroupMembers(int crseId, GroupMemberMap grpsWithMemToAdd)
         {
             //Deal with members that were previously removed from the group, flagged as deleted and then added
             //back to the group
@@ -468,9 +463,9 @@ namespace Ecat.Business.Repositories
             await ctxManager.Context.SaveChangesAsync();
 
             return grpsWithMemToAdd;
-        }*/
+        }
 
-        /*private async Task<GroupMemberMap> RemoveOrFlag(int crseId, GroupMemberMap grpWithMems)
+        private async Task<GroupMemberMap> RemoveOrFlag(int crseId, GroupMemberMap grpWithMems)
         {
             foreach (var group in grpWithMems.Keys)
             {
@@ -511,9 +506,9 @@ namespace Ecat.Business.Repositories
             }
             await ctxManager.Context.SaveChangesAsync();
             return grpWithMems;
-        }*/
+        }
 
-        /*public async Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory)
+        public async Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory)
         {
 
             var result = new SaveGradeResult()
@@ -581,7 +576,7 @@ namespace Ecat.Business.Repositories
 
             var columns = new List<ColumnVO>();
             var autoRetry = new Retrier<ColumnVO[]>();
-            var wsColumn = await autoRetry.Try(() => _bbWs.BbColumns(bbCrseId, columnFilter), 3);
+            var wsColumn = await autoRetry.Try(() => bbWs.BbColumns(bbCrseId, columnFilter), 3);
 
             if (wsColumn[0] == null || wsColumn.Length > 1)
             {
@@ -598,7 +593,7 @@ namespace Ecat.Business.Repositories
             {
                 name[0] = model.FacStratCol;
                 columnFilter.names = name;
-                wsColumn = await autoRetry.Try(() => _bbWs.BbColumns(bbCrseId, columnFilter), 3);
+                wsColumn = await autoRetry.Try(() => bbWs.BbColumns(bbCrseId, columnFilter), 3);
 
                 if (wsColumn[0] == null || wsColumn.Length > 1)
                 {
@@ -653,7 +648,7 @@ namespace Ecat.Business.Repositories
 
             //send to Bb
             var autoRetry2 = new Retrier<saveGradesResponse>();
-            var scoreReturn = await autoRetry2.Try(() => _bbWs.SaveGrades(bbCrseId, scoreVOs.ToArray()), 3);
+            var scoreReturn = await autoRetry2.Try(() => bbWs.SaveGrades(bbCrseId, scoreVOs.ToArray()), 3);
 
             result.ReturnedScores = scoreReturn.@return.Length;
             if (result.ReturnedScores != result.SentScores)
@@ -675,6 +670,6 @@ namespace Ecat.Business.Repositories
             }
 
             return result;
-        }*/
+        }
     }
 }

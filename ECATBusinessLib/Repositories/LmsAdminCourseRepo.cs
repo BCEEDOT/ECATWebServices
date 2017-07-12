@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Diagnostics.Contracts;
+using System.IO;
 using Breeze.Persistence;
 using Breeze.Persistence.EF6;
 using Newtonsoft.Json.Linq;
@@ -15,21 +16,25 @@ using Ecat.Data.Models.School;
 using Ecat.Data.Models.Common;
 using Ecat.Data.Static;
 using Ecat.Data.Models.Designer;
+using Ecat.Business.BbWs.BbCourse;
+using Ecat.Business.BbWs.BbCourseMembership;
+using Ecat.Business.BbWs.BbUser;
+using Ecat.Business.Utilities;
 
 namespace Ecat.Business.Repositories
 {
     public class LmsAdminCourseRepo: ILmsAdminCourseRepo
     {
         private readonly EFPersistenceManager<EcatContext> ctxManager;
-        //private readonly BbWsCnet bbWs;
+        private readonly BbWsCnet bbWs;
 
         public int loggedInUserId { get; set; }
         private ProfileFaculty Faculty { get; set; }
 
-        public LmsAdminCourseRepo(EcatContext mainCtx)//, BbWsCnet bbWs)
+        public LmsAdminCourseRepo(EcatContext mainCtx, BbWsCnet bbWsCnet)
         {
             ctxManager = new EFPersistenceManager<EcatContext>(mainCtx);
-            //_bbWs = bbWs;
+            bbWs = bbWsCnet;
 
             Faculty = ctxManager.Context.Faculty.Where(f => f.PersonId == loggedInUserId).SingleOrDefault();
         }
@@ -87,8 +92,7 @@ namespace Ecat.Business.Repositories
             return models;
         }
 
-        //TODO: Implement lms web service stuff... Bb specific in here
-        /*public async Task<List<CategoryVO>> GetBbCategories()
+        public async Task<List<CategoryVO>> GetBbCategories()
         {
             var filter = new CategoryFilter
             {
@@ -96,12 +100,12 @@ namespace Ecat.Business.Repositories
                 filterTypeSpecified = true
             };
             var autoRetry = new Retrier<CategoryVO[]>();
-            var categories = await autoRetry.Try(() => _bbWs.BbCourseCategories(filter), 3);
+            var categories = await autoRetry.Try(() => bbWs.BbCourseCategories(filter), 3);
 
             return categories.ToList();
-        }*/
+        }
 
-        /*public async Task<CourseReconResult> ReconcileCourses()
+        public async Task<CourseReconResult> ReconcileCourses()
         {
             var courseFilter = new CourseFilter
             {
@@ -121,7 +125,7 @@ namespace Ecat.Business.Repositories
             }
 
             var autoRetry = new Retrier<CourseVO[]>();
-            var bbCoursesResult = await autoRetry.Try(() => _bbWs.BbCourses(courseFilter), 3);
+            var bbCoursesResult = await autoRetry.Try(() => bbWs.BbCourses(courseFilter), 3);
 
             if (bbCoursesResult == null) throw new InvalidDataException("No Bb Responses received");
 
@@ -164,7 +168,7 @@ namespace Ecat.Business.Repositories
             }
 
             return reconResult;
-        }*/
+        }
 
         public async Task<Course> GetAllCourseMembers(int courseId)
         {
@@ -194,7 +198,7 @@ namespace Ecat.Business.Repositories
             return query.c;
         }
 
-        /*public async Task<MemReconResult> ReconcileCourseMembers(int courseId)
+        public async Task<MemReconResult> ReconcileCourseMembers(int courseId)
         {
             var ecatCourse = await ctxManager.Context.Courses
                 .Where(crse => crse.Id == courseId)
@@ -234,7 +238,7 @@ namespace Ecat.Business.Repositories
                 filterType = (int)CrseMembershipFilterType.LoadByCourseId,
             };
 
-            var bbCourseMems = await autoRetryCm.Try(() => _bbWs.BbCourseMembership(ecatCourse.Course.BbCourseId, courseMemFilter), 3);
+            var bbCourseMems = await autoRetryCm.Try(() => bbWs.BbCourseMembership(ecatCourse.Course.BbCourseId, courseMemFilter), 3);
 
             var existingCrseUserIds = ecatCourse.FacultyToReconcile
                 .Select(fac => fac.BbUserId).ToList();
@@ -262,9 +266,9 @@ namespace Ecat.Business.Repositories
             }
 
             return reconResult;
-        }*/
+        }
 
-        /*private async Task<MemReconResult> AddNewUsers(IEnumerable<CourseMembershipVO> bbCmsVo, MemReconResult reconResult)
+        private async Task<MemReconResult> AddNewUsers(IEnumerable<CourseMembershipVO> bbCmsVo, MemReconResult reconResult)
         {
             var bbCms = bbCmsVo.ToList();
             var bbCmUserIds = bbCms.Select(bbcm => bbcm.userId).ToList();
@@ -293,7 +297,7 @@ namespace Ecat.Business.Repositories
                 };
 
                 var autoRetryUsers = new Retrier<UserVO[]>();
-                var bbUsers = await autoRetryUsers.Try(() => _bbWs.BbCourseUsers(userFilter), 3);
+                var bbUsers = await autoRetryUsers.Try(() => bbWs.BbCourseUsers(userFilter), 3);
                 var courseMems = bbCms;
 
                 if (bbUsers != null)
@@ -444,7 +448,7 @@ namespace Ecat.Business.Repositories
                 : 0;
 
             return reconResult;
-        }*/
+        }
 
         private async Task<List<int>> RemoveOrFlagUsers(CourseReconcile courseToReconcile, IEnumerable<string> bbIdsToRemove)
         {

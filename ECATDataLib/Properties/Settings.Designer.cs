@@ -22,55 +22,5 @@ namespace Ecat.Data.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://barnescenter.blackboard.com:8080/webapps/ws/services/Context.WS")]
-        public string Ecat_Data_BbWs_BbContext_Context_WS {
-            get {
-                return ((string)(this["Ecat_Data_BbWs_BbContext_Context_WS"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://barnescenter.blackboard.com:8080/webapps/ws/services/Course.WS")]
-        public string Ecat_Data_BbWs_BbCourse_Course_WS {
-            get {
-                return ((string)(this["Ecat_Data_BbWs_BbCourse_Course_WS"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://barnescenter.blackboard.com:8080/webapps/ws/services/CourseMembership.WS")]
-        public string Ecat_Data_BbWs_BbCourseMembership_CourseMembership_WS {
-            get {
-                return ((string)(this["Ecat_Data_BbWs_BbCourseMembership_CourseMembership_WS"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://barnescenter.blackboard.com:8080/webapps/ws/services/Gradebook.WS")]
-        public string Ecat_Data_BbWs_BbGradebook_Gradebook_WS {
-            get {
-                return ((string)(this["Ecat_Data_BbWs_BbGradebook_Gradebook_WS"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://barnescenter.blackboard.com:8080/webapps/ws/services/User.WS")]
-        public string Ecat_Data_BbWs_BbUser_User_WS {
-            get {
-                return ((string)(this["Ecat_Data_BbWs_BbUser_User_WS"]));
-            }
-        }
     }
 }

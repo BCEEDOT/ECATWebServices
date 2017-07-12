@@ -150,6 +150,7 @@
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
     </Reference>
@@ -162,6 +163,7 @@
     <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Text.Encodings.Web, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.4.3.0\lib\netstandard1.0\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -175,12 +177,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\BbWs.BbContext\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\BbWs.BbCourseMembership\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\BbWs.BbCourse\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\BbWs.BbGradebook\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\BbWs.BbUser\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Guards\FacultyGuard.cs" />
     <Compile Include="Guards\MonitoredGuard.cs" />
     <Compile Include="Guards\StudentGuard.cs" />
     <Compile Include="Guards\UserGuard.cs" />
     <Compile Include="Guards\WorkGroupPublish.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\BbWsCnet.cs" />
     <Compile Include="Repositories\FacultyRepo.cs" />
     <Compile Include="Repositories\Interface\IFacultyRepo.cs" />
     <Compile Include="Repositories\Interface\ILmsAdminRepo.cs" />
@@ -192,11 +220,432 @@
     <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Utilities\EmailValidator.cs" />
     <Compile Include="Utilities\Hasher.cs" />
+    <Compile Include="Utilities\Retrier.cs" />
     <Compile Include="Utilities\SaveMapExtension.cs" />
     <Compile Include="Utilities\CustomExceptions.cs" />
+    <Compile Include="Utilities\WsSecurityBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Connected Services\BbWs.BbContext\Context.wsdl" />
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.CourseIdVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.deactivateToolResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.DeactivateToolResultVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.emulateUserResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.extendSessionLifeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.getMembershipsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.getMyMembershipsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.getRequiredEntitlementsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.getServerVersionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.getSystemInstallationIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.initializeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.initializeVersion2Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.loginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.loginTicketResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.loginToolResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.logoutResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.registerToolResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.RegisterToolResultVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbContext\Ecat.Business.BbWs.BbContext.VersionVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\CourseMembership.wsdl" />
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.CourseMembershipRoleVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.CourseMembershipVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.deleteCourseMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.deleteGroupMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.getCourseMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.getCourseRolesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.getGroupMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.getServerVersionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.GroupMembershipVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.initializeCourseMembershipWSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.saveCourseMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.saveGroupMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Ecat.Business.BbWs.BbCourseMembership.VersionVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Course.wsdl" />
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.addCourseToTermResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.CartridgeVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.CategoryMembershipVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.CategoryVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.changeCourseBatchUidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.changeCourseCategoryBatchUidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.changeCourseDataSourceIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.changeOrgBatchUidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.changeOrgCategoryBatchUidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.changeOrgDataSourceIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.ClassificationVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.CourseVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.createCourseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.createOrgResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteCartridgeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteCourseCategoryMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteCourseCategoryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteCourseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteGroupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteOrgCategoryMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteOrgCategoryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteOrgResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteStaffInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.deleteTermResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getAvailableGroupToolsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getCartridgeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getCategoriesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getClassificationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getCourseCategoryMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getCourseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getGroupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getOrgCategoryMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getOrgResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getServerVersionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.getStaffInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.GroupVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.initializeCourseWSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.loadCoursesInTermResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.loadTermByCourseIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.loadTermResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.loadTermsByNameResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.loadTermsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.removeCourseFromTermResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.saveCartridgeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.saveCourseCategoryMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.saveCourseCategoryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.saveCourseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.saveGroupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.saveOrgCategoryMembershipResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.saveOrgCategoryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.saveStaffInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.saveTermResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.setCourseBannerImageResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.StaffInfoVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.TermVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.updateCourseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.updateOrgResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbCourse\Ecat.Business.BbWs.BbCourse.VersionVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.AttemptVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.ColumnVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.deleteAttemptsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.deleteColumnsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.deleteGradebookTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.deleteGradesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.deleteGradingSchemasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.getAttemptsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.getGradebookColumnsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.getGradebookTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.getGradesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.getGradingSchemasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.getRequiredEntitlementsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.getServerVersionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.GradebookTypeVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.GradingSchemaVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.initializeGradebookWSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.saveAttemptsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.saveColumnsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.saveGradebookTypesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.saveGradesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.saveGradingSchemasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.ScoreVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.updateColumnAttributeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Ecat.Business.BbWs.BbGradebook.VersionVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbGradebook\Gradebook.wsdl" />
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.AddressBookEntryVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.changeUserBatchUidResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.changeUserDataSourceIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.deleteAddressBookEntryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.deleteObserverAssociationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.deleteUserByInstitutionRoleResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.deleteUserResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.getAddressBookEntryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.getInstitutionRolesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.getObserveeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.getServerVersionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.getSystemRolesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.getUserInstitutionRolesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.getUserResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.initializeUserWSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.ObserverAssociationVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.PortalRoleVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.saveAddressBookEntryResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.saveObserverAssociationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.saveUserResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.UserRoleVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.UserVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\Ecat.Business.BbWs.BbUser.VersionVO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\BbWs.BbUser\User.wsdl" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +653,76 @@
       <Project>{e4fbd950-31b9-4de5-be20-9165a7ff35d4}</Project>
       <Name>ECATDataLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\BbWs.BbContext\" />
+    <WCFMetadataStorage Include="Connected Services\BbWs.BbCourseMembership\" />
+    <WCFMetadataStorage Include="Connected Services\BbWs.BbCourse\" />
+    <WCFMetadataStorage Include="Connected Services\BbWs.BbGradebook\" />
+    <WCFMetadataStorage Include="Connected Services\BbWs.BbUser\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbContext\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbContext\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbContext\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbCourse\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbCourse\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbCourse\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbCourseMembership\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbCourseMembership\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbCourseMembership\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbGradebook\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbGradebook\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbGradebook\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbUser\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbUser\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BbWs.BbUser\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
