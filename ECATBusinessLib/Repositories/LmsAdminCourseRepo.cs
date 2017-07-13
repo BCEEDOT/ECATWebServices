@@ -107,6 +107,8 @@ namespace Ecat.Business.Repositories
 
         public async Task<CourseReconResult> ReconcileCourses()
         {
+            await GetProfile();
+
             var courseFilter = new CourseFilter
             {
                 filterTypeSpecified = true,

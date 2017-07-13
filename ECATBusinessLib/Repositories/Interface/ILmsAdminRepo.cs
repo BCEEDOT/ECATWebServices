@@ -22,9 +22,9 @@ namespace Ecat.Business.Repositories.Interface
         //ProfileFaculty Faculty { get; set; }
         Task<List<Course>> GetAllCourses();
         Task<List<WorkGroupModel>> GetCourseModels(int courseId);
-        //Task<CourseReconResult> ReconcileCourses();
+        Task<CourseReconResult> ReconcileCourses();
         Task<Course> GetAllCourseMembers(int courseId);
-        //Task<MemReconResult> ReconcileCourseMembers(int courseId);
+        Task<MemReconResult> ReconcileCourseMembers(int courseId);
     }
 
     public interface ILmsAdminGroupRepo
@@ -33,9 +33,9 @@ namespace Ecat.Business.Repositories.Interface
         //ProfileFaculty Faculty { get; set; }
         Task<Course> GetCourseGroups(int courseId);
         Task<WorkGroup> GetWorkGroupMembers(int workGroupId);
-        //Task<GroupReconResult> ReconcileGroups(int courseId);
-        //Task<GroupMemReconResult> ReconcileGroupMembers(int wgId);
-        //Task<List<GroupMemReconResult>> ReconcileGroupMembers(int courseId, string groupCategory);
-        //Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory);
+        Task<GroupReconResult> ReconcileGroups(int courseId);
+        Task<GroupMemReconResult> ReconcileGroupMembers(int wgId);
+        Task<List<GroupMemReconResult>> ReconcileGroupMembers(int courseId, string groupCategory);
+        Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory);
     }
 }

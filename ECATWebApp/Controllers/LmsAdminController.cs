@@ -80,8 +80,7 @@ namespace Ecat.Web.Controllers
             return await groupRepo.GetWorkGroupMembers(workGroupId);
         }
 
-        //TODO: Update with LMS web service impl
-        /*[HttpGet]
+        [HttpGet]
         public async Task<CourseReconResult> PollCourses()
         {
             return await courseRepo.ReconcileCourses();
@@ -115,6 +114,6 @@ namespace Ecat.Web.Controllers
         public async Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory)
         {
             return await groupRepo.SyncBbGrades(crseId, wgCategory);
-        }*/
+        }
     }
 }

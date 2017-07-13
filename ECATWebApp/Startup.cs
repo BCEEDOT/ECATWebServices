@@ -67,6 +67,7 @@ namespace Ecat.Web
             services.AddScoped<IFacultyRepo, FacultyRepo>();
             services.AddScoped<ILmsAdminCourseRepo, LmsAdminCourseRepo>();
             services.AddScoped<ILmsAdminGroupRepo, LmsAdminGroupRepo>();
+            services.AddScoped<BbWsCnet, BbWsCnet>();
 
             //Controllers need to have the httpContext injected
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
