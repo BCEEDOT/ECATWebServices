@@ -112,10 +112,11 @@ namespace Ecat.Web.Controllers
             return await groupRepo.ReconcileGroupMembers(workGroupId);
         }
 
+        //ECAT 2.0 only get BC1 groups from LMS
         [HttpGet]
-        public async Task<List<GroupMemReconResult>> PollGroupCategory(int courseId, string category)
+        public async Task<List<GroupMemReconResult>> PollGroupCategory(int courseId)//, string category)
         {
-            return await groupRepo.ReconcileGroupMembers(courseId, category);
+            return await groupRepo.ReconcileAllGroupMembers(courseId);//, category);
         }
 
         [HttpGet]

@@ -207,6 +207,8 @@ namespace Ecat.Business.Repositories
 
         public async Task<MemReconResult> ReconcileCourseMembers(int courseId)
         {
+            await GetProfile();
+
             var ecatCourse = await ctxManager.Context.Courses
                 .Where(crse => crse.Id == courseId)
                 .Select(crse => new CourseReconcile

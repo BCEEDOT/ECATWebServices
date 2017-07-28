@@ -39,12 +39,15 @@ namespace Ecat.Business.Repositories
             Faculty = ctxManager.Context.Faculty.Where(f => f.PersonId == loggedInUserId).SingleOrDefault();
         }
 
-        ////public SaveResult ClientSave(JObject saveBundle)
-        ////{
-        ////    var guardian = new StudentGuard(ctxManager, loggedInUserId);
-        ////    ctxManager.BeforeSaveEntitiesDelegate += guardian.BeforeSaveEntities;
-        ////    return ctxManager.SaveChanges(saveBundle);
-        ////}
+        public async Task GetProfile()
+        {
+            if (Faculty == null || Faculty.PersonId == 0)
+            {
+                Faculty = await ctxManager.Context.Faculty
+                .Where(fac => fac.PersonId == loggedInUserId)
+                .SingleOrDefaultAsync();
+            }
+        }
 
         public async Task<Course> GetCourseGroups(int courseId)
         {
@@ -134,6 +137,8 @@ namespace Ecat.Business.Repositories
         //TODO: Implement lms web service stuff... Bb specific here
         public async Task<GroupReconResult> ReconcileGroups(int courseId)
         {
+            await GetProfile();
+
             var ecatCourse = await ctxManager.Context.Courses
                 .Where(course => course.Id == courseId)
                 .Include(course => course.WorkGroups)
@@ -161,9 +166,14 @@ namespace Ecat.Business.Repositories
 
             if (bbGroups == null) return reconResult;
 
+            //var groupNeedToCreate = bbGroups
+            //    .Where(bbg => !courseGroups.Select(wg => wg.BbGroupId).Contains(bbg.id))
+            //    .Where(bbg => bbg.title.ToLower().StartsWith("bc")).ToList();
+
+            //ECAT 2.0 only get BC1 groups from LMS
             var groupNeedToCreate = bbGroups
                 .Where(bbg => !courseGroups.Select(wg => wg.BbGroupId).Contains(bbg.id))
-                .Where(bbg => bbg.title.ToLower().StartsWith("bc")).ToList();
+                .Where(bbg => bbg.title.ToLower().StartsWith("bc1")).ToList();
 
             if (!groupNeedToCreate.Any()) return reconResult;
 
@@ -184,15 +194,16 @@ namespace Ecat.Business.Repositories
                     case "BC1":
                         category = MpGroupCategory.Wg1;
                         break;
-                    case "BC2":
-                        category = MpGroupCategory.Wg2;
-                        break; ;
-                    case "BC3":
-                        category = MpGroupCategory.Wg3;
-                        break;
-                    case "BC4":
-                        category = MpGroupCategory.Wg4;
-                        break;
+                    //ECAT 2.0 only get BC1 groups from LMS
+                    //case "BC2":
+                    //    category = MpGroupCategory.Wg2;
+                    //    break; ;
+                    //case "BC3":
+                    //    category = MpGroupCategory.Wg3;
+                    //    break;
+                    //case "BC4":
+                    //    category = MpGroupCategory.Wg4;
+                    //    break;
                     default:
                         category = MpGroupCategory.None;
                         break;
@@ -204,7 +215,7 @@ namespace Ecat.Business.Repositories
                     MpCategory = category,
                     GroupNumber = groupMapper[1].Substring(1),
                     DefaultName = groupMapper[2],
-                    MpSpStatus = MpSpStatus.Open,
+                    MpSpStatus = MpSpStatus.Created,
                     ModifiedById = Faculty.PersonId,
                     ModifiedDate = DateTime.Now,
                     ReconResultId = reconResult.Id,
@@ -225,6 +236,7 @@ namespace Ecat.Business.Repositories
 
         public async Task<GroupMemReconResult> ReconcileGroupMembers(int wgId)
         {
+
             var crseWithWorkgroup = await ctxManager.Context.Courses
                 .Where(crse => crse.WorkGroups.Any(wg => wg.WorkGroupId == wgId))
                 .Select(crse => new GroupMemberReconcile
@@ -261,8 +273,9 @@ namespace Ecat.Business.Repositories
             return reconResults.SingleOrDefault();
         }
 
-        public async Task<List<GroupMemReconResult>> ReconcileGroupMembers(int courseId, string groupCategory)
+        public async Task<List<GroupMemReconResult>> ReconcileAllGroupMembers(int courseId)//, string groupCategory)
         {
+            //ECAT 2.0 only get BC1 groups from LMS
             var crseWithWorkgroup = await ctxManager.Context.Courses
                 .Where(crse => crse.Id == courseId)
                 .Select(crse => new GroupMemberReconcile
@@ -271,7 +284,7 @@ namespace Ecat.Business.Repositories
                     BbCrseId = crse.BbCourseId,
                     WorkGroups = crse.WorkGroups
                     .Where(wg => wg.MpSpStatus != MpSpStatus.Published)
-                    .Where(wg => wg.MpCategory == groupCategory)
+                    .Where(wg => wg.MpCategory == MpGroupCategory.Wg1)
                         .Select(wg => new GmrGroup
                         {
                             WgId = wg.WorkGroupId,
@@ -300,6 +313,8 @@ namespace Ecat.Business.Repositories
 
         private async Task<List<GroupMemReconResult>> DoReconciliation(GroupMemberReconcile crseGroupToReconcile)
         {
+            await GetProfile();
+
             var allGroupBbIds = crseGroupToReconcile.WorkGroups.Select(wg => wg.BbWgId).ToArray();
 
             var autoRetry = new Retrier<GroupMembershipVO[]>();
@@ -618,43 +633,81 @@ namespace Ecat.Business.Repositories
 
             string[] name = { model.StudStratCol };
 
+            //var columnFilter = new ColumnFilter
+            //{
+            //    filterType = (int)ColumnFilterType.GetColumnByCourseIdAndColumnName,
+            //    filterTypeSpecified = true,
+            //    names = name
+            //};
+
             var columnFilter = new ColumnFilter
             {
-                filterType = (int)ColumnFilterType.GetColumnByCourseIdAndColumnName,
-                filterTypeSpecified = true,
-                names = name
+                filterType = (int)ColumnFilterType.GetColumnByCourseId,
+                filterTypeSpecified = true
             };
 
             var columns = new List<ColumnVO>();
             var autoRetry = new Retrier<ColumnVO[]>();
             var wsColumn = await autoRetry.Try(() => bbWs.BbColumns(bbCrseId, columnFilter), 3);
 
-            if (wsColumn[0] == null || wsColumn.Length > 1)
+            //if (wsColumn[0] == null || wsColumn.Length > 1)
+            //{
+            //    result.Success = false;
+            //    result.Message = "Error matching ECAT and LMS Columns";
+            //    return result;
+            //}
+
+            //columns.Add(wsColumn[0]);
+
+            if (wsColumn == null || wsColumn.Length == 0)
             {
                 result.Success = false;
                 result.Message = "Error matching ECAT and LMS Columns";
                 return result;
             }
 
-            columns.Add(wsColumn[0]);
+            var studCol = wsColumn.Where(col => col.columnName == model.StudStratCol).ToList();
 
-            //If you specify column names in the column filter, Bb only brings back the column that matches the first name in the names array for some reason
-            //So either we go get all 100+ columns and filter it for what we want or we hit the WS twice...
+            if (studCol[0] == null || studCol.Count > 1)
+            {
+                result.Success = false;
+                result.Message = "Error matching ECAT and LMS Columns";
+                return result;
+            }
+
+            columns.Add(studCol[0]);
+
+            var facCol = new List<ColumnVO>();
             if (model.MaxStratFaculty > 0 && model.FacStratCol != null)
             {
-                name[0] = model.FacStratCol;
-                columnFilter.names = name;
-                wsColumn = await autoRetry.Try(() => bbWs.BbColumns(bbCrseId, columnFilter), 3);
-
-                if (wsColumn[0] == null || wsColumn.Length > 1)
+                facCol = wsColumn.Where(col => col.columnName == model.FacStratCol).ToList();
+                if (facCol[0] == null || facCol.Count > 1)
                 {
                     result.Success = false;
                     result.Message = "Error matching ECAT and LMS Columns";
                     return result;
                 }
 
-                columns.Add(wsColumn[0]);
+                columns.Add(facCol[0]);
             }
+
+            //If you specify column names in the column filter, Bb only brings back the column that matches the first name in the names array for some reason
+            //So either we go get all 100+ columns and filter it for what we want or we hit the WS twice...
+            //if (model.MaxStratFaculty > 0 && model.FacStratCol != null)
+            //{
+            //    name[0] = model.FacStratCol;
+            //    columnFilter.names = name;
+            //    wsColumn = await autoRetry.Try(() => bbWs.BbColumns(bbCrseId, columnFilter), 3);
+
+            //    if (wsColumn[0] == null || wsColumn.Length > 1)
+            //    {
+            //        result.Success = false;
+            //        result.Message = "Error matching ECAT and LMS Columns";
+            //        return result;
+            //    }
+
+            //    columns.Add(wsColumn[0]);
+            //}
 
             var stratResults = await (from str in ctxManager.Context.SpStratResults
                                       where grpIds.Contains(str.WorkGroupId)
@@ -671,7 +724,8 @@ namespace Ecat.Business.Repositories
                 {
                     userId = str.person.BbUserId,
                     courseId = bbCrseId,
-                    columnId = columns[0].id,
+                    columnId = studCol[0].id,
+                    //columnId = columns[0].id,
                     manualGrade = str.stratResult.StudStratAwardedScore.ToString(),
                     manualScore = decimal.ToDouble(str.stratResult.StudStratAwardedScore),
                     manualScoreSpecified = true
@@ -685,7 +739,8 @@ namespace Ecat.Business.Repositories
                     {
                         userId = str.person.BbUserId,
                         courseId = bbCrseId,
-                        columnId = columns[1].id,
+                        columnId = facCol[0].id,
+                        //columnId = columns[1].id,
                         manualGrade = str.stratResult.FacStratAwardedScore.ToString(),
                         manualScore = decimal.ToDouble(str.stratResult.FacStratAwardedScore),
                         manualScoreSpecified = true
