@@ -203,6 +203,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Guards\FacultyGuard.cs" />
+    <Compile Include="Guards\IsaGuard.cs" />
     <Compile Include="Guards\MonitoredGuard.cs" />
     <Compile Include="Guards\StudentGuard.cs" />
     <Compile Include="Guards\UserGuard.cs" />

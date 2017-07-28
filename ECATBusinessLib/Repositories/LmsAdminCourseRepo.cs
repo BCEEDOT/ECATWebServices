@@ -20,6 +20,7 @@ using Ecat.Business.BbWs.BbCourse;
 using Ecat.Business.BbWs.BbCourseMembership;
 using Ecat.Business.BbWs.BbUser;
 using Ecat.Business.Utilities;
+using Ecat.Business.Guards;
 
 namespace Ecat.Business.Repositories
 {
@@ -45,8 +46,12 @@ namespace Ecat.Business.Repositories
             return new EFPersistenceManager<LmsAdminMetadata>().Metadata();
         }
 
+
+
         public SaveResult SaveClientChanges(JObject saveBundle)
         {
+            var guardian = new IsaGuard(ctxManager, loggedInUserId);
+            ctxManager.BeforeSaveEntitiesDelegate += guardian.BeforeSaveEntities;
             return ctxManager.SaveChanges(saveBundle);
         }
         #endregion breeze methods

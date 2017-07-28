@@ -92,6 +92,9 @@ namespace Ecat.Web.Providers
                         {
                             identity.AddClaim(OpenIdConnectConstants.Claims.Role, "ISA", OpenIdConnectConstants.Destinations.AccessToken);
                         }
+                        else {
+                            identity.AddClaim(OpenIdConnectConstants.Claims.Role, "notISA", OpenIdConnectConstants.Destinations.AccessToken);
+                        }
                         break;
                     default:
                         identity.AddClaim(OpenIdConnectConstants.Claims.Role, "Student", OpenIdConnectConstants.Destinations.AccessToken);

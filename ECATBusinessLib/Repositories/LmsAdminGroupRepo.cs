@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 
+using Ecat.Business.Guards;
 using Breeze.Persistence;
 using Breeze.Persistence.EF6;
 using Ecat.Business.Repositories.Interface;
@@ -17,6 +18,7 @@ using Ecat.Business.BbWs.BbCourse;
 using Ecat.Business.Utilities;
 using Ecat.Business.BbWs.BbCourseMembership;
 using Ecat.Business.BbWs.BbGradebook;
+using Newtonsoft.Json.Linq;
 
 namespace Ecat.Business.Repositories
 {
@@ -36,6 +38,13 @@ namespace Ecat.Business.Repositories
 
             Faculty = ctxManager.Context.Faculty.Where(f => f.PersonId == loggedInUserId).SingleOrDefault();
         }
+
+        ////public SaveResult ClientSave(JObject saveBundle)
+        ////{
+        ////    var guardian = new StudentGuard(ctxManager, loggedInUserId);
+        ////    ctxManager.BeforeSaveEntitiesDelegate += guardian.BeforeSaveEntities;
+        ////    return ctxManager.SaveChanges(saveBundle);
+        ////}
 
         public async Task<Course> GetCourseGroups(int courseId)
         {
@@ -81,6 +90,48 @@ namespace Ecat.Business.Repositories
             return workGroup;
         }
 
+
+        public async Task<List<WorkGroup>> GetAllGroupSetMembers(int courseId, string categoryId)
+        {
+            var latestCourse = ctxManager.Context.Courses.Where(crse => crse.Id == courseId).Single();
+
+            var workGroupsInCourse = await (from workGroup in ctxManager.Context.WorkGroups
+
+                                            where workGroup.CourseId == latestCourse.Id && workGroup.MpCategory == categoryId
+
+                                            select new
+                                            {
+                                                workGroup,
+                                                //Return all GroupMembers even deleted. Schools must have the ability to keep a student in a course but 
+                                                //not in a group.
+                                                //GroupMembers = workGroup.GroupMembers.Where(gm => gm.IsDeleted == false).Select(gm => new
+                                                GroupMembers = workGroup.GroupMembers.Select(gm => new
+                                                {
+                                                    gm,
+                                                    StudProfile = gm.StudentProfile,
+                                                    StudPerson = gm.StudentProfile.Person,
+                                                    RoadRunner = gm.StudentProfile.Person.RoadRunnerAddresses
+                                                })
+
+
+
+                                            }).ToListAsync();
+
+            var currentWorkgroups = new List<WorkGroup>();
+
+            workGroupsInCourse.ForEach(wg =>
+            {
+                //if (wg.GroupMembers.Any())
+                //{
+                    currentWorkgroups.Add(wg.workGroup);
+                //}
+            });
+
+            return currentWorkgroups;
+        }
+
+
+        //TODO: Implement lms web service stuff... Bb specific here
         public async Task<GroupReconResult> ReconcileGroups(int courseId)
         {
             var ecatCourse = await ctxManager.Context.Courses
