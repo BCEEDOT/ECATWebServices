@@ -39,6 +39,13 @@ namespace Ecat.Business.Repositories
             Faculty = ctxManager.Context.Faculty.Where(f => f.PersonId == loggedInUserId).SingleOrDefault();
         }
 
+        public SaveResult SaveClientChanges(JObject saveBundle)
+        {
+            var guardian = new IsaGuard(ctxManager, loggedInUserId);
+            ctxManager.BeforeSaveEntitiesDelegate += guardian.BeforeSaveEntities;
+            return ctxManager.SaveChanges(saveBundle);
+        }
+
         public async Task GetProfile()
         {
             if (Faculty == null || Faculty.PersonId == 0)
@@ -134,7 +141,7 @@ namespace Ecat.Business.Repositories
         }
 
 
-        //TODO: Implement lms web service stuff... Bb specific here
+        //lms web service stuff... Bb specific here
         public async Task<GroupReconResult> ReconcileGroups(int courseId)
         {
             await GetProfile();
@@ -314,6 +321,10 @@ namespace Ecat.Business.Repositories
         private async Task<List<GroupMemReconResult>> DoReconciliation(GroupMemberReconcile crseGroupToReconcile)
         {
             await GetProfile();
+            //if (crseGroupToReconcile.WorkGroups == null || crseGroupToReconcile.WorkGroups.Count == 0)
+            //{
+            //    return null;
+            //}
 
             var allGroupBbIds = crseGroupToReconcile.WorkGroups.Select(wg => wg.BbWgId).ToArray();
 

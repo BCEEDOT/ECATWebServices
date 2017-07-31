@@ -11,6 +11,7 @@ using Ecat.Data.Models.Cognitive;
 using Ecat.Data.Models.School;
 using Ecat.Business.Utilities;
 using Ecat.Data.Models.Common;
+using Ecat.Data.Static;
 
 namespace Ecat.Business.Guards
 {
@@ -33,7 +34,8 @@ namespace Ecat.Business.Guards
 
             if (saveMap.ContainsKey(tWg))
             {
-                
+                var grps = ProcessWorkGroup(saveMap[tWg]);
+                saveMap.MergeMap(grps);
             }
 
             if (saveMap.ContainsKey(tStudInGroup))
@@ -98,6 +100,28 @@ namespace Ecat.Business.Guards
 
 
             return saveMap;
+        }
+
+        private SaveMap ProcessWorkGroup(List<EntityInfo> workGroupInfos)
+        {
+
+            var publishingWgs = workGroupInfos
+                .Where(info => info.OriginalValuesMap.ContainsKey("MpSpStatus"))
+                .Select(info => info.Entity)
+                .OfType<WorkGroup>()
+                .Where(wg => wg.MpSpStatus == MpSpStatus.Published).ToList();
+
+            var wgSaveMap = new Dictionary<Type, List<EntityInfo>> { { tWg, workGroupInfos } };
+
+            if (!publishingWgs.Any()) return wgSaveMap;
+
+
+            var svrWgIds = publishingWgs.Select(wg => wg.WorkGroupId);
+            var publishResultMap = WorkGroupPublish.Publish(wgSaveMap, svrWgIds, loggedInUserId, ctxManager);
+
+            wgSaveMap.MergeMap(publishResultMap);
+
+            return wgSaveMap;
         }
     }
 

@@ -12,7 +12,6 @@ using Ecat.Data.Models.Designer;
 
 namespace Ecat.Business.Repositories.Interface
 {
-    //TODO: Implement LMS web service stuff...
     public interface ILmsAdminCourseRepo
     {
         string Metadata();
@@ -29,6 +28,8 @@ namespace Ecat.Business.Repositories.Interface
 
     public interface ILmsAdminGroupRepo
     {
+        SaveResult SaveClientChanges(JObject saveBundle);
+
         int loggedInUserId { get; set; }
         //ProfileFaculty Faculty { get; set; }
         Task<Course> GetCourseGroups(int courseId);
@@ -38,9 +39,5 @@ namespace Ecat.Business.Repositories.Interface
         Task<List<GroupMemReconResult>> ReconcileAllGroupMembers(int courseId);//, string groupCategory);
         Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory);
         Task<List<WorkGroup>> GetAllGroupSetMembers(int courseId, string categoryId);
-        //Task<GroupReconResult> ReconcileGroups(int courseId);
-        //Task<GroupMemReconResult> ReconcileGroupMembers(int wgId);
-        //Task<List<GroupMemReconResult>> ReconcileGroupMembers(int courseId, string groupCategory);
-        //Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory);
     }
 }

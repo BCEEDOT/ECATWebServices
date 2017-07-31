@@ -87,7 +87,6 @@ namespace Ecat.Web.Controllers
             return await groupRepo.GetAllGroupSetMembers(courseId, categoryId);
         }
 
-        //TODO: Update with LMS web service impl
         [HttpGet]
         public async Task<CourseReconResult> PollCourses()
         {

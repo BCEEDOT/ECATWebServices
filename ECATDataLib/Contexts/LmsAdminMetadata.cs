@@ -19,7 +19,6 @@ namespace Ecat.Data.Contexts
     public class LmsAdminMetadata: DbContext
     {
         //Only used for metadata for breeze, cannot be used to query the database
-        //TODO: Make sure this is everything we need for LMS Admin...
         static LmsAdminMetadata()
         {
             Database.SetInitializer<LmsAdminMetadata>(null);
