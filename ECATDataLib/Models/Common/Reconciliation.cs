@@ -49,6 +49,25 @@ namespace Ecat.Data.Models.Common
         public GmrMemberVo BbGmVo { get; set; }
     }
 
+    public class StudentOnTheMove
+    {
+        public CrseStudentInGroup Student { get; set; }
+        public int StudentId { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsMoving { get; set; }
+        public bool HasChildren { get; set; }
+        public int CourseId { get; set; }
+        public int ToWorkGroupId { get; set; }
+        public int FromWorkGroupId { get; set; }
+    }
+
+    public class StudentOTMReconcile
+    {
+        public CrseStudentInGroup Student { get; set; }
+        public int ToWorkGroupId {get; set;}
+        public int CourseId { get; set; }
+    }
+
     public class GmrMemberVo
     {
         public string CourseMembershipId { get; set; }
