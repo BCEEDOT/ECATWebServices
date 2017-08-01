@@ -128,6 +128,9 @@ namespace Ecat.Web
                 options.AllowInsecureHttp = true;
                 options.AuthorizationEndpointPath = PathString.Empty;
                 options.TokenEndpointPath = "/connect/token";
+                //TODO: Update token lifetime before release
+                options.AccessTokenLifetime = TimeSpan.FromHours(1);
+                options.IdentityTokenLifetime = TimeSpan.FromHours(1);
                 options.AccessTokenHandler = new JwtSecurityTokenHandler
                 {
                     InboundClaimTypeMap = new Dictionary<string, string>(),

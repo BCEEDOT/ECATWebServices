@@ -114,8 +114,9 @@ namespace Ecat.Web.Providers
                 var ticket = new AuthenticationTicket(
                     new ClaimsPrincipal(identity), new AuthenticationProperties(), context.Options.AuthenticationScheme);
 
-                ticket.Properties.IssuedUtc = DateTime.Now;
-                ticket.Properties.ExpiresUtc = DateTime.Now.Add(TimeSpan.FromHours(1));
+                //these didn't actually do anything for us it seems
+                //ticket.Properties.IssuedUtc = DateTime.Now;
+                //ticket.Properties.ExpiresUtc = DateTime.Now.AddHours(6);
 
                 ticket.SetScopes(OpenIdConnectConstants.Scopes.OpenId);
                 ticket.SetResources("ecat_server");
