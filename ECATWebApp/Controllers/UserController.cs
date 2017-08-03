@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Breeze.AspNetCore;
 using Breeze.Persistence;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Business.Utilities;
 using Ecat.Data.Models.User;
@@ -17,7 +18,6 @@ namespace Ecat.Web.Controllers
 {
     [Route("breeze/[controller]/[action]")]
     [Authorize(Policy = "LoggedInUser")]
-    //[Authorize(Policy = "Student")]
     public class UserController: Controller
     {
         private readonly IUserRepo userRepo;

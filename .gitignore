@@ -10,6 +10,7 @@
 /ECATBusinessLib/bin
 /ECATDevOps/bin
 /ECATDevOps/obj
+/ECATWebApp/wwwroot
 
 # dependencies
 /packages
