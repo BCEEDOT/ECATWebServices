@@ -149,6 +149,7 @@ namespace Ecat.Data.Contexts
         public DbSet<SpResponse> SpResponses { get; set; }
         public DbSet<SpResult> SpResults { get; set; }
         public DbSet<StudSpComment> StudSpComments { get; set; }
+        public DbSet<StudSpCommentFlag> StudSpCommentFlag { get; set; }
         public DbSet<StratResponse> SpStratResponses { get; set; }
         public DbSet<StratResult> SpStratResults { get; set; }
         //public DbSet<KcResponse> KcResponses { get; set; }

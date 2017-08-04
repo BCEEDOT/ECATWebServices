@@ -37,7 +37,17 @@ namespace Ecat.Business.Guards
             if (saveMap.ContainsKey(tWg))
             {
                 var grps = ProcessWorkGroup(saveMap[tWg]);
-                saveMap.MergeMap(grps);
+                //saveMap.MergeMap(grps);
+
+                var groups = (from info in saveMap[tWg]
+                              select info.Entity as WorkGroup).ToList();
+
+                groups.ForEach(group =>
+                {
+                    group.ModifiedById = loggedInUserId;
+                    group.ModifiedDate = DateTime.Now;
+                });
+                    
             }
 
             if (saveMap.ContainsKey(tStudInGroup))
@@ -52,38 +62,34 @@ namespace Ecat.Business.Guards
                                         where info.OriginalValuesMap.ContainsKey("WorkGroupId")
                                         select info).ToList();
 
-      
                 var unAssignedStudents = (from info in saveMap[tStudInGroup]
                                         let sig = info.Entity as CrseStudentInGroup
                                         where info.EntityState == EntityState.Modified
                                         where info.OriginalValuesMap.ContainsKey("IsDeleted")
-                                        select info).ToList();
+                                        select info.Entity as CrseStudentInGroup).ToList();
 
-                if (unAssignedStudents.Any()) {
-                    unAssignedStudents.ForEach(sm =>
+                if (unAssignedStudents.Any())
+                {
+                    unAssignedStudents.ForEach(uas =>
                     {
-                        var studentEntity = sm.Entity as CrseStudentInGroup;
-                        var toWorkGroupId = studentEntity.WorkGroupId;
+                        if (uas.IsDeleted == true)
+                        {
 
-                        var memwithChildren = ctxManager.Context.StudentInGroups
-                                                          .Where(sig => sig.StudentId == studentEntity.StudentId)
-                                                          .Where(sig => sig.WorkGroupId == toWorkGroupId)
-                                                          .Select(sig => new StudentOnTheMove{
-                                                              Student = sig,
-                                                              StudentId = sig.StudentId,
-                                                              IsDeleted = sig.IsDeleted,
-                                                              IsMoving = false,
-                                                              HasChildren = sig.AuthorOfComments.Any() ||
-                                                                           sig.AssesseeSpResponses.Any() ||
-                                                                           sig.AssessorSpResponses.Any() ||
-                                                                           sig.AssesseeStratResponse.Any() ||
-                                                                           sig.AssessorStratResponse.Any() ||
-                                                                           sig.RecipientOfComments.Any()
-                                                          }).ToList();
-
-                        studentsPendingRemoval.AddRange(memwithChildren);
+                            uas.DeletedById = loggedInUserId;
+                            uas.DeletedDate = DateTime.Now;
+                            uas.ModifiedById = loggedInUserId;
+                            uas.ModifiedDate = DateTime.Now;
+                        }
+                        else
+                        {
+                            uas.DeletedById = null;
+                            uas.DeletedDate = null;
+                            uas.ModifiedById = loggedInUserId;
+                            uas.ModifiedDate = DateTime.Now;                      
+                        }
 
                     });
+
                 }
 
                 if (studentsOnTheMove.Any()) {
@@ -93,27 +99,28 @@ namespace Ecat.Business.Guards
                         var studentEntity = sm.Entity as CrseStudentInGroup;
                         var fromWorkGroupId = Int32.Parse(sm.OriginalValuesMap.Values.FirstOrDefault().ToString());
 
-
                         var memwithChildren = ctxManager.Context.StudentInGroups
-                                                          .Where(sig => sig.StudentId == studentEntity.StudentId)
-                                                          .Where(sig => sig.WorkGroupId == fromWorkGroupId)
-                                                          .Select(sig => new StudentOnTheMove {
-                                                              Student = sig,
-                                                              StudentId = sig.StudentId,
-                                                              IsDeleted = sig.IsDeleted,
-                                                              IsMoving = true,
-                                                              ToWorkGroupId = studentEntity.WorkGroupId,
-                                                              FromWorkGroupId = fromWorkGroupId,
-                                                              CourseId = studentEntity.CourseId,
-                                                              HasChildren = sig.AuthorOfComments.Any() ||
-                                                                           sig.AssesseeSpResponses.Any() ||
-                                                                           sig.AssessorSpResponses.Any() ||
-                                                                           sig.AssesseeStratResponse.Any() ||
-                                                                           sig.AssessorStratResponse.Any() ||
-                                                                           sig.RecipientOfComments.Any()
-                                                          }).ToList();
+                                                            .Where(sig => sig.StudentId == studentEntity.StudentId)
+                                                            .Where(sig => sig.WorkGroupId == fromWorkGroupId)
+                                                            .Select(sig => new StudentOnTheMove
+                                                            {
+                                                                Student = sig,
+                                                                StudentId = sig.StudentId,
+                                                                IsDeleted = sig.IsDeleted,
+                                                                IsMoving = true,
+                                                                ToWorkGroupId = studentEntity.WorkGroupId,
+                                                                FromWorkGroupId = fromWorkGroupId,
+                                                                CourseId = studentEntity.CourseId,
+                                                                HasChildren = sig.AuthorOfComments.Any() ||
+                                                                            sig.AssesseeSpResponses.Any() ||
+                                                                            sig.AssessorSpResponses.Any() ||
+                                                                            sig.AssesseeStratResponse.Any() ||
+                                                                            sig.AssessorStratResponse.Any() ||
+                                                                            sig.RecipientOfComments.Any()
+                                                            }).ToList();
 
                         studentsPendingRemoval.AddRange(memwithChildren);
+                        
                     });                  
                 }
 
@@ -130,6 +137,14 @@ namespace Ecat.Business.Guards
                     {
                         if (sprwc.IsMoving)
                         {
+                            var authorCommentFlags = ctxManager.Context.StudSpCommentFlag
+                                                        .Where(sscf => sscf.AuthorPersonId == sprwc.StudentId)
+                                                        .Where(sscf => sscf.WorkGroupId == sprwc.FromWorkGroupId);
+
+                            var recipientCommentFlags = ctxManager.Context.StudSpCommentFlag
+                                                        .Where(sscf => sscf.RecipientPersonId == sprwc.StudentId)
+                                                        .Where(sscf => sscf.WorkGroupId == sprwc.FromWorkGroupId);
+
                             var authorOfComments = ctxManager.Context.StudSpComments
                                                     .Where(ssc => ssc.AuthorPersonId == sprwc.StudentId)
                                                     .Where(ssc => ssc.WorkGroupId == sprwc.FromWorkGroupId);
@@ -137,9 +152,7 @@ namespace Ecat.Business.Guards
                             var recipientOfComments = ctxManager.Context.StudSpComments
                                                         .Where(ssc => ssc.RecipientPersonId == sprwc.StudentId)
                                                         .Where(ssc => ssc.WorkGroupId == sprwc.FromWorkGroupId);
-
-                            //var authorCommentFlags = ctxManager.Context.
-
+                        
                             var assesseeSpResponses = ctxManager.Context.SpResponses
                                                     .Where(sr => sr.AssesseePersonId == sprwc.StudentId)
                                                     .Where(sr => sr.WorkGroupId == sprwc.FromWorkGroupId);
@@ -159,10 +172,17 @@ namespace Ecat.Business.Guards
                             
 
                             if (authorOfComments.Any()) {
+                                if (authorCommentFlags.Any()) {
+                                    ctxManager.Context.StudSpCommentFlag.RemoveRange(authorCommentFlags);
+                                }
+
                                 ctxManager.Context.StudSpComments.RemoveRange(authorOfComments);
                             }
 
                             if (recipientOfComments.Any()) {
+                                if (recipientCommentFlags.Any()) {
+                                    ctxManager.Context.StudSpCommentFlag.RemoveRange(recipientCommentFlags);
+                                }
                                 ctxManager.Context.StudSpComments.RemoveRange(recipientOfComments);
                             }
 
@@ -205,37 +225,15 @@ namespace Ecat.Business.Guards
                 var studentsToBeAddedBack = studentsPendingRemoval
                                                         .Where(spr => spr.IsMoving).ToList();
 
-
-                //Students that were previously deleted with children. 
-                var studentsToAdd = new List<CrseStudentInGroup>();
-
-
+                ////Students that were previously deleted with children.    
+                studentsOnTheMove.ForEach(info => { saveMap.Remove(tStudInGroup); });
                 if (studentsToBeAddedBack.Any())
                 {
 
                     studentsToBeAddedBack.ForEach(stab =>
                     {
-                        var studentWithPreviousRecord = ctxManager.Context.StudentInGroups
-                                                              .Where(sig => sig.StudentId == stab.StudentId)
-                                                              .Where(sig => sig.WorkGroupId == stab.ToWorkGroupId)
-                                                              .Where(sig => sig.IsDeleted == true).ToList();
 
-                        if (studentWithPreviousRecord.Any())
-                        {
-                            studentWithPreviousRecord.ForEach(swpr =>
-                            {
-                                swpr.IsDeleted = false;
-                                swpr.DeletedDate = null;
-                                swpr.DeletedById = null;
-                                swpr.ModifiedById = loggedInUserId;
-                                swpr.ModifiedDate = DateTime.Now;
-
-                            });
-                        
-                        }
-                        else
-                        {
-                            var toAdd = new CrseStudentInGroup
+                        var toAdd = new CrseStudentInGroup
                             {
                                 StudentId = stab.StudentId,
                                 CourseId = stab.CourseId,
@@ -246,45 +244,18 @@ namespace Ecat.Business.Guards
                                 ModifiedDate = DateTime.Now
                             };
 
-                            studentsToAdd.Add(toAdd);
-                        }
-
-                    });
-
-                    ctxManager.Context.SaveChanges();
-                }
-
-
-                if (studentsToAdd.Any()) {
-                    studentsToAdd.ForEach(sta =>
-                    {
-                        ctxManager.Context.StudentInGroups.Add(sta);
-                    });
-
-                    ctxManager.Context.SaveChanges();
-                }
+                        var toAddEi = ctxManager.CreateEntityInfo(toAdd);
+                        List<EntityInfo> toAddInfos;
+                      
+                        toAddInfos = new List<EntityInfo>();
+                        toAddInfos.Add(toAddEi);
+                        saveMap.Add(typeof(CrseStudentInGroup), toAddInfos);
             
-                studentsOnTheMove.ForEach(info => { saveMap.Remove(tStudInGroup); });
-                unAssignedStudents.ForEach(info => { saveMap.Remove(tStudInGroup); });
+                    });
 
-                //saveMap[tStudInGroup] = deleteOnly;
+                }
 
-
-
-                //if (deleteOnly.Any())
-                //{
-                //    foreach ( var delete in deleteOnly)
-                //    {
-                //       var gmsPendingRemovalWithChildren = delete.select
-                //    }
-
-                //    saveMap[tStudInGroup] = infosToDeleteOnly;
-                //}
-                //else {
-                //    saveMap.Remove(tStudInGroup);
-                //}
             }
-
 
             return saveMap;
         }
