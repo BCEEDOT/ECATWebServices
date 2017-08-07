@@ -101,8 +101,8 @@ namespace Ecat.Business.Repositories
             var requestedWorkGroup = workGroup.wg;
             if (addInstrument) return requestedWorkGroup;
 
-            requestedWorkGroup.AssignedSpInstr.InventoryCollection = null;
-            requestedWorkGroup.AssignedSpInstr = null;
+            //requestedWorkGroup.AssignedSpInstr.InventoryCollection = null;
+            //requestedWorkGroup.AssignedSpInstr = null;
 
             return requestedWorkGroup;
         }
