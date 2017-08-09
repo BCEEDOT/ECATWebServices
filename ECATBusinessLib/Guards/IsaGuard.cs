@@ -105,7 +105,7 @@ namespace Ecat.Business.Guards
                     studentsOnTheMove.ForEach(sm =>
                     {
                         var studentEntity = sm.Entity as CrseStudentInGroup;
-                        var fromWorkGroupId = Int32.Parse(sm.OriginalValuesMap.Values.FirstOrDefault().ToString());
+                        var fromWorkGroupId = Int32.Parse(sm.OriginalValuesMap["WorkGroupId"].ToString());
 
                         var member = ctxManager.Context.StudentInGroups
                                                             .Where(sig => sig.StudentId == studentEntity.StudentId)
@@ -128,7 +128,7 @@ namespace Ecat.Business.Guards
                                                             }).ToList();
 
                         studentsPendingRemoval.AddRange(member);
-                        
+
                     });                  
                 }
 
@@ -232,6 +232,7 @@ namespace Ecat.Business.Guards
                         if (sprwoc.IsMoving)
                         {
                             ctxManager.Context.StudentInGroups.Remove(sprwoc.Student);
+                            ctxManager.Context.SaveChanges();
                         }
 
                         //ctxManager.Context.Entry(sprwoc.Student).State = System.Data.Entity.EntityState.Deleted;
@@ -248,10 +249,13 @@ namespace Ecat.Business.Guards
 
                 if (studentsToBeAddedBack.Any())
                 {
+                    List<EntityInfo> toAddInfos;
+                    toAddInfos = new List<EntityInfo>();
+
 
                     studentsToBeAddedBack.ForEach(stab =>
                     {
-
+                        
                         var toAdd = new CrseStudentInGroup
                             {
                                 StudentId = stab.StudentId,
@@ -264,13 +268,11 @@ namespace Ecat.Business.Guards
                             };
 
                         var toAddEi = ctxManager.CreateEntityInfo(toAdd);
-                        List<EntityInfo> toAddInfos;
-                      
-                        toAddInfos = new List<EntityInfo>();
-                        toAddInfos.Add(toAddEi);
-                        saveMap.Add(typeof(CrseStudentInGroup), toAddInfos);
+                        toAddInfos.Add(toAddEi);                    
             
                     });
+
+                    saveMap.Add(tStudInGroup, toAddInfos);
 
                 }
 
