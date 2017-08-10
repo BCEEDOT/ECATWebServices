@@ -295,5 +295,34 @@ namespace Ecat.Business.Repositories
             workGroup.CanPublish = requestedWg.CanPublish;
             return workGroup;
         }
+
+        public async Task<Course> GetAllCourseMembers(int courseId)
+        {
+            var query = await ctxManager.Context.Courses
+                 .Where(c => c.Id == courseId)
+                 .Select(c => new
+                 {
+                     c,
+                     Students = c.Students
+                     .Where(sic => !sic.IsDeleted)
+                     .Select(sic => new
+                     {
+                         sic,
+                         sic.WorkGroupEnrollments,
+                         sic.Student,
+                         sic.Student.Person
+                     }),
+                     Faculty = c.Faculty.Where(fic => !fic.IsDeleted)
+                     .Select(fic => new
+                     {
+                         fic,
+                         fic.FacultyProfile,
+                         fic.FacultyProfile.Person
+                     })
+                 })
+                 .SingleAsync();
+
+            return query.c;
+        }
     }
 }

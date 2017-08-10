@@ -25,5 +25,6 @@ namespace Ecat.Business.Repositories.Interface
         Task<List<FacSpComment>> GetFacSpComment(int courseId, int workGroupId);
         Task<WorkGroup> GetSpResult(int courseId, int workGroupId);
         Task<List<WorkGroup>> GetRoadRunnerWorkGroups(int courseId);
+        Task<Course> GetAllCourseMembers(int courseId);
     }
 }

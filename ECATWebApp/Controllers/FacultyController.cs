@@ -93,5 +93,11 @@ namespace Ecat.Web.Controllers
         {
             return await facultyRepo.GetSpResult(courseId, workGroupId);
         }
+
+        [HttpGet]
+        public async Task<Course> GetAllCourseMembers(int courseId)
+        {
+            return await facultyRepo.GetAllCourseMembers(courseId);
+        }
     }
 }
