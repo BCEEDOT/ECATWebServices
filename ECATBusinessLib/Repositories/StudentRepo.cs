@@ -52,7 +52,8 @@ namespace Ecat.Business.Repositories
                                         {
                                             crse,
                                             workGroups =
-                                                crse.WorkGroups.Where(wg => wg.GroupMembers.Any(gm => gm.StudentId == loggedInUserId && !gm.IsDeleted)),
+                                                crse.WorkGroups.Where(wg => wg.GroupMembers.Any(gm => gm.StudentId == loggedInUserId && !gm.IsDeleted))
+                                                               .Where(wg => wg.MpSpStatus != MpSpStatus.Created),
                                             StudentCoures = crse.Students
                                                 .Where(sic => sic.StudentPersonId == loggedInUserId),
                                         }).ToListAsync();
@@ -70,7 +71,8 @@ namespace Ecat.Business.Repositories
             var activeGroup = activeCourse.WorkGroups.OrderByDescending(wg => wg.MpCategory).FirstOrDefault();
             if (crseId != null) requestedCourses = requestedCourses.Where(crse => crse.Id == crseId).ToList();
 
-            if (activeGroup == null) return requestedCourses;
+            //Is this suppose to be != null?
+            if (activeGroup != null) return requestedCourses;
 
             activeGroup = await GetWorkGroup(activeGroup.WorkGroupId, true);
             activeCourse.WorkGroups.Add(activeGroup);
@@ -81,7 +83,8 @@ namespace Ecat.Business.Repositories
         {
             var workGroup = await (from wg in ctxManager.Context.WorkGroups
                                    where wg.WorkGroupId == wgId &&
-                                         wg.GroupMembers.Any(gm => gm.StudentId == loggedInUserId && !gm.IsDeleted)
+                                         wg.GroupMembers.Any(gm => gm.StudentId == loggedInUserId && !gm.IsDeleted) &&
+                                         wg.MpSpStatus != MpSpStatus.Created
                                    let prundedGm = wg.GroupMembers.Where(gm => !gm.IsDeleted)
                                    let myPrunded = prundedGm.FirstOrDefault(gm => gm.StudentId == loggedInUserId)
                                    select new
@@ -99,7 +102,8 @@ namespace Ecat.Business.Repositories
                                    }).SingleOrDefaultAsync();
 
             var requestedWorkGroup = workGroup.wg;
-            if (addInstrument) return requestedWorkGroup;
+            //TODO: How do we make sure that instrument is only returned when needed? Perhaps somehow check if student hasacknowledged?
+            //if (addInstrument) return requestedWorkGroup;
 
             //requestedWorkGroup.AssignedSpInstr.InventoryCollection = null;
             //requestedWorkGroup.AssignedSpInstr = null;
