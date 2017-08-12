@@ -21,6 +21,7 @@ using Ecat.Business.Repositories.Interface;
 using Ecat.Business.Repositories;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Reflection;
 
 namespace Ecat.Web
 {
@@ -140,7 +141,12 @@ namespace Ecat.Web
                 };
 
                 //TODO: Replace with real certifcate for production
-                options.SigningCredentials.AddEphemeralKey();
+                //options.SigningCredentials.AddEphemeralKey();
+
+                options.SigningCredentials.AddCertificate(
+                    assembly: typeof(Startup).GetTypeInfo().Assembly,
+                    resource: "Ecat.Web.EcatCertificate.pfx",
+                    password: "ecatisawesome");
 
             });
 
