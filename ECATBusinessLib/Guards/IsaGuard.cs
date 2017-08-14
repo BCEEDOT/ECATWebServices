@@ -82,10 +82,10 @@ namespace Ecat.Business.Guards
                                                         .Select(sig => new StudentOnTheMove
                                                         {
                                                             //Student = sig,
-                                                            //StudentId = sig.StudentId,
+                                                            StudentId = sig.StudentId,
                                                             //IsDeleted = sig.IsDeleted,
                                                             IsMoving = false,
-                                                            //FromWorkGroupId = fromWorkGroupId,
+                                                            FromWorkGroupId = fromWorkGroupId,
                                                             //CourseId = studentEntity.CourseId,
                                                             HasChildren = sig.AuthorOfComments.Any() ||
                                                                             sig.AssesseeSpResponses.Any() ||
@@ -95,7 +95,7 @@ namespace Ecat.Business.Guards
                                                                             sig.RecipientOfComments.Any()
                                                         }).ToList();
 
-                        //studentsPendingRemoval.AddRange(member);
+                        studentsPendingRemoval.AddRange(member);
                     });
 
                 }

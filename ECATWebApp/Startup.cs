@@ -141,12 +141,12 @@ namespace Ecat.Web
                 };
 
                 //TODO: Replace with real certifcate for production
-                //options.SigningCredentials.AddEphemeralKey();
+                options.SigningCredentials.AddEphemeralKey();
 
-                options.SigningCredentials.AddCertificate(
-                    assembly: typeof(Startup).GetTypeInfo().Assembly,
-                    resource: "Ecat.Web.EcatCertificate.pfx",
-                    password: "ecatisawesome");
+                //options.SigningCredentials.AddCertificate(
+                //    assembly: typeof(Startup).GetTypeInfo().Assembly,
+                //    resource: "Ecat.Web.EcatCertificate.pfx",
+                //    password: "ecatisawesome");
 
             });
 
