@@ -37,7 +37,7 @@ namespace Ecat.Business.Guards
             if (saveMap.ContainsKey(tWg))
             {
                 var grps = ProcessWorkGroup(saveMap[tWg]);
-                //saveMap.MergeMap(grps);
+                if (grps != null) { saveMap.MergeMap(grps); }
 
                 var groups = (from info in saveMap[tWg]
                               select info.Entity as WorkGroup).ToList();
@@ -292,7 +292,7 @@ namespace Ecat.Business.Guards
 
             var wgSaveMap = new Dictionary<Type, List<EntityInfo>> { { tWg, workGroupInfos } };
 
-            if (!publishingWgs.Any()) return wgSaveMap;
+            if (!publishingWgs.Any()) return null;
 
 
             var svrWgIds = publishingWgs.Select(wg => wg.WorkGroupId);
@@ -300,9 +300,9 @@ namespace Ecat.Business.Guards
 
             var publishResultMap = WorkGroupPublish.Publish(wgSaveMap, grpsWithMemsIds, loggedInUserId, ctxManager);
 
-            wgSaveMap.MergeMap(publishResultMap);
+            //wgSaveMap.MergeMap(publishResultMap);
 
-            return wgSaveMap;
+            return publishResultMap;
         }
     }
 
