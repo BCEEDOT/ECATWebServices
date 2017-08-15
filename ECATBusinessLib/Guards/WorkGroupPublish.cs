@@ -36,6 +36,20 @@ namespace Ecat.Business.Guards
                 throw new EntityErrorsException(error);
             }
 
+            if (pubWgs.Count() < svrWgIds.Count())
+            {
+                var missingGrps = pubWgs.Where(wg => {
+                    if (svrWgIds.Contains(wg.Id)) { return false; }
+                    return true;
+                });
+
+                var errorMessage = "Some groups were found to be unpublishable";
+                var error = infos.Select(
+                            info => new EFEntityError(info, "Publication Error", errorMessage, "MpSpStatus"));
+                throw new EntityErrorsException(error);
+
+            }
+
             foreach (var wg in pubWgs)
             {
                 var stratScoreInterval = 1m / wg.PubWgMembers.Count();

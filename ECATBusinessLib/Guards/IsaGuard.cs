@@ -296,7 +296,9 @@ namespace Ecat.Business.Guards
 
 
             var svrWgIds = publishingWgs.Select(wg => wg.WorkGroupId);
-            var publishResultMap = WorkGroupPublish.Publish(wgSaveMap, svrWgIds, loggedInUserId, ctxManager);
+            var grpsWithMemsIds = ctxManager.Context.WorkGroups.Where(grp => svrWgIds.Contains(grp.WorkGroupId) && grp.GroupMembers.Where(mem => !mem.IsDeleted).Count() > 0).Select(wg => wg.WorkGroupId);
+
+            var publishResultMap = WorkGroupPublish.Publish(wgSaveMap, grpsWithMemsIds, loggedInUserId, ctxManager);
 
             wgSaveMap.MergeMap(publishResultMap);
 
