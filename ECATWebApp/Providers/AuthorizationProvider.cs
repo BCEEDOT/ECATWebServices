@@ -170,6 +170,7 @@ namespace Ecat.Web.Providers
             identity.AddClaim("mpPaygrade", person.MpPaygrade, OpenIdConnectConstants.Destinations.IdentityToken);
             identity.AddClaim("mpGender", person.MpGender, OpenIdConnectConstants.Destinations.IdentityToken);
             identity.AddClaim("mpInstituteRole", person.MpInstituteRole, OpenIdConnectConstants.Destinations.IdentityToken);
+            identity.AddClaim("registrationComplete", person.RegistrationComplete.ToString(), OpenIdConnectConstants.Destinations.IdentityToken);
 
             var ticket = new AuthenticationTicket(
                 new ClaimsPrincipal(identity), new AuthenticationProperties(), context.Options.AuthenticationScheme);
