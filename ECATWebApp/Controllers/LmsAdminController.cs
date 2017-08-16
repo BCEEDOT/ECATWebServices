@@ -22,7 +22,6 @@ namespace Ecat.Web.Controllers
     {
         private readonly ILmsAdminCourseRepo courseRepo;
         private readonly ILmsAdminGroupRepo groupRepo;
-        private IHttpContextAccessor httpCtx;
 
         public LmsAdminController(ILmsAdminCourseRepo lmsCourseOps, ILmsAdminGroupRepo lmsGroupOps, IHttpContextAccessor accessor)
         {
@@ -30,8 +29,7 @@ namespace Ecat.Web.Controllers
             groupRepo = lmsGroupOps;
 
             //get the userId out of the token and set the userid in the repos
-            httpCtx = accessor;
-            int userId = int.Parse(httpCtx.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
+            int userId = int.Parse(accessor.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
             courseRepo.loggedInUserId = userId;
             groupRepo.loggedInUserId = userId;
         }

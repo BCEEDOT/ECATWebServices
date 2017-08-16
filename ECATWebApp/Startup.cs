@@ -38,7 +38,6 @@ namespace Ecat.Web
         }
 
         public IConfigurationRoot Configuration { get; }
-        public string connectionString { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -62,7 +61,7 @@ namespace Ecat.Web
                                        .AllowCredentials());
             });
 
-            connectionString = Configuration["DbConnection"];
+            var connectionString = Configuration["DbConnection"];
             services.AddScoped(_ => new EcatContext(connectionString));
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IStudentRepo, StudentRepo>();
@@ -70,11 +69,11 @@ namespace Ecat.Web
             services.AddScoped<ILmsAdminCourseRepo, LmsAdminCourseRepo>();
             services.AddScoped<ILmsAdminGroupRepo, LmsAdminGroupRepo>();
             services.AddScoped<BbWsCnet, BbWsCnet>();
-
-            //Controllers need to have the httpContext injected
-            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddScoped<AuthorizationProvider>();
             services.AddScoped<IAuthorizationHandler, LoggedInUserPolicy>();
+
+            //Controllers and AuthProvider need to have the httpContextAccessor injected
+            //the accessor can be a singleton used across everything to access individual httpRequest contexts
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Add framework services.
             services.AddMvc().AddJsonOptions(options => {
@@ -126,9 +125,8 @@ namespace Ecat.Web
 
             app.UseOpenIdConnectServer(options =>
             {
-                //OpenIdConnectServer is a singleton, so anything injected has a singleton lifetime (ie repo and context)
-                options.Provider = new AuthorizationProvider(connectionString);
-                //options.Provider = app.ApplicationServices.GetService<AuthorizationProvider>();
+                //OpenIdConnectServer is a singleton, so anything injected has a singleton lifetime (ie repo and context) the singleton accessor can be used to access the current httpContext
+                options.Provider = new AuthorizationProvider(app.ApplicationServices.GetService<IHttpContextAccessor>());
                 options.ApplicationCanDisplayErrors = true;
                 options.AllowInsecureHttp = true;
                 options.AuthorizationEndpointPath = PathString.Empty;

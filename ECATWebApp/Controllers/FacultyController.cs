@@ -22,14 +22,12 @@ namespace Ecat.Web.Controllers
     public class FacultyController: Controller
     {
         private readonly IFacultyRepo facultyRepo;
-        private IHttpContextAccessor httpCtx;
 
         public FacultyController(IFacultyRepo repo, IHttpContextAccessor accessor)
         {
             facultyRepo = repo;
             //get the userId out of the token and set the userid in the repo
-            httpCtx = accessor;
-            facultyRepo.loggedInUserId = int.Parse(httpCtx.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
+            facultyRepo.loggedInUserId = int.Parse(accessor.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
         }
 
         #region breeze methods

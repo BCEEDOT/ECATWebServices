@@ -21,15 +21,13 @@ namespace Ecat.Web.Controllers
     public class UserController: Controller
     {
         private readonly IUserRepo userRepo;
-        private IHttpContextAccessor httpCtx;
 
         public UserController(IUserRepo repo, IHttpContextAccessor accessor)
         {
             userRepo = repo;
             //get the userId out of the token and set the userid in the repo
             //if we get to this point we already know the the sub claim exists and the value is an int because it checks in it auth policy handler
-            httpCtx = accessor;
-            userRepo.loggedInUserId = int.Parse(httpCtx.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
+            userRepo.loggedInUserId = int.Parse(accessor.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
         }
 
         #region breeze methods
