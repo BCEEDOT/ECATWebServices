@@ -23,17 +23,30 @@ using LtiLibrary.AspNetCore.Extensions;
 using LtiLibrary.NetCore.Extensions;
 using LtiLibrary.NetCore.Lti1;
 using Ecat.Business.Repositories.Interface;
+using Ecat.Data.Static;
 
 namespace Ecat.Web.Providers
 {
     public sealed class AuthorizationProvider : OpenIdConnectServerProvider
     {
 
-        private IUserRepo userRepo;
+        //private IUserRepo userRepo;
+        //private EcatContext ctx;
+        private string connection;
 
-        public AuthorizationProvider(IUserRepo repo)
+        //public AuthorizationProvider(EcatContext context)
+        //{
+        //    ctx = context;
+        //}
+
+        //public AuthorizationProvider(IUserRepo repo)
+        //{
+        //    userRepo = repo;
+        //}
+
+        public AuthorizationProvider(string connString)
         {
-            userRepo = repo;
+            connection = connString;
         }
 
         public override async Task ValidateTokenRequest(ValidateTokenRequestContext context)
@@ -62,7 +75,7 @@ namespace Ecat.Web.Providers
             //var password = context.Request.Password;
 
             //TODO: Fix so it reads connection string from app.config -- injecting not working due to newing in startup
-            //var ecatCtx = new EcatContext();
+            var ecatCtx = new EcatContext(connection);
             //var ecatCtx = new EcatContext("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ecatlocaldev;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
             //get the person with their security entry and faculty profile if they have one
@@ -93,7 +106,8 @@ namespace Ecat.Web.Providers
                 var ltiRequest = await context.HttpContext.Request.ParseLtiRequestAsync();
                 try
                 {
-                    person = await userRepo.ProcessLtiUser(ltiRequest);
+                    //person = await userRepo.ProcessLtiUser(ltiRequest);
+                    person = await ProcessLtiUser(ecatCtx, ltiRequest);
                 }
                 catch (InvalidEmailException ex)
                 {
@@ -111,7 +125,11 @@ namespace Ecat.Web.Providers
             {
                 username = context.Request.Username;
                 password = context.Request.Password;
-                person = await userRepo.GetUserInfoByEmail(username);
+                //person = await userRepo.GetUserInfoByEmail(username);
+                person = await ecatCtx.People.Where(p => p.Email == username)
+                .Include(p => p.Security)
+                .Include(p => p.Faculty)
+                .SingleOrDefaultAsync();
             }
 
             if (person == null)
@@ -131,7 +149,9 @@ namespace Ecat.Web.Providers
                     return;
                 }
             }
-            
+
+            //clean connection
+            ecatCtx.Dispose();
 
             var identity = new ClaimsIdentity(
                     OpenIdConnectServerDefaults.AuthenticationScheme, OpenIdConnectConstants.Claims.Name, OpenIdConnectConstants.Claims.Role);
@@ -184,6 +204,110 @@ namespace Ecat.Web.Providers
             context.Validate(ticket);
 
             await Task.FromResult(context.IsValidated);
+        }
+
+        public async Task<Person> ProcessLtiUser(EcatContext ctx, LtiRequest parsedRequest)
+        {
+            var user = await ctx.People
+             .Include(s => s.Security)
+             .Include(s => s.Faculty)
+             .Include(s => s.Student)
+             .SingleOrDefaultAsync(person => person.BbUserId == parsedRequest.UserId);
+
+            var emailChecker = new ValidEmailChecker();
+            if (user != null)
+            {
+                if (user.Email.ToLower() != parsedRequest.LisPersonEmailPrimary.ToLower())
+                {
+                    if (!emailChecker.IsValidEmail(parsedRequest.LisPersonEmailPrimary))
+                    {
+                        throw new InvalidEmailException("The email address associated with your LMS account (" + parsedRequest.LisPersonEmailPrimary + ") is not a valid email address.");
+
+                    }
+                    var uniqueEmail = await ctx.People.CountAsync(per => per.Email.ToLower() == parsedRequest.LisPersonEmailPrimary.ToLower()) == 0;
+                    if (!uniqueEmail)
+                    //if (!await UniqueEmailCheck(parsedRequest.LisPersonEmailPrimary))
+                    {
+                        throw new InvalidEmailException("The email address associated with your LMS account (" + parsedRequest.LisPersonEmailPrimary + ") is already being used in ECAT.");
+                    }
+                }
+                user.ModifiedById = user.PersonId;
+            }
+            else
+            {
+                if (!emailChecker.IsValidEmail(parsedRequest.LisPersonEmailPrimary))
+                {
+                    throw new InvalidEmailException("The email address associated with your LMS account (" + parsedRequest.LisPersonEmailPrimary + ") is not a valid email address.");
+                }
+                var uniqueEmail = await ctx.People.CountAsync(per => per.Email.ToLower() == parsedRequest.LisPersonEmailPrimary.ToLower()) == 0;
+                if (!uniqueEmail)
+                //if (!await UniqueEmailCheck(parsedRequest.LisPersonEmailPrimary))
+                {
+                    throw new InvalidEmailException("The email address associated with your LMS account (" + parsedRequest.LisPersonEmailPrimary + ") is already being used in ECAT.");
+                }
+
+                user = new Person
+                {
+                    IsActive = true,
+                    MpGender = MpGender.Unk,
+                    MpAffiliation = MpAffiliation.Unk,
+                    MpComponent = MpComponent.Unk,
+                    MpPaygrade = MpPaygrade.Unk,
+                    MpInstituteRole = MpInstituteRoleId.Undefined,
+                    RegistrationComplete = false
+                };
+
+                ctx.People.Add(user);
+            }
+
+            var userIsCourseAdmin = false;
+
+            switch (parsedRequest.Parameters["Roles"].ToLower())
+            {
+                case "instructor":
+                    userIsCourseAdmin = true;
+                    user.MpInstituteRole = MpInstituteRoleId.Faculty;
+                    break;
+                case "teachingassistant":
+                    user.MpInstituteRole = MpInstituteRoleId.Faculty;
+                    break;
+                case "contentdeveloper":
+                    user.MpInstituteRole = MpInstituteRoleId.Designer;
+                    break;
+                default:
+                    user.MpInstituteRole = MpInstituteRoleId.Student;
+                    break;
+            }
+
+            switch (user.MpInstituteRole)
+            {
+                case MpInstituteRoleId.Faculty:
+                    user.Faculty = user.Faculty ?? new ProfileFaculty();
+                    user.Faculty.IsCourseAdmin = userIsCourseAdmin;
+                    user.Faculty.AcademyId = parsedRequest.Parameters["custom_ecat_school"];
+                    break;
+                case MpInstituteRoleId.Designer:
+                    //user.Designer = user.Designer ?? new ProfileDesigner();
+                    //user.Designer.AssociatedAcademyId = parsedRequest.Parameters["custom_ecat_school"];
+                    break;
+                default:
+                    user.Student = user.Student ?? new ProfileStudent();
+                    break;
+            }
+
+            user.IsActive = true;
+            user.Email = parsedRequest.LisPersonEmailPrimary.ToLower();
+            user.LastName = parsedRequest.LisPersonNameFamily;
+            user.FirstName = parsedRequest.LisPersonNameGiven;
+            user.BbUserId = parsedRequest.UserId;
+            user.ModifiedDate = DateTime.Now;
+
+            if (await ctx.SaveChangesAsync() > 0)
+            {
+                return user;
+            }
+
+            throw new UserUpdateException("Save User Changes did not succeed!");
         }
 
     }
