@@ -124,7 +124,10 @@ namespace Ecat.Business.Guards
                                                                             sig.AssessorSpResponses.Any() ||
                                                                             sig.AssesseeStratResponse.Any() ||
                                                                             sig.AssessorStratResponse.Any() ||
-                                                                            sig.RecipientOfComments.Any()
+                                                                            sig.RecipientOfComments.Any() ||
+                                                                            sig.FacultySpResponses.Any() ||
+                                                                            sig.FacultyStrat != null ||
+                                                                            sig.FacultyComment != null
                                                             }).ToList();
 
                         studentsPendingRemoval.AddRange(member);
@@ -145,70 +148,104 @@ namespace Ecat.Business.Guards
                     {
                         //if (sprwc.IsMoving)
                         //{
-                            var authorCommentFlags = ctxManager.Context.StudSpCommentFlag
-                                                        .Where(sscf => sscf.AuthorPersonId == sprwc.StudentId)
-                                                        .Where(sscf => sscf.WorkGroupId == sprwc.FromWorkGroupId);
+                        var authorCommentFlags = ctxManager.Context.StudSpCommentFlag
+                                                    .Where(sscf => sscf.AuthorPersonId == sprwc.StudentId)
+                                                    .Where(sscf => sscf.WorkGroupId == sprwc.FromWorkGroupId);
 
-                            var recipientCommentFlags = ctxManager.Context.StudSpCommentFlag
-                                                        .Where(sscf => sscf.RecipientPersonId == sprwc.StudentId)
-                                                        .Where(sscf => sscf.WorkGroupId == sprwc.FromWorkGroupId);
+                        var recipientCommentFlags = ctxManager.Context.StudSpCommentFlag
+                                                    .Where(sscf => sscf.RecipientPersonId == sprwc.StudentId)
+                                                    .Where(sscf => sscf.WorkGroupId == sprwc.FromWorkGroupId);
 
-                            var authorOfComments = ctxManager.Context.StudSpComments
-                                                    .Where(ssc => ssc.AuthorPersonId == sprwc.StudentId)
+                        var authorOfComments = ctxManager.Context.StudSpComments
+                                                .Where(ssc => ssc.AuthorPersonId == sprwc.StudentId)
+                                                .Where(ssc => ssc.WorkGroupId == sprwc.FromWorkGroupId);
+
+                        var recipientOfComments = ctxManager.Context.StudSpComments
+                                                    .Where(ssc => ssc.RecipientPersonId == sprwc.StudentId)
                                                     .Where(ssc => ssc.WorkGroupId == sprwc.FromWorkGroupId);
-
-                            var recipientOfComments = ctxManager.Context.StudSpComments
-                                                        .Where(ssc => ssc.RecipientPersonId == sprwc.StudentId)
-                                                        .Where(ssc => ssc.WorkGroupId == sprwc.FromWorkGroupId);
                         
-                            var assesseeSpResponses = ctxManager.Context.SpResponses
-                                                    .Where(sr => sr.AssesseePersonId == sprwc.StudentId)
+                        var assesseeSpResponses = ctxManager.Context.SpResponses
+                                                .Where(sr => sr.AssesseePersonId == sprwc.StudentId)
+                                                .Where(sr => sr.WorkGroupId == sprwc.FromWorkGroupId);
+
+                        var assessorSpResponses = ctxManager.Context.SpResponses
+                                                    .Where(sr => sr.AssessorPersonId == sprwc.StudentId)
                                                     .Where(sr => sr.WorkGroupId == sprwc.FromWorkGroupId);
 
-                            var assessorSpResponses = ctxManager.Context.SpResponses
-                                                        .Where(sr => sr.AssessorPersonId == sprwc.StudentId)
-                                                        .Where(sr => sr.WorkGroupId == sprwc.FromWorkGroupId);
+                        var assesseeStratResponses = ctxManager.Context.SpStratResponses
+                                                        .Where(ssr => ssr.AssesseePersonId == sprwc.StudentId)
+                                                        .Where(ssr => ssr.WorkGroupId == sprwc.FromWorkGroupId);
 
-                            var assesseeStratResponses = ctxManager.Context.SpStratResponses
-                                                            .Where(ssr => ssr.AssesseePersonId == sprwc.StudentId)
-                                                            .Where(ssr => ssr.WorkGroupId == sprwc.FromWorkGroupId);
+                        var assessorStratResponses = ctxManager.Context.SpStratResponses
+                                                        .Where(ssr => ssr.AssessorPersonId == sprwc.StudentId)
+                                                        .Where(ssr => ssr.WorkGroupId == sprwc.FromWorkGroupId);
 
-                            var assessorStratResponses = ctxManager.Context.SpStratResponses
-                                                            .Where(ssr => ssr.AssessorPersonId == sprwc.StudentId)
-                                                            .Where(ssr => ssr.WorkGroupId == sprwc.FromWorkGroupId);
+                        var facSpResponses = ctxManager.Context.FacSpResponses
+                                                        .Where(fsr => fsr.AssesseePersonId == sprwc.StudentId)
+                                                        .Where(fsr => fsr.WorkGroupId == sprwc.FromWorkGroupId);
 
-                            
+                        var facStratResponse = ctxManager.Context.FacStratResponses
+                                                        .Where(fsr => fsr.AssesseePersonId == sprwc.StudentId)
+                                                        .Where(fsr => fsr.WorkGroupId == sprwc.FromWorkGroupId);
 
-                            if (authorOfComments.Any()) {
-                                if (authorCommentFlags.Any()) {
-                                    ctxManager.Context.StudSpCommentFlag.RemoveRange(authorCommentFlags);
-                                }
+                        var facComments = ctxManager.Context.FacSpComments
+                                                        .Where(fsc => fsc.RecipientPersonId == sprwc.StudentId)
+                                                        .Where(fsc => fsc.WorkGroupId == sprwc.FromWorkGroupId);
 
-                                ctxManager.Context.StudSpComments.RemoveRange(authorOfComments);
+                        var facCommentsFlag = ctxManager.Context.facSpCommentsFlag
+                                                        .Where(fscf => fscf.RecipientPersonId == sprwc.StudentId)
+                                                        .Where(fscf => fscf.WorkGroupId == sprwc.FromWorkGroupId);
+
+
+
+                         
+
+                        if (authorOfComments.Any()) {
+                            if (authorCommentFlags.Any()) {
+                                ctxManager.Context.StudSpCommentFlag.RemoveRange(authorCommentFlags);
                             }
 
-                            if (recipientOfComments.Any()) {
-                                if (recipientCommentFlags.Any()) {
-                                    ctxManager.Context.StudSpCommentFlag.RemoveRange(recipientCommentFlags);
-                                }
-                                ctxManager.Context.StudSpComments.RemoveRange(recipientOfComments);
+                            ctxManager.Context.StudSpComments.RemoveRange(authorOfComments);
+                        }
+
+                        if (recipientOfComments.Any()) {
+                            if (recipientCommentFlags.Any()) {
+                                ctxManager.Context.StudSpCommentFlag.RemoveRange(recipientCommentFlags);
+                            }
+                            ctxManager.Context.StudSpComments.RemoveRange(recipientOfComments);
+                        }
+
+                        if (assesseeSpResponses.Any()) {
+                            ctxManager.Context.SpResponses.RemoveRange(assesseeSpResponses);
+                        }
+
+                        if (assessorSpResponses.Any()) {
+                            ctxManager.Context.SpResponses.RemoveRange(assessorSpResponses);
+                        }
+
+                        if (assesseeStratResponses.Any()) {
+                            ctxManager.Context.SpStratResponses.RemoveRange(assesseeStratResponses);
+                        }
+
+                        if (assessorStratResponses.Any()) {
+                            ctxManager.Context.SpStratResponses.RemoveRange(assessorStratResponses);
                             }
 
-                            if (assesseeSpResponses.Any()) {
-                                ctxManager.Context.SpResponses.RemoveRange(assesseeSpResponses);
-                            }
+                        if (facSpResponses.Any()) {
+                            ctxManager.Context.FacSpResponses.RemoveRange(facSpResponses);
+                        }
 
-                            if (assessorSpResponses.Any()) {
-                                ctxManager.Context.SpResponses.RemoveRange(assessorSpResponses);
-                            }
+                        if (facStratResponse.Any()) {
+                            ctxManager.Context.FacStratResponses.RemoveRange(facStratResponse);
+                        }
 
-                            if (assesseeStratResponses.Any()) {
-                                ctxManager.Context.SpStratResponses.RemoveRange(assesseeStratResponses);
-                            }
+                        if (facComments.Any()) {
+                            ctxManager.Context.FacSpComments.RemoveRange(facComments);
+                        }
 
-                            if (assessorStratResponses.Any()) {
-                                ctxManager.Context.SpStratResponses.RemoveRange(assessorStratResponses);
-                             }
+                        if (facCommentsFlag.Any()) {
+                            ctxManager.Context.facSpCommentsFlag.RemoveRange(facCommentsFlag);
+                        }
 
 
                         //}

@@ -120,6 +120,7 @@ namespace Ecat.Data.Contexts
 
         public DbSet<FacSpResponse> FacSpResponses { get; set; }
         public DbSet<FacSpComment> FacSpComments { get; set; }
+        public DbSet<FacSpCommentFlag> facSpCommentsFlag { get; set; }
         public DbSet<FacStratResponse> FacStratResponses { get; set; }
 
         #endregion

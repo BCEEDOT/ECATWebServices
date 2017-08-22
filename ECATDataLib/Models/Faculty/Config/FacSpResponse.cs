@@ -20,7 +20,7 @@ namespace Ecat.Data.Models.Faculty.Config
                 .WillCascadeOnDelete(false);
 
             HasRequired(p => p.Assessee)
-                .WithMany()
+                .WithMany(p => p.FacultySpResponses)
                 .HasForeignKey(p => new { p.AssesseePersonId, p.CourseId, p.WorkGroupId })
                 .WillCascadeOnDelete(false);
 
