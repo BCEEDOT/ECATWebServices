@@ -67,7 +67,7 @@ namespace Ecat.Data.Contexts.Config
         {
             Ignore(p => p.WgModel);
             Ignore(p => p.FacSpComments);
-            Ignore(p => p.FacSpResponses);
+            //Ignore(p => p.FacSpResponses);
             Ignore(p => p.FacStratResponses);
             Ignore(p => p.BbGroupId);
             Ignore(p => p.CanPublish);
@@ -95,6 +95,16 @@ namespace Ecat.Data.Contexts.Config
             HasKey(p => p.PersonId)
                 .HasRequired(p => p.Person)
                 .WithOptional(p => p.Student);
+        }
+    }
+
+    internal class StudConfigProfileFaculty : EntityTypeConfiguration<ProfileFaculty>
+    {
+        public StudConfigProfileFaculty()
+        {
+            HasKey(p => p.PersonId)
+                .HasRequired(p => p.Person)
+                .WithOptional(p => p.Faculty);
         }
     }
 

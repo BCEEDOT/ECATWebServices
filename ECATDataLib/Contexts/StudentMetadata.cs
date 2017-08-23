@@ -16,6 +16,7 @@ using Ecat.Data.Models.Student.Config;
 using Ecat.Data.Contexts.Config;
 using Ecat.Data.Models.Faculty;
 using Ecat.Data.Models.Common;
+using Ecat.Data.Models.Faculty.Config;
 
 namespace Ecat.Data.Contexts
 {
@@ -46,16 +47,19 @@ namespace Ecat.Data.Contexts
             mb.Configurations.Add(new StudConfigCrseStudInWg());
             mb.Configurations.Add(new StudConfigSpComment());
             mb.Configurations.Add(new ConfigSpCommentFlag());
+            mb.Configurations.Add(new ConfigFacSpResponse());
+            mb.Configurations.Add(new ConfigFacultyInCourse());
+            mb.Configurations.Add(new StudConfigProfileFaculty());
 
             mb.Ignore(new List<Type>
             {
                 //typeof (ProfileExternal),
                 //typeof (ProfileDesigner),
-                typeof (ProfileFaculty),
+                //typeof (ProfileFaculty),
                 typeof (Security),
                 //typeof (ProfileStaff),
-                typeof (FacultyInCourse),
-                typeof (FacSpResponse),
+                //typeof (FacultyInCourse),
+                //typeof (FacSpResponse),
                 typeof (FacStratResponse),
                 typeof (FacSpComment),
                 //typeof (KcResponse),
