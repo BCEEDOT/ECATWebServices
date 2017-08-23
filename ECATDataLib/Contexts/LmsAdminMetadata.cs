@@ -36,13 +36,14 @@ namespace Ecat.Data.Contexts
             mb.Configurations.Add(new ConfigFacStratResponse());
             mb.Configurations.Add(new ConfigStratResponse());
             mb.Configurations.Add(new ConfigPerson());
+            mb.Configurations.Add(new ConfigFacSpResponse());
 
             //mb.Ignore<Academy>();
             mb.Ignore<Security>();
             mb.Ignore<SanitizedSpComment>();
             mb.Ignore<SanitizedSpResponse>();
             mb.Ignore<SpResponse>();
-            mb.Ignore<FacSpResponse>();
+            //mb.Ignore<FacSpResponse>();
             //mb.Ignore<SpResult>();
             //mb.Ignore<StratResponse>();
             //mb.Ignore<FacStratResponse>();
