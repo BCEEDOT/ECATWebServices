@@ -265,6 +265,7 @@ namespace Ecat.Business.Repositories
 
                 //var bbCourseRoles = queryCr.@return.ToList();
                 reconResult = await AddNewUsers(newMembers, reconResult);
+                reconResult.NumAdded = newMembers.Count();
             }
 
             var usersBbIdsToRemove = existingCrseUserIds.Where(ecu => !bbCourseMems.Select(cm => cm.userId).Contains(ecu)).ToList();
@@ -272,6 +273,7 @@ namespace Ecat.Business.Repositories
             if (usersBbIdsToRemove.Any())
             {
                 reconResult.RemovedIds = await RemoveOrFlagUsers(ecatCourse, usersBbIdsToRemove);
+                reconResult.NumRemoved = reconResult.RemovedIds.Count();
             }
 
             return reconResult;
