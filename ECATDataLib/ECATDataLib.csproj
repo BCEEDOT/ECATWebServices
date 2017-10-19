@@ -247,9 +247,9 @@
     <Compile Include="Contexts\LmsAdminMetadata.cs" />
     <Compile Include="Contexts\StudentMetadata.cs" />
     <Compile Include="Contexts\UserMetadata.cs" />
-    <Compile Include="Migrations\201704201420271_Init_ECAT.cs" />
-    <Compile Include="Migrations\201704201420271_Init_ECAT.Designer.cs">
-      <DependentUpon>201704201420271_Init_ECAT.cs</DependentUpon>
+    <Compile Include="Migrations\201708311912215_ECAT2_Init.cs" />
+    <Compile Include="Migrations\201708311912215_ECAT2_Init.Designer.cs">
+      <DependentUpon>201708311912215_ECAT2_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Cognitive\CogEcmspeResult.cs" />
     <Compile Include="Models\Cognitive\CogEcpeResult.cs" />
@@ -339,12 +339,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704201420271_Init_ECAT.resx">
-      <DependentUpon>201704201420271_Init_ECAT.cs</DependentUpon>
-    </EmbeddedResource>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <EmbeddedResource Include="Migrations\201708311912215_ECAT2_Init.resx">
+      <DependentUpon>201708311912215_ECAT2_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

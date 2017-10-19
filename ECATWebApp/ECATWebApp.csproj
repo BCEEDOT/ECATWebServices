@@ -4,6 +4,10 @@
     <OutputType>exe</OutputType>
   </PropertyGroup>
 
+  <!--PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputType>Library</OutputType>
+  </PropertyGroup-->
+
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <RuntimeIdentifier>win7-x86</RuntimeIdentifier>

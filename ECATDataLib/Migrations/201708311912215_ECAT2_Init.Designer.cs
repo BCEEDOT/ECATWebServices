@@ -7,13 +7,13 @@ namespace Ecat.Data.Contexts
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Init_ECAT : IMigrationMetadata
+    public sealed partial class ECAT2_Init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Init_ECAT));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ECAT2_Init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704201420271_Init_ECAT"; }
+            get { return "201708311912215_ECAT2_Init"; }
         }
         
         string IMigrationMetadata.Source

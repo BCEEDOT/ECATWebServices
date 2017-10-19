@@ -3,7 +3,7 @@ namespace Ecat.Data.Contexts
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Init_ECAT : DbMigration
+    public partial class ECAT2_Init : DbMigration
     {
         public override void Up()
         {
@@ -354,20 +354,15 @@ namespace Ecat.Data.Contexts
                         DeletedDate = c.DateTime(precision: 7, storeType: "datetime2"),
                         ModifiedById = c.Int(),
                         ModifiedDate = c.DateTime(precision: 7, storeType: "datetime2"),
-                        CrseStudentInGroup_StudentId = c.Int(),
-                        CrseStudentInGroup_CourseId = c.Int(),
-                        CrseStudentInGroup_WorkGroupId = c.Int(),
                     })
                 .PrimaryKey(t => new { t.AssesseePersonId, t.CourseId, t.WorkGroupId, t.InventoryItemId })
                 .ForeignKey("dbo.CrseStudentInGroup", t => new { t.AssesseePersonId, t.CourseId, t.WorkGroupId })
                 .ForeignKey("dbo.FacultyInCourse", t => new { t.FacultyPersonId, t.CourseId })
                 .ForeignKey("dbo.SpInventory", t => t.InventoryItemId)
                 .ForeignKey("dbo.WorkGroup", t => t.WorkGroupId)
-                .ForeignKey("dbo.CrseStudentInGroup", t => new { t.CrseStudentInGroup_StudentId, t.CrseStudentInGroup_CourseId, t.CrseStudentInGroup_WorkGroupId })
                 .Index(t => new { t.AssesseePersonId, t.CourseId, t.WorkGroupId })
                 .Index(t => new { t.FacultyPersonId, t.CourseId })
-                .Index(t => t.InventoryItemId)
-                .Index(t => new { t.CrseStudentInGroup_StudentId, t.CrseStudentInGroup_CourseId, t.CrseStudentInGroup_WorkGroupId });
+                .Index(t => t.InventoryItemId);
             
             CreateTable(
                 "dbo.FacStratResponse",
@@ -629,7 +624,6 @@ namespace Ecat.Data.Contexts
             DropForeignKey("dbo.StratResult", new[] { "StudentId", "CourseId", "WorkGroupId" }, "dbo.CrseStudentInGroup");
             DropForeignKey("dbo.SpResult", new[] { "StudentId", "CourseId", "WorkGroupId" }, "dbo.CrseStudentInGroup");
             DropForeignKey("dbo.FacStratResponse", new[] { "AssesseePersonId", "CourseId", "WorkGroupId" }, "dbo.CrseStudentInGroup");
-            DropForeignKey("dbo.FacSpResponse", new[] { "CrseStudentInGroup_StudentId", "CrseStudentInGroup_CourseId", "CrseStudentInGroup_WorkGroupId" }, "dbo.CrseStudentInGroup");
             DropForeignKey("dbo.CrseStudentInGroup", "CourseId", "dbo.Course");
             DropForeignKey("dbo.StudSpComment", "WorkGroupId", "dbo.WorkGroup");
             DropForeignKey("dbo.WorkGroup", "WgModelId", "dbo.WorkGroupModel");
@@ -686,7 +680,6 @@ namespace Ecat.Data.Contexts
             DropIndex("dbo.FacStratResponse", new[] { "WorkGroupId" });
             DropIndex("dbo.FacStratResponse", new[] { "FacultyPersonId", "CourseId" });
             DropIndex("dbo.FacStratResponse", new[] { "AssesseePersonId", "CourseId", "WorkGroupId" });
-            DropIndex("dbo.FacSpResponse", new[] { "CrseStudentInGroup_StudentId", "CrseStudentInGroup_CourseId", "CrseStudentInGroup_WorkGroupId" });
             DropIndex("dbo.FacSpResponse", new[] { "InventoryItemId" });
             DropIndex("dbo.FacSpResponse", new[] { "FacultyPersonId", "CourseId" });
             DropIndex("dbo.FacSpResponse", new[] { "AssesseePersonId", "CourseId", "WorkGroupId" });
