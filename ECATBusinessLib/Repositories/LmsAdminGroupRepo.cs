@@ -19,6 +19,8 @@ using Ecat.Business.Utilities;
 using Ecat.Business.BbWs.BbCourseMembership;
 using Ecat.Business.BbWs.BbGradebook;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using Ecat.Data.Models.Canvas;
 
 namespace Ecat.Business.Repositories
 {
@@ -27,6 +29,7 @@ namespace Ecat.Business.Repositories
     {
         private readonly EFPersistenceManager<EcatContext> ctxManager;
         private readonly BbWsCnet bbWs;
+        private readonly string canvasApiUrl = "https://ec2-34-215-69-52.us-west-2.compute.amazonaws.com/api/v1/";
 
         public int loggedInUserId { get; set; }
         private ProfileFaculty Faculty { get; set; }
@@ -784,6 +787,129 @@ namespace Ecat.Business.Repositories
             {
                 ctxManager.Context.WorkGroups.RemoveRange(unusedGrps);
                 await ctxManager.Context.SaveChangesAsync();
+            }
+
+            return result;
+        }
+
+        public async Task<SaveGradeResult> SyncCanvasGrades(int crseId)
+        {
+            var result = new SaveGradeResult();
+            result.Success = false;
+            result.Message = "";
+            result.NumOfStudents = 0;
+            result.SentScores = 0;
+
+            var groups = await ctxManager.Context.WorkGroups.Where(wg => wg.CourseId == crseId && wg.GroupMembers.Any())
+                .Include(wg => wg.WgModel)
+                .Include(wg => wg.Course)
+                .ToListAsync();
+
+            if (!groups.Any())
+            {
+                result.Success = false;
+                result.Message = "No groups with members found.";
+                return result;
+            }
+
+            var unpubGroups = groups.Where(wg => wg.MpSpStatus != MpSpStatus.Published).ToList();
+
+            if (unpubGroups.Any())
+            {
+                result.Success = false;
+                result.Message = "All groups with members must be published to push eval scores to the LMS.";
+                return result;
+            }
+
+            var acad = StaticAcademy.AcadLookupById[groups.First().Course.AcademyId];
+
+            var models = await ctxManager.Context.WgModels.Where(wgm => wgm.MpEdLevel == acad.MpEdLevel && wgm.IsActive).ToListAsync();
+            models.OrderBy(wgm => wgm.MpWgCategory);
+
+            var client = new HttpClient();
+            var apiAddr = new Uri(canvasApiUrl + "courses/" + crseId + "assignments");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
+
+            var response = await client.GetAsync(apiAddr);
+            if (!response.IsSuccessStatusCode)
+            {
+                result.Success = false;
+                result.Message = "There was an error calling the LMS API for assignment information.";
+                return result;
+            }
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            var canvAssignments = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasAssignment>>(apiResponse);
+
+            var canvasEvalAssign = canvAssignments.Where(ca => ca.name == models.Last().StudStratCol).Single();
+
+            if (canvasEvalAssign == null)
+            {
+                result.Success = false;
+                result.Message = "There was an error finding the proper assignment in the LMS to push scores.";
+                return result;
+            }
+
+            var grpIds = new List<int>();
+            groups.ForEach(grp => grpIds.Add(grp.WorkGroupId));
+            var grpMemsWithPerson = await (from csig in ctxManager.Context.StudentInGroups
+                                    where csig.CourseId == crseId && grpIds.Contains(csig.WorkGroupId) && !csig.IsDeleted
+                                    select new
+                                    {
+                                        csig,
+                                        csig.StudentProfile,
+                                        csig.StudentProfile.Person,
+                                        csig.StratResult
+                                    }).ToListAsync();
+            var crseMems = await ctxManager.Context.StudentInCourses.Where(sic => sic.CourseId == crseId && !sic.IsDeleted).ToListAsync();
+
+            string gradeData = "{\"grade_data\":{";
+            crseMems.ForEach(cm =>
+            {
+                result.NumOfStudents += 1;
+                var grpMems = grpMemsWithPerson.Where(gm => gm.Person.PersonId == cm.StudentPersonId).ToList();
+                decimal totalEval = 0;
+                string canvasId = "0";
+                grpMems.ForEach(mem =>
+                {
+                    canvasId = mem.Person.BbUserId;
+                    totalEval += mem.StratResult.StudStratAwardedScore;
+                    totalEval += mem.StratResult.FacStratAwardedScore;
+                });
+
+                if (canvasId == "0") {  }
+                string score = "\"" + canvasId + "\":{\"posted_grade\":\"" + totalEval + "\"},";
+                gradeData += score;
+                result.SentScores += 1;
+            });
+
+            gradeData += "}}";
+
+            apiAddr = new Uri(canvasApiUrl + "courses/" + crseId + "assignments/" + canvasEvalAssign.id + "submissions/update_grades");
+            var content = new StringContent(gradeData, Encoding.UTF8, "application/json");
+
+            var postResponse = await client.PostAsync(apiAddr, content);
+            if (!postResponse.IsSuccessStatusCode)
+            {
+                result.Success = false;
+                result.Message = "There was an error attempting to post scores to the LMS API.";
+                return result;
+            }
+
+            var postRespContent = await postResponse.Content.ReadAsStringAsync();
+            var progress = Newtonsoft.Json.JsonConvert.DeserializeObject<CanvasProgress>(postRespContent); 
+
+            if (progress.workflow_state == "queued" || progress.workflow_state == "running")
+            {
+                result.Success = true;
+                result.Message = result.SentScores + " scores have been sent to the LMS and are now being processed. ";//Check the status at " + canvasApiUrl +"progress/" + progress.id;
+            }
+
+            if (progress.workflow_state == "failed")
+            {
+                result.Success = false;
+                result.Message = "LMS returned failed on API call: " + progress.message;
             }
 
             return result;

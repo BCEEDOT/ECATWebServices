@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Net.Http;
 using Breeze.Persistence;
 using Breeze.Persistence.EF6;
 using Newtonsoft.Json.Linq;
@@ -16,6 +17,7 @@ using Ecat.Data.Models.School;
 using Ecat.Data.Models.Common;
 using Ecat.Data.Static;
 using Ecat.Data.Models.Designer;
+using Ecat.Data.Models.Canvas;
 using Ecat.Business.BbWs.BbCourse;
 using Ecat.Business.BbWs.BbCourseMembership;
 using Ecat.Business.BbWs.BbUser;
@@ -28,6 +30,7 @@ namespace Ecat.Business.Repositories
     {
         private readonly EFPersistenceManager<EcatContext> ctxManager;
         private readonly BbWsCnet bbWs;
+        private readonly string canvasApiUrl = "https://ec2-34-215-69-52.us-west-2.compute.amazonaws.com/api/v1/";
 
         public int loggedInUserId { get; set; }
         private ProfileFaculty Faculty { get; set; }
@@ -177,6 +180,76 @@ namespace Ecat.Business.Repositories
             return reconResult;
         }
 
+        public async Task<CourseReconResult> ReconcileCanvasCourses()
+        {
+            await GetProfile();
+            var academy = new Academy();
+            if (Faculty != null)
+            {
+                academy = StaticAcademy.AcadLookupById[Faculty.AcademyId];
+            }
+            else
+            {
+                return null;
+            }
+            var reconResult = new CourseReconResult();
+
+            var client = new HttpClient();
+            var apiAddr = new Uri(canvasApiUrl + "accounts/" + academy.CanvasAcctId + "/courses");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
+
+            var response = await client.GetAsync(apiAddr);
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var coursesReturned = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasCourse>>(apiResponse);
+                var reconCourses = new List<Course>();
+
+                if (coursesReturned == null || coursesReturned.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    var existingCourses = await ctxManager.Context.Courses.Where(c => c.AcademyId == academy.Id).ToListAsync();
+                    var existingIds = new List<int>();
+                    //Bb course id is a string, Canvas course ids are numbers
+                    existingCourses.ForEach(c => existingIds.Add(c.Id));
+                    
+                    coursesReturned.ForEach(c =>
+                    {
+                        if (!existingIds.Contains(c.id))
+                        {
+                            var newCourse = new Course();
+                            newCourse.AcademyId = academy.Id;
+                            newCourse.Name = c.name;
+                            newCourse.BbCourseId = c.id.ToString();
+                            newCourse.StartDate = c.start_at;
+                            newCourse.GradDate = c.end_at;
+                            reconCourses.Add(newCourse);
+                            reconResult.NumAdded += 1;
+                        }
+                    });
+
+                    if (reconCourses.Any())
+                    {
+                        ctxManager.Context.Courses.AddRange(reconCourses);
+                        await ctxManager.Context.SaveChangesAsync();
+                    }
+                    
+                }
+
+                reconResult.Id = Guid.NewGuid();
+                reconResult.AcademyId = Faculty?.AcademyId;
+                reconResult.Courses = reconCourses;
+            }
+            
+
+            return reconResult;
+        }
+
         public async Task<Course> GetAllCourseMembers(int courseId)
         {
             var query = await ctxManager.Context.Courses
@@ -274,6 +347,166 @@ namespace Ecat.Business.Repositories
             {
                 reconResult.RemovedIds = await RemoveOrFlagUsers(ecatCourse, usersBbIdsToRemove);
                 reconResult.NumRemoved = reconResult.RemovedIds.Count();
+            }
+
+            return reconResult;
+        }
+
+        private async Task<MemReconResult> ReconcileCanvasCourseMems (int courseId)
+        {
+            await GetProfile();
+
+            var course = await ctxManager.Context.Courses.Where(c => c.Id == courseId).SingleOrDefaultAsync();
+            var reconResult = new MemReconResult();
+            reconResult.Id = Guid.NewGuid();
+            reconResult.AcademyId = Faculty?.AcademyId;
+            reconResult.CourseId = courseId;
+            reconResult.NumAdded = 0;
+            reconResult.NumOfAccountCreated = 0;
+
+            var client = new HttpClient();
+            var apiAddr = new Uri(canvasApiUrl + "courses/" + course.BbCourseId + "/enrollments?include[]=observed_users");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
+
+            var response = await client.GetAsync(apiAddr);
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var enrollmentsReturned = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasEnrollment>>(apiResponse);
+
+                var reconCourses = new List<Course>();
+
+                if (enrollmentsReturned == null || enrollmentsReturned.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    var returnedUserIds = new List<string>();
+
+                    enrollmentsReturned.ForEach(ce =>
+                    {
+                        returnedUserIds.Add(ce.user_id.ToString());
+                    });
+
+                    var existingUsers = await ctxManager.Context.People.Where(p => returnedUserIds.Contains(p.BbUserId)).ToListAsync();
+
+                    var students = existingUsers.Where(p => p.MpInstituteRole == MpInstituteRoleId.Student).ToList();
+                    var faculty = existingUsers.Where(p => p.MpInstituteRole == MpInstituteRoleId.Faculty).ToList();
+                    faculty.AddRange(existingUsers.Where(p => p.MpInstituteRole == MpInstituteRoleId.CourseAdmin).ToList());
+
+                    var newUsers = enrollmentsReturned.Where(er => !existingUsers.Select(eu => eu.BbUserId).Contains(er.user_id.ToString())).ToList();
+
+                    if (newUsers.Any())
+                    {
+                        var newEcatAccts = new List<Person>();
+                        newUsers.ForEach(u =>
+                        {
+                            var ecatAcct = new Person();
+                            ecatAcct.BbUserId = u.user_id.ToString();
+                            ecatAcct.BbUserName = u.user.login_id;
+                            ecatAcct.Email = u.user.login_id;
+                            var nameSplit = u.user.sortable_name.Split(',');
+                            ecatAcct.LastName = nameSplit[0];
+                            ecatAcct.FirstName = nameSplit[1].TrimStart(' ');
+                            ecatAcct.IsActive = true;
+                            ecatAcct.MpGender = MpGender.Unk;
+                            ecatAcct.MpAffiliation = MpAffiliation.Unk;
+                            ecatAcct.MpComponent = MpComponent.Unk;
+                            ecatAcct.RegistrationComplete = false;
+                            ecatAcct.MpPaygrade = MpPaygrade.Unk;
+                            ecatAcct.ModifiedById = Faculty?.PersonId;
+                            ecatAcct.ModifiedDate = DateTime.Now;
+
+                            ecatAcct.MpInstituteRole = MpRoleTransform.CanvasRoleToEcat(u.type);
+
+                            if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Student)
+                            {
+                                ecatAcct.Student = new ProfileStudent();
+                                students.Add(ecatAcct);
+                            }
+
+                            if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Faculty || ecatAcct.MpInstituteRole == MpInstituteRoleId.CourseAdmin)
+                            {
+                                ecatAcct.Faculty = new ProfileFaculty();
+                                faculty.Add(ecatAcct);
+                            }
+
+                            newEcatAccts.Add(ecatAcct);
+                        });
+
+                        ctxManager.Context.People.AddRange(newEcatAccts);
+                        reconResult.NumOfAccountCreated = await ctxManager.Context.SaveChangesAsync();
+                    }
+
+                    if (existingUsers.Any())
+                    {
+                        var studsWithProfiles = await ctxManager.Context.People.Where(p => students.Contains(p)).Include(p => p.Student).ToListAsync();
+                        var facsWithProfiles = await ctxManager.Context.People.Where(p => faculty.Contains(p)).Include(p => p.Faculty).ToListAsync();
+
+                        var studsNeedProfiles = studsWithProfiles.Where(p => p.Student == null).ToList();
+                        studsNeedProfiles.ForEach(u =>
+                        {
+                            u.Student = new ProfileStudent();
+                            u.Student.PersonId = u.PersonId;
+                            ctxManager.Context.Students.Add(u.Student);
+                        });
+
+                        var facsNeedProfiles = facsWithProfiles.Where(p => p.Faculty == null).ToList();
+                        facsNeedProfiles.ForEach(u =>
+                        {
+                            u.Faculty = new ProfileFaculty();
+                            u.Faculty.PersonId = u.PersonId;
+                            ctxManager.Context.Faculty.Add(u.Faculty);
+                        });
+
+                        await ctxManager.Context.SaveChangesAsync();
+                    }
+
+                    var existingStudEnrolls = await ctxManager.Context.StudentInCourses.Where(sic => sic.CourseId == courseId).Select(sic => sic.StudentPersonId).ToListAsync();
+                    var existingFacEnrolls = await ctxManager.Context.FacultyInCourses.Where(fic => fic.CourseId == courseId).Select(fic => fic.FacultyPersonId).ToListAsync();
+
+                    var needStudEnrolls = students.Where(s => !existingStudEnrolls.Contains(s.PersonId)).ToList();
+                    var needFacEnrolls = faculty.Where(f => !existingFacEnrolls.Contains(f.PersonId)).ToList();
+
+                    if (needStudEnrolls.Any())
+                    {
+                        var newStudEnrolls = new List<StudentInCourse>();
+                        needStudEnrolls.ForEach(nse =>
+                        {
+                            var newEnroll = new StudentInCourse();
+                            newEnroll.StudentPersonId = nse.PersonId;
+                            newEnroll.CourseId = courseId;
+                            newEnroll.BbCourseMemId = enrollmentsReturned.Where(er => er.user_id.ToString() == nse.BbUserId).Select(er => er.id.ToString()).Single();
+
+                            newStudEnrolls.Add(newEnroll);
+                        });
+
+                        ctxManager.Context.StudentInCourses.AddRange(newStudEnrolls);
+                        reconResult.NumAdded += await ctxManager.Context.SaveChangesAsync();
+                    }
+
+                    if (needFacEnrolls.Any())
+                    {
+                        var newFacEnrolls = new List<FacultyInCourse>();
+                        needFacEnrolls.ForEach(nfe =>
+                        {
+                            var newEnroll = new FacultyInCourse();
+                            newEnroll.FacultyPersonId = nfe.PersonId;
+                            newEnroll.CourseId = courseId;
+                            newEnroll.BbCourseMemId = enrollmentsReturned.Where(er => er.user_id.ToString() == nfe.BbUserId).Select(er => er.id.ToString()).Single();
+
+                            newFacEnrolls.Add(newEnroll);
+                        });
+
+                        ctxManager.Context.FacultyInCourses.AddRange(newFacEnrolls);
+                        reconResult.NumAdded += await ctxManager.Context.SaveChangesAsync();
+                    }
+
+                }
+
             }
 
             return reconResult;
