@@ -251,6 +251,12 @@
     <Compile Include="Migrations\201708311912215_ECAT2_Init.Designer.cs">
       <DependentUpon>201708311912215_ECAT2_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Canvas\Assignment.cs" />
+    <Compile Include="Models\Canvas\Course.cs" />
+    <Compile Include="Models\Canvas\Enrollment.cs" />
+    <Compile Include="Models\Canvas\Progress.cs" />
+    <Compile Include="Models\Canvas\Section.cs" />
+    <Compile Include="Models\Canvas\User.cs" />
     <Compile Include="Models\Cognitive\CogEcmspeResult.cs" />
     <Compile Include="Models\Cognitive\CogEcpeResult.cs" />
     <Compile Include="Models\Cognitive\CogEsalbResult.cs" />

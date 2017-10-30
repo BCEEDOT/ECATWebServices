@@ -16,5 +16,6 @@ namespace Ecat.Data.Models.School
         public AcademyBase Base { get; set; }
         public string BbCategoryId { get; set; }
         public string ParentBbCategoryId { get; set; }
+        public int CanvasAcctId { get; set; }
     }
 }
