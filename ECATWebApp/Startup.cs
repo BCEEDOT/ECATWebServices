@@ -22,6 +22,7 @@ using Ecat.Business.Repositories;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
+using System.IO;
 
 namespace Ecat.Web
 {
@@ -51,15 +52,15 @@ namespace Ecat.Web
             });
 
 
-            //Only for development
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                                       .AllowAnyMethod()
-                                       .AllowAnyHeader()
-                                       .AllowCredentials());
-            });
+            //TODO: Only for development
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy",
+            //        builder => builder.AllowAnyOrigin()
+            //                           .AllowAnyMethod()
+            //                           .AllowAnyHeader()
+            //                           .AllowCredentials());
+            //});
 
             var connectionString = Configuration["DbConnection"];
             services.AddScoped(_ => new EcatContext(connectionString));
@@ -103,7 +104,7 @@ namespace Ecat.Web
 
             //Only for development
             //Todo: Remove for production
-            app.UseCors("CorsPolicy");
+            //app.UseCors("CorsPolicy");
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
@@ -113,7 +114,8 @@ namespace Ecat.Web
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
                 Audience = "ecat_server",
-                Authority  = "http://localhost:62187",
+                //TODO: Update with environment
+                Authority  = "http://ec2-34-237-207-101.compute-1.amazonaws.com",
                 RequireHttpsMetadata = false,
                 TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
                     NameClaimType = OpenIdConnectConstants.Claims.Name,
@@ -142,17 +144,31 @@ namespace Ecat.Web
                 };
 
                 //TODO: Replace with real certifcate for production
-                options.SigningCredentials.AddEphemeralKey();
+                //options.SigningCredentials.AddEphemeralKey();
 
-                //options.SigningCredentials.AddCertificate(
-                //    assembly: typeof(Startup).GetTypeInfo().Assembly,
-                //    resource: "Ecat.Web.EcatCertificate.pfx",
-                //    password: "ecatisawesome");
+                options.SigningCredentials.AddCertificate(
+                    assembly: typeof(Startup).GetTypeInfo().Assembly,
+                    resource: "Ecat.Web.EcatCertificate.pfx",
+                    password: "ecatisawesome");
 
             });
 
-            app.UseStaticFiles();
+            
             app.UseMvc();
+
+            app.Use(async (context, next) => {
+                await next();
+                if (context.Response.StatusCode == 404 &&
+                   !Path.HasExtension(context.Request.Path.Value) &&
+                   !context.Request.Path.Value.StartsWith("/breeze/"))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
+            app.UseMvcWithDefaultRoute();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }
