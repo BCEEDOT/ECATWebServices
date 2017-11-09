@@ -65,6 +65,7 @@ namespace Ecat.Web.Controllers
                 //ViewBag.Error = JsonConvert.DeserializeObject(respString);
             } else
             {
+                ViewBag.Error = "ECAT Loading....";
                 ViewBag.User = JsonConvert.DeserializeObject(respString);
             }
 
