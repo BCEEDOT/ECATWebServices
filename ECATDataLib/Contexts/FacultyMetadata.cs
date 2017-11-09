@@ -22,6 +22,7 @@ namespace Ecat.Data.Contexts
     public class FacultyMetadata: DbContext
     {
         //Only used for metadata for breeze, cannot be used to query the database
+        //If you are changing models be sure to change the staticmetadatas also
         static FacultyMetadata()
         {
             Database.SetInitializer<FacultyMetadata>(null);
