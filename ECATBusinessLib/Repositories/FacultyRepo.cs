@@ -53,7 +53,7 @@ namespace Ecat.Business.Repositories
 
             var workGroupsInCourse = await (from workGroup in ctxManager.Context.WorkGroups
 
-                                            where workGroup.CourseId == latestCourse.Id && workGroup.MpCategory == MpGroupCategory.Wg1
+                                            where workGroup.CourseId == latestCourse.Id && workGroup.MpCategory == MpGroupCategory.Wg1 && workGroup.GroupMembers.Any()
 
                                             select new
                                             {
@@ -65,6 +65,7 @@ namespace Ecat.Business.Repositories
                                                     StudPerson = gm.StudentProfile.Person,
                                                     RoadRunner = gm.StudentProfile.Person.RoadRunnerAddresses
                                                 })
+                                               
 
 
 
