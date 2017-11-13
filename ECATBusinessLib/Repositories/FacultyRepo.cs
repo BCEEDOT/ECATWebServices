@@ -99,7 +99,7 @@ namespace Ecat.Business.Repositories
                                          FacultyCourses = course.Faculty.Where(fic => fic.FacultyPersonId == loggedInUserId),
                                      }).ToListAsync();
 
-            if (coursesProj == null) return null;
+            if (!coursesProj.Any()) return null;
 
             var courses = coursesProj.OrderByDescending(c => c.course.StartDate).Select(c => c.course).ToList();
 
