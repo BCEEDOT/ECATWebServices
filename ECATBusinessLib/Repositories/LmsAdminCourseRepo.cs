@@ -46,7 +46,10 @@ namespace Ecat.Business.Repositories
         #region breeze methods
         public string Metadata()
         {
-            return new EFPersistenceManager<LmsAdminMetadata>().Metadata();
+            //Big problem with EF6 taking minutes to generate metadata at times worked around by just having static metadata strings served up
+            //TODO: Change this if you ever change a model
+            return StaticMetadatas.LmsAdminStatic;
+            //return new EFPersistenceManager<LmsAdminMetadata>().Metadata();
         }
 
 

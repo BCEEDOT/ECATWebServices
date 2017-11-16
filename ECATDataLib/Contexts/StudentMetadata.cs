@@ -21,6 +21,7 @@ using Ecat.Data.Models.Faculty.Config;
 namespace Ecat.Data.Contexts
 {
     //Only used for metadata for breeze, cannot be used to query the database
+    //If you are changing models be sure to change the staticmetadatas also
     public class StudentMetadata: DbContext
     {
         static StudentMetadata()

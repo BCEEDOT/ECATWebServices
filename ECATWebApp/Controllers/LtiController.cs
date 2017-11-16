@@ -32,7 +32,7 @@ namespace Ecat.Web.Controllers
             //form up a new httpclient to post over to the token endpoint
             //TODO: Update Uri (figure out how to read it from somewhere?)
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:62187");
+            client.BaseAddress = new Uri("http://ec2-34-237-207-101.compute-1.amazonaws.com");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -65,6 +65,7 @@ namespace Ecat.Web.Controllers
                 //ViewBag.Error = JsonConvert.DeserializeObject(respString);
             } else
             {
+                ViewBag.Error = "ECAT Loading....";
                 ViewBag.User = JsonConvert.DeserializeObject(respString);
             }
 

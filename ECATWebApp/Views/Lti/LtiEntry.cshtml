@@ -10,19 +10,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <div #usertoken data-user-string="@ViewBag.User" data-error-string="@ViewBag.Error"></div>
+    <div #usertoken id="usertoken" data-user-string="@ViewBag.User" data-error-string="@ViewBag.Error"></div>
     <ecat-app>
-        <div style="padding: 20%;text-align:center;">
+        <div style="padding: 20%;text-align:center; font-size: 22px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
             <!--<img src="assets/icons/covalent.svg" width="200">-->
-            <div>ECAT Loading...</div>
+            <div id="message"></div>
         </div>
     </ecat-app>
-    <script type="text/javascript" src="~/inline.bundle.js"></script>
-    <script type="text/javascript" src="~/polyfills.bundle.js"></script>
-    <script type="text/javascript" src="~/scripts.bundle.js"></script>
-    <script type="text/javascript" src="~/styles.bundle.js"></script>
-    <script type="text/javascript" src="~/vendor.bundle.js"></script>
-    <script type="text/javascript" src="~/main.bundle.js"></script>
+    <script>
+        var usertoken = document.getElementById("usertoken").getAttribute("data-user-string");
+
+        if (usertoken.length > 0) {
+            
+            var jsonToken = JSON.parse(usertoken);
+            localStorage.setItem("ecatAccessToken", jsonToken.access_token);
+            localStorage.setItem("ecatUserIdToken", jsonToken.id_token);
+            window.location = "index.html";
+        }
+
+        //localStorage.setItem("ecatError", errortoken);
+        var errorToken = document.getElementById("usertoken").getAttribute("data-error-string");
+        var jsonErrorToken = JSON.parse(errorToken);
+        var errorMessage = jsonErrorToken.error_description + "<p>Please close this browser window and try again.<p>"
+        document.getElementById("message").innerHTML = errorMessage;
+
+    </script>
 </body>
 </html>
 

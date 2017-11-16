@@ -32,7 +32,10 @@ namespace Ecat.Business.Repositories
         #region breeze methods
         public string MetaData()
         {
-            return new EFPersistenceManager<FacultyMetadata>().Metadata();
+            //Big problem with EF6 taking minutes to generate metadata at times worked around by just having static metadata strings served up
+            //TODO: Change this if you ever change a model
+            return StaticMetadatas.FacultyStatic;
+            //return new EFPersistenceManager<FacultyMetadata>().Metadata();
         }
 
         public SaveResult ClientSave(JObject saveBundle)
@@ -50,7 +53,7 @@ namespace Ecat.Business.Repositories
 
             var workGroupsInCourse = await (from workGroup in ctxManager.Context.WorkGroups
 
-                                            where workGroup.CourseId == latestCourse.Id && workGroup.MpCategory == MpGroupCategory.Wg1
+                                            where workGroup.CourseId == latestCourse.Id && workGroup.MpCategory == MpGroupCategory.Wg1 && workGroup.GroupMembers.Any()
 
                                             select new
                                             {
@@ -62,6 +65,7 @@ namespace Ecat.Business.Repositories
                                                     StudPerson = gm.StudentProfile.Person,
                                                     RoadRunner = gm.StudentProfile.Person.RoadRunnerAddresses
                                                 })
+                                               
 
 
 
@@ -96,7 +100,7 @@ namespace Ecat.Business.Repositories
                                          FacultyCourses = course.Faculty.Where(fic => fic.FacultyPersonId == loggedInUserId),
                                      }).ToListAsync();
 
-            if (coursesProj == null) return null;
+            if (!coursesProj.Any()) return null;
 
             var courses = coursesProj.OrderByDescending(c => c.course.StartDate).Select(c => c.course).ToList();
 

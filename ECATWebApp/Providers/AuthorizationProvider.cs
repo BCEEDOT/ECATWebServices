@@ -89,8 +89,8 @@ namespace Ecat.Web.Providers
                 }
                 catch (InvalidEmailException ex)
                 {
-                    context.Reject("Invalid Credentials", ex.Message + "\n\n Please update your email address in both the LMS and AU Portal to use ECAT.");
-                    await Task.FromException(ex);
+                    context.Reject("Invalid Credentials Error", ex.Message + "\n\n Please update your email address in both the LMS and AU Portal to use ECAT.");
+                    return;
                 }
                 catch (UserUpdateException)
                 {

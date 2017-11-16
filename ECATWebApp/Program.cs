@@ -18,6 +18,12 @@ namespace Ecat.Web
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
+                //TODO: Choose environment for deployment
+                //.UseEnvironment("Development")
+                .UseEnvironment("AWSTesting")
+                //.UseEnvironment("AUPublicDev")
+                //.UseEnvironment("AUGateway")
+                //.UseEnvironment("Production")
                 .Build();
 
             host.Run();
