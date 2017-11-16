@@ -69,6 +69,7 @@ namespace Ecat.Web
             services.AddScoped<IFacultyRepo, FacultyRepo>();
             services.AddScoped<ILmsAdminCourseRepo, LmsAdminCourseRepo>();
             services.AddScoped<ILmsAdminGroupRepo, LmsAdminGroupRepo>();
+            services.AddScoped<ILmsAdminTokenRepo, LmsAdminTokenRepo>();
             services.AddScoped<BbWsCnet, BbWsCnet>();
             services.AddScoped<IAuthorizationHandler, LoggedInUserPolicy>();
 

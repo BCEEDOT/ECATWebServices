@@ -22,11 +22,13 @@ namespace Ecat.Web.Controllers
     {
         private readonly ILmsAdminCourseRepo courseRepo;
         private readonly ILmsAdminGroupRepo groupRepo;
+        private readonly ILmsAdminTokenRepo tokenRepo;
 
-        public LmsAdminController(ILmsAdminCourseRepo lmsCourseOps, ILmsAdminGroupRepo lmsGroupOps, IHttpContextAccessor accessor)
+        public LmsAdminController(ILmsAdminCourseRepo lmsCourseOps, ILmsAdminGroupRepo lmsGroupOps, ILmsAdminTokenRepo lmsTokenRepo, IHttpContextAccessor accessor)
         {
             courseRepo = lmsCourseOps;
             groupRepo = lmsGroupOps;
+            tokenRepo = lmsTokenRepo;
 
             //get the userId out of the token and set the userid in the repos
             int userId = int.Parse(accessor.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
@@ -120,6 +122,30 @@ namespace Ecat.Web.Controllers
         public async Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory)
         {
             return await groupRepo.SyncBbGrades(crseId, wgCategory);
+        }
+
+        [HttpGet]
+        public async Task<CourseReconResult> PollCanvasCourses()
+        {
+            var token = await tokenRepo.CheckCanvasTokenInfo();
+            if (!token)
+            {
+                //uhh tell the client to redirect somehow? this returns a CourseReconResult how am I doing this?
+            }
+
+            return await courseRepo.ReconcileCanvasCourses();
+        }
+
+        [HttpGet]
+        public async Task<MemReconResult> PollCanvasCourseMembers(int courseId)
+        {
+            var token = await tokenRepo.CheckCanvasTokenInfo();
+            if (!token)
+            {
+                
+            }
+
+            return await courseRepo.ReconcileCanvasCourseMems(courseId);
         }
     }
 }

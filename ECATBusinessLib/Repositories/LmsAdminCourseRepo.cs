@@ -30,6 +30,7 @@ namespace Ecat.Business.Repositories
     {
         private readonly EFPersistenceManager<EcatContext> ctxManager;
         private readonly BbWsCnet bbWs;
+        //TODO: Update once we have production Canvas
         private readonly string canvasApiUrl = "https://ec2-34-215-69-52.us-west-2.compute.amazonaws.com/api/v1/";
 
         public int loggedInUserId { get; set; }
@@ -195,12 +196,23 @@ namespace Ecat.Business.Repositories
             {
                 return null;
             }
+
+            //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
+            //var accessToken = await CanvasLoginRepo.GetAccessToken();
+            var accessToken = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+
+            if (accessToken == null)
+            {
+                return null;
+            }
+
             var reconResult = new CourseReconResult();
 
             var client = new HttpClient();
             var apiAddr = new Uri(canvasApiUrl + "accounts/" + academy.CanvasAcctId + "/courses");
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
+            //client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
             var response = await client.GetAsync(apiAddr);
 
@@ -367,10 +379,20 @@ namespace Ecat.Business.Repositories
             reconResult.NumAdded = 0;
             reconResult.NumOfAccountCreated = 0;
 
+            //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
+            //var accessToken = await CanvasLoginRepo.GetAccessToken();
+            var accessToken = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+
+            if (accessToken == null)
+            {
+                return null;
+            }
+
             var client = new HttpClient();
             var apiAddr = new Uri(canvasApiUrl + "courses/" + course.BbCourseId + "/enrollments?include[]=observed_users");
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
+            //client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
             var response = await client.GetAsync(apiAddr);
 

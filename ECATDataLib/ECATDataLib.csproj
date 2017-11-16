@@ -253,8 +253,10 @@
       <DependentUpon>201708311912215_ECAT2_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Canvas\Assignment.cs" />
+    <Compile Include="Models\Canvas\Config\Login.cs" />
     <Compile Include="Models\Canvas\Course.cs" />
     <Compile Include="Models\Canvas\Enrollment.cs" />
+    <Compile Include="Models\Canvas\Login.cs" />
     <Compile Include="Models\Canvas\Progress.cs" />
     <Compile Include="Models\Canvas\Section.cs" />
     <Compile Include="Models\Canvas\User.cs" />
@@ -353,5 +355,6 @@
       <DependentUpon>201708311912215_ECAT2_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

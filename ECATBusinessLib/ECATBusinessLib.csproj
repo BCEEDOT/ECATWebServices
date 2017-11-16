@@ -220,6 +220,7 @@
     <Compile Include="Repositories\Interface\IUserRepo.cs" />
     <Compile Include="Repositories\LmsAdminCourseRepo.cs" />
     <Compile Include="Repositories\LmsAdminGroupRepo.cs" />
+    <Compile Include="Repositories\LmsAdminTokenRepo.cs" />
     <Compile Include="Repositories\StudentRepo.cs" />
     <Compile Include="Repositories\UserRepo.cs" />
     <Compile Include="Utilities\EmailValidator.cs" />

@@ -29,6 +29,7 @@ namespace Ecat.Business.Repositories
     {
         private readonly EFPersistenceManager<EcatContext> ctxManager;
         private readonly BbWsCnet bbWs;
+        //TODO: Update once we have production Canvas
         private readonly string canvasApiUrl = "https://ec2-34-215-69-52.us-west-2.compute.amazonaws.com/api/v1/";
 
         public int loggedInUserId { get; set; }
@@ -821,15 +822,27 @@ namespace Ecat.Business.Repositories
                 return result;
             }
 
+            //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
+            //var accessToken = await CanvasLoginRepo.GetAccessToken();
+            var accessToken = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+
+            if (accessToken == null)
+            {
+                result.Success = false;
+                result.Message = "There was an problem with your LMS authorization information.";
+                return result;
+            }
+
             var acad = StaticAcademy.AcadLookupById[groups.First().Course.AcademyId];
 
             var models = await ctxManager.Context.WgModels.Where(wgm => wgm.MpEdLevel == acad.MpEdLevel && wgm.IsActive).ToListAsync();
             models.OrderBy(wgm => wgm.MpWgCategory);
 
             var client = new HttpClient();
-            var apiAddr = new Uri(canvasApiUrl + "courses/" + crseId + "assignments");
+            var apiAddr = new Uri(canvasApiUrl + "courses/" + crseId + "/assignments");
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
+            //client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 
             var response = await client.GetAsync(apiAddr);
             if (!response.IsSuccessStatusCode)

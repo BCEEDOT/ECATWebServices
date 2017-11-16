@@ -9,6 +9,7 @@ using Ecat.Data.Models.User;
 using Ecat.Data.Models.Common;
 using Ecat.Data.Models.School;
 using Ecat.Data.Models.Designer;
+using Ecat.Data.Models.Canvas;
 
 namespace Ecat.Business.Repositories.Interface
 {
@@ -24,6 +25,9 @@ namespace Ecat.Business.Repositories.Interface
         Task<CourseReconResult> ReconcileCourses();
         Task<Course> GetAllCourseMembers(int courseId);
         Task<MemReconResult> ReconcileCourseMembers(int courseId);
+
+        Task<CourseReconResult> ReconcileCanvasCourses();
+        Task<MemReconResult> ReconcileCanvasCourseMems(int courseId);
     }
 
     public interface ILmsAdminGroupRepo
@@ -39,5 +43,14 @@ namespace Ecat.Business.Repositories.Interface
         Task<List<GroupMemReconResult>> ReconcileAllGroupMembers(int courseId);//, string groupCategory);
         Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory);
         Task<List<WorkGroup>> GetAllGroupSetMembers(int courseId, string categoryId);
+
+        Task<SaveGradeResult> SyncCanvasGrades(int crseId);
+    }
+
+    public interface ILmsAdminTokenRepo
+    {
+        Task<bool> CheckCanvasTokenInfo();
+        Task<bool> GetRefreshToken(string authCode);
+        Task<string> GetAccessToken();
     }
 }
