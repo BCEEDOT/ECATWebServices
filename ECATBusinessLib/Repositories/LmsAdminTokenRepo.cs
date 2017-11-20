@@ -16,12 +16,19 @@ using Ecat.Data.Models.Canvas;
 
 namespace Ecat.Business.Repositories
 {
+    public class TokenUser
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+    }
+
     public class TokenResponse
     {
         public string access_token { get; set; }
         public string token_type { get; set; }
         public string refresh_token { get; set; }
         public int expires_in { get; set; }
+        public TokenUser user { get; set; }
     }
 
     public class LmsAdminTokenRepo: ILmsAdminTokenRepo
@@ -70,19 +77,20 @@ namespace Ecat.Business.Repositories
         //after getting the code from the canvas auth endpoint come here
         public async Task<bool> GetRefreshToken(string authCode)
         {
-            var canvLogin = await ecatContext.CanvasLogins
-                .Where(cl => cl.PersonId == loggedInUserId)
-                //.Include(cl => cl.Person)
-                .SingleOrDefaultAsync();
             bool newEntry = false;
+            var canvLogin = new CanvasLogin();
+
+            if (loggedInUserId != 0)
+            {
+                canvLogin = await ecatContext.CanvasLogins
+                .Where(cl => cl.PersonId == loggedInUserId)
+                .SingleOrDefaultAsync();
+            }
 
             //Need a new login entry
-            if (canvLogin == null)
+            if (canvLogin.PersonId == 0)
             {
                 newEntry = true;
-                canvLogin = new CanvasLogin();
-                canvLogin.PersonId = loggedInUserId;
-                //canvLogin.Person = await ecatContext.People.Where(p => p.PersonId == loggedInUserId).SingleAsync();
             }
 
             var client = new HttpClient();
@@ -105,6 +113,14 @@ namespace Ecat.Business.Repositories
             var respContent = await response.Content.ReadAsStringAsync();
             var respObject = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponse>(respContent);
 
+            var ecatUser = await ecatContext.People.Where(p => p.BbUserId == respObject.user.id.ToString()).SingleAsync();
+
+            if (ecatUser == null)
+            {
+                return false;
+            }
+
+            canvLogin.PersonId = ecatUser.PersonId;
             canvLogin.AccessToken = respObject.access_token;
             canvLogin.TokenExpires = DateTime.Now.AddSeconds(respObject.expires_in);
 

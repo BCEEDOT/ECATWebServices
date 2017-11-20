@@ -12,8 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace Ecat.Web.Controllers
 {
     [Route("[controller]/[action]")]
-    //[Authorize(Policy = "LoggedInUser")]
-    //[Authorize(Policy = "LMSAdmin")]
     public class CanvasAuthController : Controller
     {
         private readonly ILmsAdminTokenRepo tokenRepo;
@@ -21,10 +19,6 @@ namespace Ecat.Web.Controllers
         public CanvasAuthController(ILmsAdminTokenRepo lmsTokenRepo, IHttpContextAccessor accessor)
         {
             tokenRepo = lmsTokenRepo;
-
-            //get the userId out of the token and set the userid in the repos
-            //int userId = int.Parse(accessor.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
-            tokenRepo.loggedInUserId = 301;
         }
 
         [HttpGet]

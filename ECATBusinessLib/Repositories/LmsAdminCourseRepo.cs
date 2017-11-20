@@ -438,55 +438,70 @@ namespace Ecat.Business.Repositories
                     var students = existingUsers.Where(p => p.MpInstituteRole == MpInstituteRoleId.Student).ToList();
                     var faculty = existingUsers.Where(p => p.MpInstituteRole == MpInstituteRoleId.Faculty).ToList();
                     faculty.AddRange(existingUsers.Where(p => p.MpInstituteRole == MpInstituteRoleId.CourseAdmin).ToList());
+                    var studentIds = new List<int>();
+                    var facultyIds = new List<int>();
+                    students.ForEach(s => studentIds.Add(s.PersonId));
+                    faculty.ForEach(f => facultyIds.Add(f.PersonId));
 
                     var newUsers = enrollmentsReturned.Where(er => !existingUsers.Select(eu => eu.BbUserId).Contains(er.user_id.ToString())).ToList();
 
                     if (newUsers.Any())
                     {
                         var newEcatAccts = new List<Person>();
+                        var newEcatAcctIds = new List<string>();
                         newUsers.ForEach(u =>
                         {
-                            var ecatAcct = new Person();
-                            ecatAcct.BbUserId = u.user_id.ToString();
-                            ecatAcct.BbUserName = u.user.login_id;
-                            ecatAcct.Email = u.user.login_id;
-                            var nameSplit = u.user.sortable_name.Split(',');
-                            ecatAcct.LastName = nameSplit[0];
-                            ecatAcct.FirstName = nameSplit[1].TrimStart(' ');
-                            ecatAcct.IsActive = true;
-                            ecatAcct.MpGender = MpGender.Unk;
-                            ecatAcct.MpAffiliation = MpAffiliation.Unk;
-                            ecatAcct.MpComponent = MpComponent.Unk;
-                            ecatAcct.RegistrationComplete = false;
-                            ecatAcct.MpPaygrade = MpPaygrade.Unk;
-                            ecatAcct.ModifiedById = Faculty?.PersonId;
-                            ecatAcct.ModifiedDate = DateTime.Now;
-
-                            ecatAcct.MpInstituteRole = MpRoleTransform.CanvasRoleToEcat(u.type);
-
-                            if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Student)
+                            //if a user has multiple section enrollments in the same course in Canvas they come back from the API each as different enrollment objects
+                            //TODO: change this depending on what we do with sections in prod
+                            if (!newEcatAcctIds.Contains(u.user_id.ToString()))
                             {
-                                ecatAcct.Student = new ProfileStudent();
-                                students.Add(ecatAcct);
-                            }
+                                var ecatAcct = new Person();
+                                ecatAcct.BbUserId = u.user_id.ToString();
+                                ecatAcct.BbUserName = u.user.login_id;
+                                ecatAcct.Email = u.user.login_id;
+                                var nameSplit = u.user.sortable_name.Split(',');
+                                ecatAcct.LastName = nameSplit[0];
+                                ecatAcct.FirstName = nameSplit[1].TrimStart(' ');
+                                ecatAcct.IsActive = true;
+                                ecatAcct.MpGender = MpGender.Unk;
+                                ecatAcct.MpAffiliation = MpAffiliation.Unk;
+                                ecatAcct.MpComponent = MpComponent.Unk;
+                                ecatAcct.RegistrationComplete = false;
+                                ecatAcct.MpPaygrade = MpPaygrade.Unk;
+                                ecatAcct.ModifiedById = Faculty?.PersonId;
+                                ecatAcct.ModifiedDate = DateTime.Now;
 
-                            if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Faculty || ecatAcct.MpInstituteRole == MpInstituteRoleId.CourseAdmin)
-                            {
-                                ecatAcct.Faculty = new ProfileFaculty();
-                                faculty.Add(ecatAcct);
-                            }
+                                ecatAcct.MpInstituteRole = MpRoleTransform.CanvasRoleToEcat(u.type);
 
-                            newEcatAccts.Add(ecatAcct);
+                                if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Student)
+                                {
+                                    ecatAcct.Student = new ProfileStudent();
+                                    students.Add(ecatAcct);
+                                    studentIds.Add(ecatAcct.PersonId);
+                                }
+
+                                if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Faculty || ecatAcct.MpInstituteRole == MpInstituteRoleId.CourseAdmin)
+                                {
+                                    ecatAcct.Faculty = new ProfileFaculty();
+                                    faculty.Add(ecatAcct);
+                                    facultyIds.Add(ecatAcct.PersonId);
+                                }
+
+                                newEcatAccts.Add(ecatAcct);
+                                newEcatAcctIds.Add(ecatAcct.BbUserId);
+                            }
                         });
 
                         ctxManager.Context.People.AddRange(newEcatAccts);
-                        reconResult.NumOfAccountCreated = await ctxManager.Context.SaveChangesAsync();
+                        var changesCount = await ctxManager.Context.SaveChangesAsync();
+                        //this save adds both accounts and profiles, so the count is double the number of accounts added
+                        reconResult.NumOfAccountCreated = changesCount / 2;
                     }
 
                     if (existingUsers.Any())
                     {
-                        var studsWithProfiles = await ctxManager.Context.People.Where(p => students.Contains(p)).Include(p => p.Student).ToListAsync();
-                        var facsWithProfiles = await ctxManager.Context.People.Where(p => faculty.Contains(p)).Include(p => p.Faculty).ToListAsync();
+                        var studsWithProfiles = await ctxManager.Context.People.Where(p => studentIds.Contains(p.PersonId)).Include(p => p.Student).ToListAsync();
+                        var facsWithProfiles = await ctxManager.Context.People.Where(p => facultyIds.Contains(p.PersonId)).Include(p => p.Faculty).ToListAsync();
 
                         var studsNeedProfiles = studsWithProfiles.Where(p => p.Student == null).ToList();
                         studsNeedProfiles.ForEach(u =>

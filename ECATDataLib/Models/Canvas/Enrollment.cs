@@ -17,11 +17,11 @@ namespace Ecat.Data.Models.Canvas
         public int user_id { get; set; }
         public string role { get; set; }
         public int role_id { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set; }
-        public DateTime start_at { get; set; }
-        public DateTime end_at { get; set; }
-        public DateTime last_activity_at { get; set; }
+        //public DateTime created_at { get; set; }
+        //public DateTime updated_at { get; set; }
+        //public DateTime start_at { get; set; }
+        //public DateTime end_at { get; set; }
+        //public DateTime last_activity_at { get; set; }
         public int total_activity_time { get; set; }
 
         public CanvasCourse Course { get; set; }
