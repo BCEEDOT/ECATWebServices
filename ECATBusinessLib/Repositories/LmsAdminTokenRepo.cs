@@ -124,56 +124,7 @@ namespace Ecat.Business.Repositories
                 ecatContext.Entry(canvLogin).State = System.Data.Entity.EntityState.Modified;
             }
 
-            try
-            {
-                //ctxManager.Context.CanvasLogins.Add(canvLogin);
-                //await ecatContext.SaveChangesAsync();
-                var test = await ecatContext.SaveChangesAsync();
-                Debug.Write(test);
-            }
-            catch (DbEntityValidationException ex)
-            {
-                var testex = ex.ToString();
-                Debug.WriteLine(ex);
-                foreach (DbEntityValidationResult item in ex.EntityValidationErrors)
-                {
-                    // Get entry
-
-                    DbEntityEntry entry = item.Entry;
-                    string entityTypeName = entry.Entity.GetType().Name;
-
-                    // Display or log error messages
-
-                    foreach (DbValidationError subItem in item.ValidationErrors)
-                    {
-                        string message = string.Format("Error '{0}' occurred in {1} at {2}",
-                                 subItem.ErrorMessage, entityTypeName, subItem.PropertyName);
-                        Debug.WriteLine(message);
-                    }
-                }
-                
-                //// Retrieve the error messages as a list of strings.
-                //var errorMessages = ex.EntityValidationErrors
-                //        .SelectMany(x => x.ValidationErrors)
-                //        .Select(x => x.ErrorMessage);
-
-                //// Join the list to a single string.
-                //var fullErrorMessage = string.Join("; ", errorMessages);
-
-                //// Combine the original exception message with the new one.
-                //var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-
-                //// Throw a new DbEntityValidationException with the improved exception message.
-                //Debug.WriteLine(exceptionMessage);
-                
-                //var test = e;
-                //Debug.WriteLine(e);
-                //foreach(var thing in e.EntityValidationErrors)
-                //{
-                //    Debug.WriteLine(thing);
-                //}
-            }
-            
+            await ecatContext.SaveChangesAsync();
 
             return true;
         }

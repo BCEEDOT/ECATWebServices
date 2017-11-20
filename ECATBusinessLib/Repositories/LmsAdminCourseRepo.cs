@@ -197,16 +197,17 @@ namespace Ecat.Business.Repositories
                 return null;
             }
 
+            var reconResult = new CourseReconResult();
+
             //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
             //var accessToken = await CanvasLoginRepo.GetAccessToken();
             var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
 
             if (canvasLogin.AccessToken == null)
             {
-                return null;
+                reconResult.HasToken = false;
+                return reconResult;
             }
-
-            var reconResult = new CourseReconResult();
 
             var client = new HttpClient();
             var apiAddr = new Uri(canvasApiUrl + "accounts/" + academy.CanvasAcctId + "/courses");
@@ -224,33 +225,48 @@ namespace Ecat.Business.Repositories
 
                 if (coursesReturned == null || coursesReturned.Count == 0)
                 {
-                    return null;
+                    return reconResult;
                 }
                 else
                 {
                     var existingCourses = await ctxManager.Context.Courses.Where(c => c.AcademyId == academy.Id).ToListAsync();
-                    var existingIds = new List<int>();
+                    var existingIds = new List<string>();
                     //Bb course id is a string, Canvas course ids are numbers
-                    existingCourses.ForEach(c => existingIds.Add(c.Id));
+                    existingCourses.ForEach(c => existingIds.Add(c.BbCourseId));
                     
                     coursesReturned.ForEach(c =>
                     {
-                        if (!existingIds.Contains(c.id))
+                        if (!existingIds.Contains(c.id.ToString()))
                         {
                             var newCourse = new Course();
                             newCourse.AcademyId = academy.Id;
                             newCourse.Name = c.name;
                             newCourse.BbCourseId = c.id.ToString();
-                            newCourse.StartDate = c.start_at;
-                            newCourse.GradDate = c.end_at;
+
+                            if (c.start_at == null)
+                            {
+                                newCourse.StartDate = DateTime.Now;
+                            } else
+                            {
+                                newCourse.StartDate = DateTime.Parse(c.start_at);
+                            }
+
+                            if (c.end_at == null)
+                            {
+                                newCourse.GradDate = DateTime.Now.AddDays(30);
+                            } else
+                            {
+                                newCourse.GradDate = DateTime.Parse(c.end_at);
+                            }
+                            
                             reconCourses.Add(newCourse);
+                            ctxManager.Context.Courses.Add(newCourse);
                             reconResult.NumAdded += 1;
                         }
                     });
 
                     if (reconCourses.Any())
                     {
-                        ctxManager.Context.Courses.AddRange(reconCourses);
                         await ctxManager.Context.SaveChangesAsync();
                     }
                     
@@ -385,7 +401,8 @@ namespace Ecat.Business.Repositories
 
             if (canvasLogin.AccessToken == null)
             {
-                return null;
+                reconResult.HasToken = false;
+                return reconResult;
             }
 
             var client = new HttpClient();
@@ -405,7 +422,7 @@ namespace Ecat.Business.Repositories
 
                 if (enrollmentsReturned == null || enrollmentsReturned.Count == 0)
                 {
-                    return null;
+                    return reconResult;
                 }
                 else
                 {

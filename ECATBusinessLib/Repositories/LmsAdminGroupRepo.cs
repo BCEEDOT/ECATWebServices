@@ -829,6 +829,7 @@ namespace Ecat.Business.Repositories
             if (canvasLogin.AccessToken == null)
             {
                 result.Success = false;
+                result.HasToken = false;
                 result.Message = "There was an problem with your LMS authorization information.";
                 return result;
             }

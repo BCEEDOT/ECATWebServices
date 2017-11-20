@@ -57,7 +57,7 @@ namespace Ecat.Data.Static
              Base = AcademyBase.Gunter,
              BbCategoryId = MpAcadCat.AFSNCOA,
              ParentBbCategoryId = MpAcadCat.BCEE,
-             CanvasAcctId = 21
+             CanvasAcctId = 1
          };
 
         public static Academy Ecat
@@ -70,7 +70,7 @@ namespace Ecat.Data.Static
            Base = AcademyBase.Gunter,
            BbCategoryId = MpAcadCat.ECAT,
            ParentBbCategoryId = MpAcadCat.BCEE,
-           CanvasAcctId = 21
+           CanvasAcctId = 1
        };
 
         public static Academy Ecatncoa
@@ -83,7 +83,7 @@ namespace Ecat.Data.Static
            Base = AcademyBase.Gunter,
            BbCategoryId = MpAcadCat.ECATILE,
            ParentBbCategoryId = MpAcadCat.NCOA,
-           CanvasAcctId = 21
+           CanvasAcctId = 1
        };
 
         public static Academy Ecatsncoa
@@ -96,7 +96,7 @@ namespace Ecat.Data.Static
            Base = AcademyBase.Gunter,
            BbCategoryId = MpAcadCat.ECATALE,
            ParentBbCategoryId = MpAcadCat.BCEE,
-           CanvasAcctId = 21
+           CanvasAcctId = 1
        };
 
         public static Academy Keesler
@@ -109,7 +109,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.Gunter,
             BbCategoryId = MpAcadCat.Keesler,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
 
         public static Academy Peterson
@@ -122,7 +122,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.Peterson,
             BbCategoryId = MpAcadCat.Peterson,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
 
         public static Academy Kapaun
@@ -135,7 +135,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.Kapaun,
             BbCategoryId = MpAcadCat.Kapaun,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
 
         public static Academy Kadena
@@ -148,7 +148,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.Kadena,
             BbCategoryId = MpAcadCat.Kadena,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
 
         public static Academy Hickam
@@ -161,7 +161,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.Hickam,
             BbCategoryId = MpAcadCat.Hickam,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
 
         public static Academy Elmendorf
@@ -174,7 +174,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.Elmendorf,
             BbCategoryId = MpAcadCat.Elmendorf,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
 
         public static Academy McGheeTyson
@@ -187,7 +187,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.McGheeTyson,
             BbCategoryId = MpAcadCat.McGheeTyson,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
 
         public static Academy Sheppard
@@ -200,7 +200,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.Sheppard,
             BbCategoryId = MpAcadCat.Sheppard,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
 
         public static Academy Tyndall
@@ -213,7 +213,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.Tyndall,
             BbCategoryId = MpAcadCat.Tyndall,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
 
         public static Academy Lackland
@@ -226,7 +226,7 @@ namespace Ecat.Data.Static
             Base = AcademyBase.Lackland,
             BbCategoryId = MpAcadCat.Lackland,
             ParentBbCategoryId = MpAcadCat.NCOA,
-            CanvasAcctId = 21
+            CanvasAcctId = 1
         };
     }
 }

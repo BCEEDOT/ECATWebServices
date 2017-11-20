@@ -129,41 +129,49 @@ namespace Ecat.Web.Controllers
         public async Task<CourseReconResult> PollCanvasCourses()
         {
             var token = await tokenRepo.CheckCanvasTokenInfo();
+            var result = new CourseReconResult();
             if (!token)
             {
-                var notoken = new CourseReconResult();
-                notoken.HasToken = false;
-                return notoken;
+                result.HasToken = false;
+                return result;
             }
+            
+            result = await courseRepo.ReconcileCanvasCourses();
+            result.HasToken = true;
 
-            return await courseRepo.ReconcileCanvasCourses();
+            return result;
         }
 
         [HttpGet]
         public async Task<MemReconResult> PollCanvasCourseMembers(int courseId)
         {
             var token = await tokenRepo.CheckCanvasTokenInfo();
+            var result = new MemReconResult();
             if (!token)
             {
-                var notoken = new MemReconResult();
-                notoken.HasToken = false;
-                return notoken;
+                result.HasToken = false;
+                return result;
             }
 
-            return await courseRepo.ReconcileCanvasCourseMems(courseId);
+            result = await courseRepo.ReconcileCanvasCourseMems(courseId);
+            result.HasToken = true;
+
+            return result;
         }
 
         public async Task<SaveGradeResult> SyncCanvasGrades (int courseId)
         {
             var token = await tokenRepo.CheckCanvasTokenInfo();
+            var result = new SaveGradeResult();
             if (!token)
             {
-                var notoken = new SaveGradeResult();
-                notoken.HasToken = false;
-                return notoken;
+                result.HasToken = false;
+                return result;
             }
 
-            return await groupRepo.SyncCanvasGrades(courseId);
+            result = await groupRepo.SyncCanvasGrades(courseId);
+            result.HasToken = true;
+            return result;
         }
 
         //[HttpGet]

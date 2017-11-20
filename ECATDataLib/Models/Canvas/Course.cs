@@ -16,8 +16,8 @@ namespace Ecat.Data.Models.Canvas
         public int account_id { get; set; }
         public int root_account_id { get; set; }
         public int enrollment_term_id { get; set; }
-        public int grading_standard_id { get; set; }
-        public DateTime start_at { get; set; }
-        public DateTime end_at { get; set; }
+        //public int grading_standard_id { get; set; }
+        public string start_at { get; set; }
+        public string end_at { get; set; }
     }
 }
