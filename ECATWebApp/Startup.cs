@@ -53,14 +53,14 @@ namespace Ecat.Web
 
 
             //TODO: Only for development
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy",
-            //        builder => builder.AllowAnyOrigin()
-            //                           .AllowAnyMethod()
-            //                           .AllowAnyHeader()
-            //                           .AllowCredentials());
-            //});
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                                       .AllowAnyMethod()
+                                       .AllowAnyHeader()
+                                       .AllowCredentials());
+            });
 
             var connectionString = Configuration["DbConnection"];
             services.AddScoped(_ => new EcatContext(connectionString));
@@ -105,7 +105,7 @@ namespace Ecat.Web
 
             //Only for development
             //Todo: Remove for production
-            //app.UseCors("CorsPolicy");
+            app.UseCors("CorsPolicy");
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
@@ -116,7 +116,7 @@ namespace Ecat.Web
                 AutomaticChallenge = true,
                 Audience = "ecat_server",
                 //TODO: Update with environment
-                Authority  = "http://ec2-34-237-207-101.compute-1.amazonaws.com",
+                Authority  = "http://localhost:62187",
                 RequireHttpsMetadata = false,
                 TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
                     NameClaimType = OpenIdConnectConstants.Claims.Name,
@@ -145,12 +145,12 @@ namespace Ecat.Web
                 };
 
                 //TODO: Replace with real certifcate for production
-                //options.SigningCredentials.AddEphemeralKey();
+                options.SigningCredentials.AddEphemeralKey();
 
-                options.SigningCredentials.AddCertificate(
-                    assembly: typeof(Startup).GetTypeInfo().Assembly,
-                    resource: "Ecat.Web.EcatCertificate.pfx",
-                    password: "ecatisawesome");
+                //options.SigningCredentials.AddCertificate(
+                //    assembly: typeof(Startup).GetTypeInfo().Assembly,
+                //    resource: "Ecat.Web.EcatCertificate.pfx",
+                //    password: "ecatisawesome");
 
             });
 

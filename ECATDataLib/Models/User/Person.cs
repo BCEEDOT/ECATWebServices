@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ecat.Data.Models.Canvas;
 using Ecat.Data.Models.Interface;
 
 namespace Ecat.Data.Models.User

@@ -252,6 +252,10 @@
     <Compile Include="Migrations\201708311912215_ECAT2_Init.Designer.cs">
       <DependentUpon>201708311912215_ECAT2_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711201328328_CanvasLogins.cs" />
+    <Compile Include="Migrations\201711201328328_CanvasLogins.Designer.cs">
+      <DependentUpon>201711201328328_CanvasLogins.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Canvas\Assignment.cs" />
     <Compile Include="Models\Canvas\Config\Login.cs" />
     <Compile Include="Models\Canvas\Course.cs" />
@@ -353,6 +357,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201708311912215_ECAT2_Init.resx">
       <DependentUpon>201708311912215_ECAT2_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711201328328_CanvasLogins.resx">
+      <DependentUpon>201711201328328_CanvasLogins.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

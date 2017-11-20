@@ -12,6 +12,11 @@ namespace Ecat.Data.Models.Canvas.Config
         public ConfigCanvasLogin()
         {
             HasKey(cl => cl.PersonId);
+
+            HasRequired(cl => cl.FacultyProfile)
+                .WithOptional(fp => fp.CanvasLogin)
+                //.HasForeignKey(p => p.FacultyPersonId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

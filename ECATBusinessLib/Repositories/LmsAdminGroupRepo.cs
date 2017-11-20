@@ -824,9 +824,9 @@ namespace Ecat.Business.Repositories
 
             //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
             //var accessToken = await CanvasLoginRepo.GetAccessToken();
-            var accessToken = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+            var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
 
-            if (accessToken == null)
+            if (canvasLogin.AccessToken == null)
             {
                 result.Success = false;
                 result.Message = "There was an problem with your LMS authorization information.";
@@ -842,7 +842,7 @@ namespace Ecat.Business.Repositories
             var apiAddr = new Uri(canvasApiUrl + "courses/" + crseId + "/assignments");
             client.DefaultRequestHeaders.Accept.Clear();
             //client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
 
             var response = await client.GetAsync(apiAddr);
             if (!response.IsSuccessStatusCode)

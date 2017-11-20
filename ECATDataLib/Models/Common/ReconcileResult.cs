@@ -13,6 +13,7 @@ namespace Ecat.Data.Models.Common
         public string AcademyId { get; set; }
         public int NumAdded { get; set; }
         public int NumRemoved { get; set; }
+        public bool HasToken { get; set; }
     }
 
     public class CourseReconResult : ReconcileResult

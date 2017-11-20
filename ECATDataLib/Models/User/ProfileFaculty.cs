@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ecat.Data.Models.Canvas;
 using Ecat.Data.Models.Interface;
 using Ecat.Data.Models.School;
 
@@ -20,5 +21,6 @@ namespace Ecat.Data.Models.User
 
         public Person Person { get; set; }
         public ICollection<FacultyInCourse> Courses { get; set; }
+        public CanvasLogin CanvasLogin { get; set; }
     }
 }

@@ -199,9 +199,9 @@ namespace Ecat.Business.Repositories
 
             //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
             //var accessToken = await CanvasLoginRepo.GetAccessToken();
-            var accessToken = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+            var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
 
-            if (accessToken == null)
+            if (canvasLogin.AccessToken == null)
             {
                 return null;
             }
@@ -212,7 +212,7 @@ namespace Ecat.Business.Repositories
             var apiAddr = new Uri(canvasApiUrl + "accounts/" + academy.CanvasAcctId + "/courses");
             client.DefaultRequestHeaders.Accept.Clear();
             //client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
 
             var response = await client.GetAsync(apiAddr);
 
@@ -367,7 +367,7 @@ namespace Ecat.Business.Repositories
             return reconResult;
         }
 
-        private async Task<MemReconResult> ReconcileCanvasCourseMems (int courseId)
+        public async Task<MemReconResult> ReconcileCanvasCourseMems (int courseId)
         {
             await GetProfile();
 
@@ -381,9 +381,9 @@ namespace Ecat.Business.Repositories
 
             //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
             //var accessToken = await CanvasLoginRepo.GetAccessToken();
-            var accessToken = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+            var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
 
-            if (accessToken == null)
+            if (canvasLogin.AccessToken == null)
             {
                 return null;
             }
@@ -392,7 +392,7 @@ namespace Ecat.Business.Repositories
             var apiAddr = new Uri(canvasApiUrl + "courses/" + course.BbCourseId + "/enrollments?include[]=observed_users");
             client.DefaultRequestHeaders.Accept.Clear();
             //client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
 
             var response = await client.GetAsync(apiAddr);
 

@@ -19,8 +19,8 @@ namespace Ecat.Web
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
                 //TODO: Choose environment for deployment
-                //.UseEnvironment("Development")
-                .UseEnvironment("AWSTesting")
+                .UseEnvironment("Development")
+                //.UseEnvironment("AWSTesting")
                 //.UseEnvironment("AUPublicDev")
                 //.UseEnvironment("AUGateway")
                 //.UseEnvironment("Production")

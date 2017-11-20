@@ -34,6 +34,7 @@ namespace Ecat.Web.Controllers
             int userId = int.Parse(accessor.HttpContext.User.Claims.First(c => c.Type == "sub").Value);
             courseRepo.loggedInUserId = userId;
             groupRepo.loggedInUserId = userId;
+            tokenRepo.loggedInUserId = userId;
         }
 
         #region breeze methods
@@ -130,7 +131,9 @@ namespace Ecat.Web.Controllers
             var token = await tokenRepo.CheckCanvasTokenInfo();
             if (!token)
             {
-                //uhh tell the client to redirect somehow? this returns a CourseReconResult how am I doing this?
+                var notoken = new CourseReconResult();
+                notoken.HasToken = false;
+                return notoken;
             }
 
             return await courseRepo.ReconcileCanvasCourses();
@@ -142,10 +145,42 @@ namespace Ecat.Web.Controllers
             var token = await tokenRepo.CheckCanvasTokenInfo();
             if (!token)
             {
-                
+                var notoken = new MemReconResult();
+                notoken.HasToken = false;
+                return notoken;
             }
 
             return await courseRepo.ReconcileCanvasCourseMems(courseId);
         }
+
+        public async Task<SaveGradeResult> SyncCanvasGrades (int courseId)
+        {
+            var token = await tokenRepo.CheckCanvasTokenInfo();
+            if (!token)
+            {
+                var notoken = new SaveGradeResult();
+                notoken.HasToken = false;
+                return notoken;
+            }
+
+            return await groupRepo.SyncCanvasGrades(courseId);
+        }
+
+        //[HttpGet]
+        //public async Task<ActionResult> CanvasAuth(string code)
+        //{
+        //    var token = await tokenRepo.GetRefreshToken(code);
+
+        //    if (token)
+        //    {
+        //        ViewBag.Success = true;
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Success = false;
+        //    }
+
+        //    return View();
+        //}
     }
 }

@@ -49,6 +49,8 @@ namespace Ecat.Business.Repositories.Interface
 
     public interface ILmsAdminTokenRepo
     {
+        int loggedInUserId { get; set; }
+
         Task<bool> CheckCanvasTokenInfo();
         Task<bool> GetRefreshToken(string authCode);
         Task<string> GetAccessToken();

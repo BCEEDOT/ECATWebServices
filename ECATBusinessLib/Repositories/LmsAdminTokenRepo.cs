@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Breeze.Persistence;
 using Breeze.Persistence.EF6;
 using Ecat.Business.Repositories.Interface;
 using Ecat.Data.Contexts;
@@ -22,7 +26,8 @@ namespace Ecat.Business.Repositories
 
     public class LmsAdminTokenRepo: ILmsAdminTokenRepo
     {
-        private readonly EFPersistenceManager<EcatContext> ctxManager;
+        //private readonly EFPersistenceManager<EcatContext> ctxManager;
+        private readonly EcatContext ecatContext;
         //TODO: Update once we have production Canvas
         private readonly string canvasTokenUrl = "https://ec2-34-215-69-52.us-west-2.compute.amazonaws.com/login/oauth2/token";
         private readonly string clientId = "10000000000002";
@@ -33,14 +38,15 @@ namespace Ecat.Business.Repositories
 
         public LmsAdminTokenRepo(EcatContext mainCtx)
         {
-            ctxManager = new EFPersistenceManager<EcatContext>(mainCtx);
+            //ctxManager = new EFPersistenceManager<EcatContext>(mainCtx);
+            ecatContext = mainCtx;
         }
 
         //return true is we have a refresh token for this user that works
         //return false should redirect the user to the canvas auth endpoint to get a code
         public async Task<bool> CheckCanvasTokenInfo()
         {
-            var canvLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+            var canvLogin = await ecatContext.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
 
             if (canvLogin == null)
             {
@@ -64,7 +70,10 @@ namespace Ecat.Business.Repositories
         //after getting the code from the canvas auth endpoint come here
         public async Task<bool> GetRefreshToken(string authCode)
         {
-            var canvLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+            var canvLogin = await ecatContext.CanvasLogins
+                .Where(cl => cl.PersonId == loggedInUserId)
+                //.Include(cl => cl.Person)
+                .SingleOrDefaultAsync();
             bool newEntry = false;
 
             //Need a new login entry
@@ -73,9 +82,11 @@ namespace Ecat.Business.Repositories
                 newEntry = true;
                 canvLogin = new CanvasLogin();
                 canvLogin.PersonId = loggedInUserId;
+                //canvLogin.Person = await ecatContext.People.Where(p => p.PersonId == loggedInUserId).SingleAsync();
             }
 
             var client = new HttpClient();
+
             var authAddr = new Uri(canvasTokenUrl);
             var content = new FormUrlEncodedContent(new[] {
                     new KeyValuePair<string, string>("grant_type", "authorization_code"),
@@ -105,14 +116,64 @@ namespace Ecat.Business.Repositories
 
             if (newEntry)
             {
-                ctxManager.Context.CanvasLogins.Add(canvLogin);
+                ecatContext.CanvasLogins.Add(canvLogin);
             }
             else
             {
-                ctxManager.Context.Entry(canvLogin).State = EntityState.Modified;
+                ecatContext.CanvasLogins.Attach(canvLogin);
+                ecatContext.Entry(canvLogin).State = System.Data.Entity.EntityState.Modified;
             }
 
-            await ctxManager.Context.SaveChangesAsync();
+            try
+            {
+                //ctxManager.Context.CanvasLogins.Add(canvLogin);
+                //await ecatContext.SaveChangesAsync();
+                var test = await ecatContext.SaveChangesAsync();
+                Debug.Write(test);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var testex = ex.ToString();
+                Debug.WriteLine(ex);
+                foreach (DbEntityValidationResult item in ex.EntityValidationErrors)
+                {
+                    // Get entry
+
+                    DbEntityEntry entry = item.Entry;
+                    string entityTypeName = entry.Entity.GetType().Name;
+
+                    // Display or log error messages
+
+                    foreach (DbValidationError subItem in item.ValidationErrors)
+                    {
+                        string message = string.Format("Error '{0}' occurred in {1} at {2}",
+                                 subItem.ErrorMessage, entityTypeName, subItem.PropertyName);
+                        Debug.WriteLine(message);
+                    }
+                }
+                
+                //// Retrieve the error messages as a list of strings.
+                //var errorMessages = ex.EntityValidationErrors
+                //        .SelectMany(x => x.ValidationErrors)
+                //        .Select(x => x.ErrorMessage);
+
+                //// Join the list to a single string.
+                //var fullErrorMessage = string.Join("; ", errorMessages);
+
+                //// Combine the original exception message with the new one.
+                //var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+                //// Throw a new DbEntityValidationException with the improved exception message.
+                //Debug.WriteLine(exceptionMessage);
+                
+                //var test = e;
+                //Debug.WriteLine(e);
+                //foreach(var thing in e.EntityValidationErrors)
+                //{
+                //    Debug.WriteLine(thing);
+                //}
+            }
+            
 
             return true;
         }
@@ -120,7 +181,7 @@ namespace Ecat.Business.Repositories
         //if this returns null, redirect user to the canvas auth endpoint
         public async Task<string> GetAccessToken()
         {
-            var canvLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+            var canvLogin = await ecatContext.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
 
             if (canvLogin == null)
             {
@@ -164,9 +225,9 @@ namespace Ecat.Business.Repositories
 
                 canvLogin.AccessToken = respObject.access_token;
                 canvLogin.TokenExpires = DateTime.Now.AddSeconds(respObject.expires_in);
-                ctxManager.Context.Entry(canvLogin).State = EntityState.Modified;
+                ecatContext.Entry(canvLogin).State = System.Data.Entity.EntityState.Modified;
 
-                await ctxManager.Context.SaveChangesAsync();
+                await ecatContext.SaveChangesAsync();
 
                 return canvLogin.AccessToken;
             }

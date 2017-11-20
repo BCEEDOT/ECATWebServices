@@ -15,5 +15,6 @@ namespace Ecat.Data.Models.Common
         public int SentScores { get; set; }
         public int ReturnedScores { get; set; }
         public string Message { get; set; }
+        public bool HasToken { get; set; }
     }
 }
