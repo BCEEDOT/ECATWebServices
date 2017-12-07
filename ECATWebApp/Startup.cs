@@ -176,8 +176,8 @@ namespace Ecat.Web
             });
             app.UseMvcWithDefaultRoute();
             app.UseDefaultFiles();
-            app.UseStaticFiles();
             app.UseResponseCompression();
+            app.UseStaticFiles();
         }
     }
 }
