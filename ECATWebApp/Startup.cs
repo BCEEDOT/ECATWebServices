@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
 using System.IO;
+using System.IO.Compression;
 
 namespace Ecat.Web
 {
@@ -94,6 +96,12 @@ namespace Ecat.Web
                 options.SerializerSettings.TypeNameHandling = TypeNameHandling.Objects;
                 //adds $id and $ref, making the formatter properly read object references
                 options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            });
+
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<GzipCompressionProvider>();
             });
         }
 
@@ -169,6 +177,7 @@ namespace Ecat.Web
             });
             app.UseMvcWithDefaultRoute();
             app.UseDefaultFiles();
+            app.UseResponseCompression();
             app.UseStaticFiles();
         }
     }
