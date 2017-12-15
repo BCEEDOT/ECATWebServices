@@ -77,20 +77,9 @@ namespace Ecat.Business.Repositories
         //after getting the code from the canvas auth endpoint come here
         public async Task<bool> GetRefreshToken(string authCode)
         {
-            bool newEntry = false;
-            var canvLogin = new CanvasLogin();
-
-            if (loggedInUserId != 0)
+            if (authCode == null)
             {
-                canvLogin = await ecatContext.CanvasLogins
-                .Where(cl => cl.PersonId == loggedInUserId)
-                .SingleOrDefaultAsync();
-            }
-
-            //Need a new login entry
-            if (canvLogin.PersonId == 0)
-            {
-                newEntry = true;
+                return false;
             }
 
             var client = new HttpClient();
@@ -120,7 +109,16 @@ namespace Ecat.Business.Repositories
                 return false;
             }
 
-            canvLogin.PersonId = ecatUser.PersonId;
+            var canvLogin = await ecatContext.CanvasLogins
+                .Where(cl => cl.PersonId == ecatUser.PersonId)
+                .SingleOrDefaultAsync();
+
+            if (respObject.access_token == null)
+            {
+                //we got a success code from the canvas call, but didn't get a token. can this happen?
+                return false;
+            }
+
             canvLogin.AccessToken = respObject.access_token;
             canvLogin.TokenExpires = DateTime.Now.AddSeconds(respObject.expires_in);
 
@@ -130,8 +128,10 @@ namespace Ecat.Business.Repositories
                 canvLogin.RefreshToken = respObject.refresh_token;
             }
 
-            if (newEntry)
+            //Need a new login entry
+            if (canvLogin.PersonId == 0)
             {
+                canvLogin.PersonId = ecatUser.PersonId;
                 ecatContext.CanvasLogins.Add(canvLogin);
             }
             else
@@ -157,6 +157,7 @@ namespace Ecat.Business.Repositories
 
             if (canvLogin.AccessToken == null)
             {
+                //there isn't a time where we will have a refresh token but no access token unless something weird happened, so just have the user re-auth with canvas
                 return null;
             }
 
@@ -195,8 +196,6 @@ namespace Ecat.Business.Repositories
                 ecatContext.Entry(canvLogin).State = System.Data.Entity.EntityState.Modified;
 
                 await ecatContext.SaveChangesAsync();
-
-                return canvLogin.AccessToken;
             }
 
             return canvLogin.AccessToken;

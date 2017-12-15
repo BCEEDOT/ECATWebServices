@@ -21,6 +21,7 @@ using Ecat.Business.BbWs.BbGradebook;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using Ecat.Data.Models.Canvas;
+using Ecat.Data.Models.Designer;
 
 namespace Ecat.Business.Repositories
 {
@@ -242,6 +243,227 @@ namespace Ecat.Business.Repositories
                 ctxManager.Context.WorkGroups.Add(grp);
             }
             await ctxManager.Context.SaveChangesAsync();
+            return reconResult;
+        }
+
+        public async Task<GroupReconResult> PollCanvasGroups(int crseId)
+        {
+            var course = await ctxManager.Context.Courses.Where(c => c.Id == crseId)
+                .Include(c => c.Students)
+                .Include(c => c.WorkGroups)
+                .SingleAsync();
+            if (course == null) { return null; }
+            var academy = StaticAcademy.AcadLookupById[course.AcademyId];
+            var workGroupModel = await ctxManager.Context.WgModels.Where(wgm => wgm.IsActive && wgm.MpEdLevel == academy.MpEdLevel && wgm.MpWgCategory == MpGroupCategory.Wg1).SingleAsync();
+
+            var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+
+            if (canvasLogin.AccessToken == null)
+            {
+                return null;
+            }
+
+            var reconResult = new GroupReconResult
+            {
+                Id = Guid.NewGuid(),
+                AcademyId = Faculty?.AcademyId,
+                Groups = new List<WorkGroup>()
+            };
+
+            var client = new HttpClient();
+            var apiAddr = new Uri(canvasApiUrl + "courses/" + course.BbCourseId + "/groups?per_page=1000");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
+
+            var response = await client.GetAsync(apiAddr);
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var groupsReturned = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasGroup>>(apiResponse);
+
+                groupsReturned.ForEach(gr =>
+                {
+                    var existingGroup = course.WorkGroups.Where(grp => grp.BbGroupId == gr.id.ToString()).Single();
+                    if (existingGroup == null)
+                    {
+                        var newGroup = new WorkGroup()
+                        {
+                            BbGroupId = gr.id.ToString(),
+                            DefaultName = gr.name,
+                            CourseId = crseId,
+                            WgModelId = workGroupModel.Id,
+                            AssignedSpInstrId = workGroupModel.AssignedSpInstrId,
+                            MpCategory = MpGroupCategory.Wg1,
+                            MpSpStatus = MpSpStatus.Created,
+                            ModifiedById = loggedInUserId,
+                            ModifiedDate = DateTime.Now,
+                            ReconResultId = reconResult.Id
+                        };
+
+                        var nameNum = gr.name.Split(' ')[1];
+                        if (!nameNum.StartsWith("0") && nameNum.Length == 1)
+                        {
+                            nameNum = "0" + nameNum;
+                        }
+                        newGroup.GroupNumber = nameNum;
+
+                        ctxManager.Context.WorkGroups.Add(newGroup);
+                        reconResult.Groups.Add(newGroup);
+                    }
+                });
+
+                await ctxManager.Context.SaveChangesAsync();
+            }
+
+            return reconResult;
+        }
+
+        public async Task<List<GroupMemReconResult>> PollCanvasGroupMems (Course course, CanvasLogin canvasLogin)
+        {
+            var results = new List<GroupMemReconResult>();
+
+            var client = new HttpClient();
+            var apiAddr = new Uri(canvasApiUrl + "courses/" + course.BbCourseId + "/enrollments?include[]=groupd_ids&per_page=1000");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
+
+            var response = await client.GetAsync(apiAddr);
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var enrollmentsReturned = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasEnrollment>>(apiResponse);
+                var studentIds = new List<int>();
+                course.Students.ToList().ForEach(stu => studentIds.Add(stu.StudentPersonId));
+                var students = await ctxManager.Context.People.Where(p => studentIds.Contains(p.PersonId)).ToListAsync();
+                var groupsWithMems = await ctxManager.Context.WorkGroups.Where(grp => grp.CourseId == course.Id && grp.MpCategory == MpGroupCategory.Wg1).Include(grp => grp.GroupMembers).ToListAsync();
+
+                groupsWithMems.ForEach(grp =>
+                {
+                    var grpMemRecon = new GroupMemReconResult()
+                    {
+                        CourseId = course.Id,
+                        Id = new Guid(),
+                        WorkGroupId = grp.WorkGroupId,
+                        WorkGroupName = grp.DefaultName,
+                        GroupType = grp.MpCategory
+                    };
+
+                    var returnedMems = enrollmentsReturned.Where(er => er.user.group_ids.Count == 1 && er.user.group_ids.First().ToString() == grp.BbGroupId).ToList();
+                    var allRetMemIds = new List<int>();
+
+                    returnedMems.ForEach(rm =>
+                    {
+                        var retMemPerson = students.Where(s => s.BbUserId == rm.user_id.ToString()).Single();
+                        if (retMemPerson != null)
+                        {
+                            allRetMemIds.Add(retMemPerson.PersonId);
+                            var existingMem = grp.GroupMembers.Where(gm => gm.StudentId == retMemPerson.PersonId).Single();
+
+                            if (existingMem == null)
+                            {
+                                var grpMembership = new CrseStudentInGroup()
+                                {
+                                    CourseId = grp.CourseId,
+                                    WorkGroupId = grp.WorkGroupId,
+                                    StudentId = retMemPerson.PersonId,
+                                    ModifiedById = loggedInUserId,
+                                    ModifiedDate = DateTime.Now
+                                };
+
+                                ctxManager.Context.StudentInGroups.Add(grpMembership);
+                                grpMemRecon.NumAdded++; 
+                            } 
+                            else
+                            {
+                                if (existingMem.IsDeleted)
+                                { existingMem.IsDeleted = false; }
+
+                                ctxManager.Context.Entry(existingMem).State = System.Data.Entity.EntityState.Modified;
+                                grpMemRecon.NumAdded++;
+                            }
+                        }
+                    });
+
+                    var memNotReturned = grp.GroupMembers.Where(gm => !gm.IsDeleted && !allRetMemIds.Contains(gm.StudentId)).ToList();
+
+                    if (memNotReturned.Any())
+                    {
+                        memNotReturned.ForEach(mnr => {
+                            mnr.IsDeleted = true;
+                            ctxManager.Context.Entry(mnr).State = System.Data.Entity.EntityState.Modified;
+                            grpMemRecon.NumRemoved++;
+                        });
+                    }
+
+                    if (grpMemRecon.NumAdded > 0 || grpMemRecon.NumRemoved > 0)
+                    {
+                        results.Add(grpMemRecon);
+                    }
+                });
+
+                await ctxManager.Context.SaveChangesAsync();
+            }
+
+            return results;
+        }
+
+        public async Task<GroupReconResult> PushCanvasSections(int crseId)
+        {
+            var course = await ctxManager.Context.Courses.Where(c => c.Id == crseId).SingleAsync();
+            if (course == null) { return null; }
+            var academy = StaticAcademy.AcadLookupById[course.AcademyId];
+
+            var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+
+            if (canvasLogin.AccessToken == null)
+            {
+                return null;
+            }
+
+            var reconResult = new GroupReconResult
+            {
+                Id = Guid.NewGuid(),
+                AcademyId = Faculty?.AcademyId,
+                Groups = new List<WorkGroup>()
+            };
+
+            var client = new HttpClient();
+            var apiAddr = new Uri(canvasApiUrl + "courses/" + course.BbCourseId + "/sections?include[]=students&per_page=1000");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
+
+            var response = await client.GetAsync(apiAddr);
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var sectionsReturned = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasSection>>(apiResponse);
+
+                var groupsWithMems = await ctxManager.Context.WorkGroups.Where(grp => grp.CourseId == crseId && grp.MpCategory == MpGroupCategory.Wg1 && grp.GroupMembers.Any()).Include(grp => grp.GroupMembers).ToListAsync();
+                var studentIds = new List<int>();
+                groupsWithMems.ForEach(grp => {
+                    grp.GroupMembers.ToList().ForEach(gm => {
+                        studentIds.Add(gm.StudentId);
+                    });
+                });
+
+                var students = ctxManager.Context.People.Where(p => studentIds.Contains(p.PersonId)).ToListAsync();
+
+                groupsWithMems.ForEach(grp =>
+                {
+                    var retSection = sectionsReturned.Where(sr => sr.name == grp.DefaultName).First();
+                    if (retSection == null)
+                    {
+                        var newSection = new CanvasSection()
+                        {
+                            name = grp.DefaultName
+                        };
+                    }
+                });
+            }
+
             return reconResult;
         }
 
@@ -589,6 +811,158 @@ namespace Ecat.Business.Repositories
             return grpWithMems;
         }
 
+        public async Task<List<GroupMemReconResult>> PollCanvasSections(int crseId)
+        {
+            //incomplete, but I'm leaving all this in for now, because if the new SIS ever happens we might have to get sections
+
+            var course = await ctxManager.Context.Courses.Where(c => c.Id == crseId)
+                .Include(c => c.Students)
+                .SingleAsync();
+            if (course == null) { return null; }
+            var academy = StaticAcademy.AcadLookupById[course.AcademyId];
+            var workGroupModel = await ctxManager.Context.WgModels.Where(wgm => wgm.IsActive && wgm.MpEdLevel == academy.MpEdLevel && wgm.MpWgCategory == MpGroupCategory.Wg1).SingleAsync();
+
+            var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+
+            if (canvasLogin.AccessToken == null)
+            {
+                return null;
+            }
+
+            var results = new List<GroupMemReconResult>();
+
+            var client = new HttpClient();
+            var apiAddr = new Uri(canvasApiUrl + "courses/" + course.BbCourseId + "/sections?include[]=students&per_page=1000");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
+
+            var response = await client.GetAsync(apiAddr);
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var sectionsReturned = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasSection>>(apiResponse);
+
+                if (sectionsReturned == null || sectionsReturned.Count == 0)
+                {
+                    return results;
+                }
+                else
+                {
+                    //var returnedSectionIds = new List<string>();
+                    //sectionsReturned.ForEach(sr => returnedSectionIds.Add(sr.id.ToString()));
+                    var courseEnrollPersonIds = new List<int>();
+
+                    course.Students.ToList().ForEach(cs => courseEnrollPersonIds.Add(cs.StudentPersonId));
+
+                    var existingGroups = await ctxManager.Context.WorkGroups.Where(wg => wg.CourseId == crseId)
+                        .Include(wg => wg.GroupMembers)
+                        .ToListAsync();
+
+                    var existingGroupLMSIds = new List<string>();
+                    existingGroups.ForEach(g => {
+                        existingGroupLMSIds.Add(g.BbGroupId);
+                        //g.GroupMembers.ToList().ForEach(gm => studentsInGroupsIds.Add(gm.StudentId));
+                    });
+                    var newGroups = new List<CanvasSection>();
+                    sectionsReturned.ForEach(sr =>
+                    {
+                        if (!existingGroupLMSIds.Contains(sr.id.ToString()))
+                        {
+                            newGroups.Add(sr);
+                        }
+                    });
+
+                    var createdGroups = await AddCanvasGroups(newGroups, course.Id, workGroupModel);
+
+                    var courseEnrolls = new List<Person>();
+                    if (courseEnrollPersonIds.Count > 0)
+                    {
+                        courseEnrolls = await ctxManager.Context.People.Where(p => courseEnrollPersonIds.Contains(p.PersonId)).ToListAsync();
+                    }
+                    var courseEnrollLMSIds = new List<string>();
+                    courseEnrolls.ForEach(ce => courseEnrollLMSIds.Add(ce.BbUserId));
+
+
+
+
+                    
+                    sectionsReturned.ForEach(sec =>
+                    {
+                        if (existingGroupLMSIds.Contains(sec.id.ToString()))
+                        {
+                            var groupRecord = existingGroups.Where(g => g.BbGroupId == sec.id.ToString()).Single();
+
+                            if (groupRecord.GroupMembers.Count > 0)
+                            {
+                                var grpMemList = groupRecord.GroupMembers.ToList();
+                                var groupMemIds = new List<int>();
+                                grpMemList.ForEach(gm => groupMemIds.Add(gm.StudentId));
+
+                                var groupMemPersons = courseEnrolls.Where(ce => {
+                                    if (groupMemIds.Contains(ce.PersonId)) { return true; }
+                                    return false;
+                                });
+
+                                var returnedGrpStuds = sec.students.ToList();
+                                
+
+                                
+                                returnedGrpStuds.ForEach(rgs =>
+                                {
+                                    var existingMem = groupMemPersons.Where(gmp => gmp.BbUserId == rgs.id.ToString()).Single();
+                                    
+                                    if (existingMem == null)
+                                    {
+                                        //var user = courseEnrolls.Where()
+                                        var newCSIG = new CrseStudentInGroup()
+                                        {
+                                            CourseId = course.Id,
+                                            WorkGroupId = groupRecord.WorkGroupId
+                                        };
+
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+
+
+
+            return results;
+        }
+
+        public async Task<List<WorkGroup>> AddCanvasGroups(List<CanvasSection> sections, int crseId, WorkGroupModel model)
+        {
+            var newGroups = new List<WorkGroup>();
+
+            sections.ForEach(sec => {
+                var group = new WorkGroup()
+                {
+                    CourseId = crseId,
+                    BbGroupId = sec.id.ToString(),
+                    DefaultName = sec.name,
+                    WgModelId = model.Id,
+                    ModifiedById = loggedInUserId,
+                    ModifiedDate = DateTime.Now,
+                    AssignedSpInstrId = model.AssignedSpInstrId,
+                    MpCategory = MpGroupCategory.Wg1,
+                    MpSpStatus = MpSpStatus.Created
+                    //TODO: figure out how to figure out group number (will it be in name somewhere?)
+                    //GroupNumber = 
+                };
+
+                newGroups.Add(group);
+            });
+
+            ctxManager.Context.WorkGroups.AddRange(newGroups);
+            var saved = await ctxManager.Context.SaveChangesAsync();
+
+            return newGroups;
+        }
+
         public async Task<SaveGradeResult> SyncBbGrades(int crseId, string wgCategory)
         {
 
@@ -822,8 +1196,6 @@ namespace Ecat.Business.Repositories
                 return result;
             }
 
-            //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
-            //var accessToken = await CanvasLoginRepo.GetAccessToken();
             var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
 
             if (canvasLogin.AccessToken == null)
@@ -840,9 +1212,8 @@ namespace Ecat.Business.Repositories
             models.OrderBy(wgm => wgm.MpWgCategory);
 
             var client = new HttpClient();
-            var apiAddr = new Uri(canvasApiUrl + "courses/" + crseId + "/assignments");
+            var apiAddr = new Uri(canvasApiUrl + "courses/" + groups[0].Course.BbCourseId + "/assignments?per_page=1000");
             client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
 
             var response = await client.GetAsync(apiAddr);
@@ -856,6 +1227,7 @@ namespace Ecat.Business.Repositories
             var apiResponse = await response.Content.ReadAsStringAsync();
             var canvAssignments = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasAssignment>>(apiResponse);
 
+            //TODO: Update based on what we are doing with prod canvas: pushing all grades back or pushing one grade back?
             var canvasEvalAssign = canvAssignments.Where(ca => ca.name == models.Last().StudStratCol).Single();
 
             if (canvasEvalAssign == null)

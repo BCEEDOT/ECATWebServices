@@ -15,5 +15,7 @@ namespace Ecat.Data.Models.Canvas
         public string login_id { get; set; }
         public ICollection<CanvasEnrollment> enrollments { get; set; }
         public string email { get; set; }
+        public string avatar_url { get; set; }
+        public ICollection<int> group_ids { get; set; }
     }
 }

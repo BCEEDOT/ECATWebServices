@@ -173,22 +173,5 @@ namespace Ecat.Web.Controllers
             result.HasToken = true;
             return result;
         }
-
-        //[HttpGet]
-        //public async Task<ActionResult> CanvasAuth(string code)
-        //{
-        //    var token = await tokenRepo.GetRefreshToken(code);
-
-        //    if (token)
-        //    {
-        //        ViewBag.Success = true;
-        //    }
-        //    else
-        //    {
-        //        ViewBag.Success = false;
-        //    }
-
-        //    return View();
-        //}
     }
 }

@@ -199,8 +199,6 @@ namespace Ecat.Business.Repositories
 
             var reconResult = new CourseReconResult();
 
-            //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
-            //var accessToken = await CanvasLoginRepo.GetAccessToken();
             var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
 
             if (canvasLogin.AccessToken == null)
@@ -210,9 +208,8 @@ namespace Ecat.Business.Repositories
             }
 
             var client = new HttpClient();
-            var apiAddr = new Uri(canvasApiUrl + "accounts/" + academy.CanvasAcctId + "/courses");
+            var apiAddr = new Uri(canvasApiUrl + "accounts/" + academy.CanvasAcctId + "/courses?per_page=1000");
             client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
 
             var response = await client.GetAsync(apiAddr);
@@ -395,8 +392,6 @@ namespace Ecat.Business.Repositories
             reconResult.NumAdded = 0;
             reconResult.NumOfAccountCreated = 0;
 
-            //var CanvasLoginRepo = new LmsAdminTokenRepo(ctxManager.Context);
-            //var accessToken = await CanvasLoginRepo.GetAccessToken();
             var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
 
             if (canvasLogin.AccessToken == null)
@@ -406,9 +401,8 @@ namespace Ecat.Business.Repositories
             }
 
             var client = new HttpClient();
-            var apiAddr = new Uri(canvasApiUrl + "courses/" + course.BbCourseId + "/enrollments?include[]=observed_users");
+            var apiAddr = new Uri(canvasApiUrl + "courses/" + course.BbCourseId + "/enrollments?include[]=observed_users&per_page=1000");
             client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Add("Authorization", "Bearer QMeMcu6XrJEBWvrovmNPqZkhAIeYJgO9BWmYbFsmZU9f6oLsF8tZPQVhptG9Te9p");
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + canvasLogin.AccessToken);
 
             var response = await client.GetAsync(apiAddr);
@@ -470,6 +464,7 @@ namespace Ecat.Business.Repositories
                                 ecatAcct.MpPaygrade = MpPaygrade.Unk;
                                 ecatAcct.ModifiedById = Faculty?.PersonId;
                                 ecatAcct.ModifiedDate = DateTime.Now;
+                                ecatAcct.AvatarLocation = u.user.avatar_url;
 
                                 ecatAcct.MpInstituteRole = MpRoleTransform.CanvasRoleToEcat(u.type);
 
@@ -565,6 +560,8 @@ namespace Ecat.Business.Repositories
                 }
 
             }
+
+            //TODO: forgot to remove enrollments...
 
             return reconResult;
         }
