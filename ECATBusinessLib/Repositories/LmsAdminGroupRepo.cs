@@ -319,8 +319,21 @@ namespace Ecat.Business.Repositories
             return reconResult;
         }
 
-        public async Task<List<GroupMemReconResult>> PollCanvasGroupMems (Course course, CanvasLogin canvasLogin)
+        public async Task<List<GroupMemReconResult>> PollCanvasGroupMems (int crseId)
         {
+            var course = await ctxManager.Context.Courses.Where(c => c.Id == crseId)
+                .Include(c => c.Students)
+                .Include(c => c.WorkGroups)
+                .SingleAsync();
+            if (course == null) { return null; }
+
+            var canvasLogin = await ctxManager.Context.CanvasLogins.Where(cl => cl.PersonId == loggedInUserId).SingleOrDefaultAsync();
+
+            if (canvasLogin.AccessToken == null)
+            {
+                return null;
+            }
+
             var results = new List<GroupMemReconResult>();
 
             var client = new HttpClient();
@@ -334,10 +347,11 @@ namespace Ecat.Business.Repositories
             if (response.IsSuccessStatusCode)
             {
                 var enrollmentsReturned = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasEnrollment>>(apiResponse);
-                var studentIds = new List<int>();
-                course.Students.ToList().ForEach(stu => studentIds.Add(stu.StudentPersonId));
-                var students = await ctxManager.Context.People.Where(p => studentIds.Contains(p.PersonId)).ToListAsync();
+
                 var groupsWithMems = await ctxManager.Context.WorkGroups.Where(grp => grp.CourseId == course.Id && grp.MpCategory == MpGroupCategory.Wg1).Include(grp => grp.GroupMembers).ToListAsync();
+
+                var studentIds = course.Students.Select(sic => sic.StudentPersonId).ToList();
+                var students = await ctxManager.Context.People.Where(p => studentIds.Contains(p.PersonId)).ToListAsync();
 
                 groupsWithMems.ForEach(grp =>
                 {
@@ -351,49 +365,48 @@ namespace Ecat.Business.Repositories
                     };
 
                     var returnedMems = enrollmentsReturned.Where(er => er.user.group_ids.Count == 1 && er.user.group_ids.First().ToString() == grp.BbGroupId).ToList();
-                    var allRetMemIds = new List<int>();
+                    var retMemIds = new List<string>();
 
                     returnedMems.ForEach(rm =>
                     {
-                        var retMemPerson = students.Where(s => s.BbUserId == rm.user_id.ToString()).Single();
-                        if (retMemPerson != null)
+                        retMemIds.Add(rm.id.ToString());
+                        var memExists = grp.GroupMembers.Where(gm => gm.BbCrseStudGroupId == rm.id.ToString()).Single();
+
+                        if (memExists == null)
                         {
-                            allRetMemIds.Add(retMemPerson.PersonId);
-                            var existingMem = grp.GroupMembers.Where(gm => gm.StudentId == retMemPerson.PersonId).Single();
+                            var stuPerson = students.Where(s => s.BbUserId == rm.user_id.ToString()).Single();
 
-                            if (existingMem == null)
+                            var grpMembership = new CrseStudentInGroup()
                             {
-                                var grpMembership = new CrseStudentInGroup()
-                                {
-                                    CourseId = grp.CourseId,
-                                    WorkGroupId = grp.WorkGroupId,
-                                    StudentId = retMemPerson.PersonId,
-                                    ModifiedById = loggedInUserId,
-                                    ModifiedDate = DateTime.Now
-                                };
+                                CourseId = grp.CourseId,
+                                WorkGroupId = grp.WorkGroupId,
+                                StudentId = stuPerson.PersonId,
+                                ModifiedById = loggedInUserId,
+                                ModifiedDate = DateTime.Now
+                            };
 
-                                ctxManager.Context.StudentInGroups.Add(grpMembership);
-                                grpMemRecon.NumAdded++; 
-                            } 
-                            else
-                            {
-                                if (existingMem.IsDeleted)
-                                { existingMem.IsDeleted = false; }
+                            ctxManager.Context.StudentInGroups.Add(grpMembership);
+                            grpMemRecon.NumAdded++;
+                        }
+                        else
+                        {
+                            if (memExists.IsDeleted)
+                            { memExists.IsDeleted = false; }
 
-                                ctxManager.Context.Entry(existingMem).State = System.Data.Entity.EntityState.Modified;
-                                grpMemRecon.NumAdded++;
-                            }
+                            ctxManager.Context.Entry(memExists).State = System.Data.Entity.EntityState.Modified;
+                            grpMemRecon.NumAdded++;
                         }
                     });
 
-                    var memNotReturned = grp.GroupMembers.Where(gm => !gm.IsDeleted && !allRetMemIds.Contains(gm.StudentId)).ToList();
+                    var memNotReturned = grp.GroupMembers.Where(gm => !gm.IsDeleted && !retMemIds.Contains(gm.BbCrseStudGroupId)).ToList();
 
                     if (memNotReturned.Any())
                     {
-                        memNotReturned.ForEach(mnr => {
-                            mnr.IsDeleted = true;
-                            ctxManager.Context.Entry(mnr).State = System.Data.Entity.EntityState.Modified;
-                            grpMemRecon.NumRemoved++;
+                        //TODO: Check for assessment/strat/comments
+                        memNotReturned.ForEach(mr =>
+                        {
+                            mr.IsDeleted = true;
+                            ctxManager.Context.Entry(mr).State = System.Data.Entity.EntityState.Modified; grpMemRecon.NumRemoved++;
                         });
                     }
 
@@ -411,6 +424,7 @@ namespace Ecat.Business.Repositories
 
         public async Task<GroupReconResult> PushCanvasSections(int crseId)
         {
+            //incomplete, not sure if we are going to do this
             var course = await ctxManager.Context.Courses.Where(c => c.Id == crseId).SingleAsync();
             if (course == null) { return null; }
             var academy = StaticAcademy.AcadLookupById[course.AcademyId];

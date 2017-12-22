@@ -384,7 +384,10 @@ namespace Ecat.Business.Repositories
         {
             await GetProfile();
 
-            var course = await ctxManager.Context.Courses.Where(c => c.Id == courseId).SingleOrDefaultAsync();
+            var course = await ctxManager.Context.Courses.Where(c => c.Id == courseId)
+                .Include(c => c.Students)
+                .Include(c => c.Faculty)
+                .SingleOrDefaultAsync();
             var reconResult = new MemReconResult();
             reconResult.Id = Guid.NewGuid();
             reconResult.AcademyId = Faculty?.AcademyId;
@@ -412,48 +415,99 @@ namespace Ecat.Business.Repositories
             {
                 var enrollmentsReturned = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CanvasEnrollment>>(apiResponse);
 
-                var reconCourses = new List<Course>();
-
                 if (enrollmentsReturned == null || enrollmentsReturned.Count == 0)
                 {
                     return reconResult;
                 }
                 else
-                {
-                    var returnedUserIds = new List<string>();
+                {                 
+                    var newEnrolls = new List<CanvasEnrollment>();
+                    var removedStudents = new List<StudentInCourse>();
+                    var removedFaculty = new List<FacultyInCourse>();
+                    var retStuUserIds = new List<string>();
+                    var retFacUserIds = new List<string>();
 
                     enrollmentsReturned.ForEach(ce =>
                     {
-                        returnedUserIds.Add(ce.user_id.ToString());
+                        if (MpRoleTransform.CanvasRoleToEcat(ce.type) == MpInstituteRoleId.Student)
+                        {
+                            retStuUserIds.Add(ce.user_id.ToString());
+                            var stuEnrollExists = course.Students.Where(sic => sic.BbCourseMemId == ce.id.ToString()).Single();
+
+                            //TODO: Will students disenrolled in iGecko/SIS show as inactive or be removed from the course in Canvas completely? Update accordingly
+                            if (ce.enrollment_state == "inactive")
+                            {
+                                if (stuEnrollExists != null && !stuEnrollExists.IsDeleted)
+                                {
+                                    removedStudents.Add(stuEnrollExists);
+                                }
+                            }
+                            
+                            if (stuEnrollExists == null)
+                            {
+                                newEnrolls.Add(ce);
+                            }
+                        }
+
+                        if (MpRoleTransform.CanvasRoleToEcat(ce.type) == MpInstituteRoleId.Faculty)
+                        {
+                            retFacUserIds.Add(ce.user_id.ToString());
+                            var facEnrollExists = course.Faculty.Where(fic => fic.BbCourseMemId == ce.id.ToString()).Single();
+
+                            //TODO: Will students disenrolled in iGecko/SIS show as inactive or be removed from the course in Canvas completely? Update accordingly
+                            if (ce.enrollment_state == "inactive")
+                            {
+                                if (facEnrollExists != null && !facEnrollExists.IsDeleted)
+                                {
+                                    removedFaculty.Add(facEnrollExists);
+                                }
+                            }
+
+                            if (facEnrollExists == null)
+                            {
+                                newEnrolls.Add(ce);
+                            }
+                        }
                     });
 
-                    var existingUsers = await ctxManager.Context.People.Where(p => returnedUserIds.Contains(p.BbUserId)).ToListAsync();
+                    var students = new List<Person>();
+                    var faculty = new List<Person>();
 
-                    var students = existingUsers.Where(p => p.MpInstituteRole == MpInstituteRoleId.Student).ToList();
-                    var faculty = existingUsers.Where(p => p.MpInstituteRole == MpInstituteRoleId.Faculty).ToList();
-                    faculty.AddRange(existingUsers.Where(p => p.MpInstituteRole == MpInstituteRoleId.CourseAdmin).ToList());
-                    var studentIds = new List<int>();
-                    var facultyIds = new List<int>();
-                    students.ForEach(s => studentIds.Add(s.PersonId));
-                    faculty.ForEach(f => facultyIds.Add(f.PersonId));
+                    if (retStuUserIds.Any())
+                    {
+                        students = await ctxManager.Context.People.Where(p => retStuUserIds.Contains(p.BbUserId)).Include(p => p.Student).ToListAsync();                       
+                    }
 
-                    var newUsers = enrollmentsReturned.Where(er => !existingUsers.Select(eu => eu.BbUserId).Contains(er.user_id.ToString())).ToList();
+                    if (retFacUserIds.Any())
+                    {
+                        faculty = await ctxManager.Context.People.Where(p => retFacUserIds.Contains(p.BbUserId)).Include(p => p.Faculty).ToListAsync();
+                    }
 
-                    if (newUsers.Any())
+                    if (newEnrolls.Any())
                     {
                         var newEcatAccts = new List<Person>();
-                        var newEcatAcctIds = new List<string>();
-                        newUsers.ForEach(u =>
+                        var newStuEnrolls = new List<StudentInCourse>();
+                        var newFacEnrolls = new List<FacultyInCourse>();
+                        newEnrolls.ForEach(ne =>
                         {
-                            //if a user has multiple section enrollments in the same course in Canvas they come back from the API each as different enrollment objects
-                            //TODO: change this depending on what we do with sections in prod
-                            if (!newEcatAcctIds.Contains(u.user_id.ToString()))
+                            var ecatAcct = new Person();
+                            if (MpRoleTransform.CanvasRoleToEcat(ne.type) == MpInstituteRoleId.Student)
                             {
-                                var ecatAcct = new Person();
-                                ecatAcct.BbUserId = u.user_id.ToString();
-                                ecatAcct.BbUserName = u.user.login_id;
-                                ecatAcct.Email = u.user.login_id;
-                                var nameSplit = u.user.sortable_name.Split(',');
+                                ecatAcct = students.Where(s => s.BbUserId == ne.user_id.ToString()).Single();
+                            }
+
+                            if (MpRoleTransform.CanvasRoleToEcat(ne.type) == MpInstituteRoleId.Faculty)
+                            {
+                                ecatAcct = faculty.Where(s => s.BbUserId == ne.user_id.ToString()).Single();
+                            }
+                            
+                            //if a user has multiple section enrollments in the same course in Canvas they come back from the API each as different enrollment objects
+                            if (ecatAcct.BbUserId == null)
+                            {
+                                ecatAcct.BbUserId = ne.user_id.ToString();
+                                ecatAcct.BbUserName = ne.user.login_id;
+                                ecatAcct.Email = ne.user.login_id;
+                                var nameSplit = ne.user.sortable_name.Split(',');
                                 ecatAcct.LastName = nameSplit[0];
                                 ecatAcct.FirstName = nameSplit[1].TrimStart(' ');
                                 ecatAcct.IsActive = true;
@@ -464,104 +518,147 @@ namespace Ecat.Business.Repositories
                                 ecatAcct.MpPaygrade = MpPaygrade.Unk;
                                 ecatAcct.ModifiedById = Faculty?.PersonId;
                                 ecatAcct.ModifiedDate = DateTime.Now;
-                                ecatAcct.AvatarLocation = u.user.avatar_url;
+                                ecatAcct.AvatarLocation = ne.user.avatar_url;
 
-                                ecatAcct.MpInstituteRole = MpRoleTransform.CanvasRoleToEcat(u.type);
-
-                                if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Student)
-                                {
-                                    ecatAcct.Student = new ProfileStudent();
-                                    students.Add(ecatAcct);
-                                    studentIds.Add(ecatAcct.PersonId);
-                                }
-
-                                if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Faculty || ecatAcct.MpInstituteRole == MpInstituteRoleId.CourseAdmin)
-                                {
-                                    ecatAcct.Faculty = new ProfileFaculty();
-                                    faculty.Add(ecatAcct);
-                                    facultyIds.Add(ecatAcct.PersonId);
-                                }
+                                ecatAcct.MpInstituteRole = MpRoleTransform.CanvasRoleToEcat(ne.type);
 
                                 newEcatAccts.Add(ecatAcct);
-                                newEcatAcctIds.Add(ecatAcct.BbUserId);
+                            }
+
+                            if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Student)
+                            {
+                                if (ecatAcct.Student == null)
+                                {
+                                    ecatAcct.Student = new ProfileStudent();
+                                }
+                                students.Add(ecatAcct);
+
+                                var newEnroll = new StudentInCourse();
+                                newEnroll.StudentPersonId = ecatAcct.PersonId;
+                                newEnroll.CourseId = courseId;
+                                newEnroll.BbCourseMemId = ne.id.ToString();
+
+                                newStuEnrolls.Add(newEnroll);
+                            }
+
+                            if (ecatAcct.MpInstituteRole == MpInstituteRoleId.Faculty || ecatAcct.MpInstituteRole == MpInstituteRoleId.CourseAdmin)
+                            {
+                                if (ecatAcct.Faculty == null)
+                                {
+                                    ecatAcct.Faculty = new ProfileFaculty();
+                                }
+                                ecatAcct.Faculty.AcademyId = course.AcademyId;
+                                faculty.Add(ecatAcct);
+
+                                var newEnroll = new FacultyInCourse();
+                                newEnroll.FacultyPersonId = ecatAcct.PersonId;
+                                newEnroll.CourseId = courseId;
+                                newEnroll.BbCourseMemId = ne.id.ToString();
+
+                                newFacEnrolls.Add(newEnroll);
+                            }
+
+                        });
+
+                        if (newEcatAccts.Any())
+                        {
+                            ctxManager.Context.People.AddRange(newEcatAccts);
+                            reconResult.NumOfAccountCreated = newEcatAccts.Count;
+                        }
+                        
+                        if (newStuEnrolls.Any())
+                        {
+                            ctxManager.Context.StudentInCourses.AddRange(newStuEnrolls);
+                            reconResult.NumAdded += newStuEnrolls.Count;
+                        }
+
+                        if (newFacEnrolls.Any())
+                        {
+                            ctxManager.Context.FacultyInCourses.AddRange(newFacEnrolls);
+                            reconResult.NumAdded += newFacEnrolls.Count;
+                        }
+                    }
+
+                    //is there a scenario where someone has a Person record, but not a profile?
+                    var stusNeedProfiles = students.Where(p => p.Student == null).ToList();
+                    stusNeedProfiles.ForEach(u =>
+                    {
+                        u.Student = new ProfileStudent();
+                        u.Student.PersonId = u.PersonId;
+                        ctxManager.Context.Students.Add(u.Student);
+                    });
+
+                    var facsNeedProfiles = faculty.Where(p => p.Faculty == null).ToList();
+                    facsNeedProfiles.ForEach(u =>
+                    {
+                        u.Faculty = new ProfileFaculty();
+                        u.Faculty.PersonId = u.PersonId;
+                        u.Faculty.AcademyId = course.AcademyId;
+                        ctxManager.Context.Faculty.Add(u.Faculty);
+                    });
+
+                    int numRemoved = 0;
+                    if (removedFaculty.Any())
+                    {
+                        removedFaculty.ForEach(fic => {
+                            fic.IsDeleted = true;
+                            ctxManager.Context.Entry(fic).State = System.Data.Entity.EntityState.Modified;
+                            numRemoved++;
+                        });
+                    }
+
+                    if (removedStudents.Any())
+                    {
+                        removedStudents.ForEach(sic => {
+                            sic.IsDeleted = true;
+                            ctxManager.Context.Entry(sic).State = System.Data.Entity.EntityState.Modified;
+                            numRemoved++;
+                        });
+
+                        var studIdList = removedStudents.Select(sic => sic.StudentPersonId).ToList();
+                        var csigList = await ctxManager.Context.StudentInGroups.Where(csig => studIdList.Contains(csig.StudentId) && csig.CourseId == course.Id && !csig.IsDeleted)
+                            .Include(csig => csig.WorkGroup)
+                            .Include(csig => csig.AssesseeSpResponses)
+                            .Include(csig => csig.AssesseeStratResponse)
+                            .Include(csig => csig.AssessorSpResponses)
+                            .Include(csig => csig.AssessorStratResponse)
+                            .Include(csig => csig.AuthorOfComments)
+                            .Include(csig => csig.RecipientOfComments)
+                            .ToListAsync();
+
+                        studIdList.ForEach(id => {
+                            var groupMems = csigList.Where(gm => gm.StudentId == id).ToList();
+                            if (groupMems.Any())
+                            {
+                                groupMems.ForEach(gm =>
+                                {
+                                    if (gm.WorkGroup.MpSpStatus != MpSpStatus.Published)
+                                    {
+                                        if (gm.AssesseeSpResponses.Any() || gm.AssesseeStratResponse.Any() || gm.AssessorSpResponses.Any() || gm.AssessorStratResponse.Any() || gm.AuthorOfComments.Any() || gm.RecipientOfComments.Any())
+                                        {
+                                            gm.IsDeleted = true;
+                                            ctxManager.Context.Entry(gm).State = System.Data.Entity.EntityState.Modified;
+                                        }
+                                        else
+                                        {
+                                            ctxManager.Context.StudentInGroups.Remove(gm);
+                                        }
+                                    }
+                                    
+                                });
                             }
                         });
-
-                        ctxManager.Context.People.AddRange(newEcatAccts);
-                        var changesCount = await ctxManager.Context.SaveChangesAsync();
-                        //this save adds both accounts and profiles, so the count is double the number of accounts added
-                        reconResult.NumOfAccountCreated = changesCount / 2;
+                        
                     }
 
-                    if (existingUsers.Any())
-                    {
-                        var studsWithProfiles = await ctxManager.Context.People.Where(p => studentIds.Contains(p.PersonId)).Include(p => p.Student).ToListAsync();
-                        var facsWithProfiles = await ctxManager.Context.People.Where(p => facultyIds.Contains(p.PersonId)).Include(p => p.Faculty).ToListAsync();
-
-                        var studsNeedProfiles = studsWithProfiles.Where(p => p.Student == null).ToList();
-                        studsNeedProfiles.ForEach(u =>
-                        {
-                            u.Student = new ProfileStudent();
-                            u.Student.PersonId = u.PersonId;
-                            ctxManager.Context.Students.Add(u.Student);
-                        });
-
-                        var facsNeedProfiles = facsWithProfiles.Where(p => p.Faculty == null).ToList();
-                        facsNeedProfiles.ForEach(u =>
-                        {
-                            u.Faculty = new ProfileFaculty();
-                            u.Faculty.PersonId = u.PersonId;
-                            ctxManager.Context.Faculty.Add(u.Faculty);
-                        });
-
-                        await ctxManager.Context.SaveChangesAsync();
-                    }
-
-                    var existingStudEnrolls = await ctxManager.Context.StudentInCourses.Where(sic => sic.CourseId == courseId).Select(sic => sic.StudentPersonId).ToListAsync();
-                    var existingFacEnrolls = await ctxManager.Context.FacultyInCourses.Where(fic => fic.CourseId == courseId).Select(fic => fic.FacultyPersonId).ToListAsync();
-
-                    var needStudEnrolls = students.Where(s => !existingStudEnrolls.Contains(s.PersonId)).ToList();
-                    var needFacEnrolls = faculty.Where(f => !existingFacEnrolls.Contains(f.PersonId)).ToList();
-
-                    if (needStudEnrolls.Any())
-                    {
-                        var newStudEnrolls = new List<StudentInCourse>();
-                        needStudEnrolls.ForEach(nse =>
-                        {
-                            var newEnroll = new StudentInCourse();
-                            newEnroll.StudentPersonId = nse.PersonId;
-                            newEnroll.CourseId = courseId;
-                            newEnroll.BbCourseMemId = enrollmentsReturned.Where(er => er.user_id.ToString() == nse.BbUserId).Select(er => er.id.ToString()).Single();
-
-                            newStudEnrolls.Add(newEnroll);
-                        });
-
-                        ctxManager.Context.StudentInCourses.AddRange(newStudEnrolls);
-                        reconResult.NumAdded += await ctxManager.Context.SaveChangesAsync();
-                    }
-
-                    if (needFacEnrolls.Any())
-                    {
-                        var newFacEnrolls = new List<FacultyInCourse>();
-                        needFacEnrolls.ForEach(nfe =>
-                        {
-                            var newEnroll = new FacultyInCourse();
-                            newEnroll.FacultyPersonId = nfe.PersonId;
-                            newEnroll.CourseId = courseId;
-                            newEnroll.BbCourseMemId = enrollmentsReturned.Where(er => er.user_id.ToString() == nfe.BbUserId).Select(er => er.id.ToString()).Single();
-
-                            newFacEnrolls.Add(newEnroll);
-                        });
-
-                        ctxManager.Context.FacultyInCourses.AddRange(newFacEnrolls);
-                        reconResult.NumAdded += await ctxManager.Context.SaveChangesAsync();
-                    }
-
+                    reconResult.NumRemoved = numRemoved;
                 }
 
+                if (reconResult.NumOfAccountCreated > 0 || reconResult.NumAdded > 0 || reconResult.NumRemoved > 0)
+                {
+                    await ctxManager.Context.SaveChangesAsync();
+                }
             }
-
-            //TODO: forgot to remove enrollments...
 
             return reconResult;
         }
