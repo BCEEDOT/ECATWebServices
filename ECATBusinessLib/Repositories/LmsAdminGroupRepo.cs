@@ -353,6 +353,8 @@ namespace Ecat.Business.Repositories
                 var studentIds = course.Students.Select(sic => sic.StudentPersonId).ToList();
                 var students = await ctxManager.Context.People.Where(p => studentIds.Contains(p.PersonId)).ToListAsync();
 
+                var remLmsGrpMemIds = new List<string>();
+
                 groupsWithMems.ForEach(grp =>
                 {
                     var grpMemRecon = new GroupMemReconResult()
@@ -391,10 +393,11 @@ namespace Ecat.Business.Repositories
                         else
                         {
                             if (memExists.IsDeleted)
-                            { memExists.IsDeleted = false; }
-
-                            ctxManager.Context.Entry(memExists).State = System.Data.Entity.EntityState.Modified;
-                            grpMemRecon.NumAdded++;
+                            {
+                                memExists.IsDeleted = false;
+                                ctxManager.Context.Entry(memExists).State = System.Data.Entity.EntityState.Modified;
+                                grpMemRecon.NumAdded++;
+                            }
                         }
                     });
 
@@ -402,12 +405,14 @@ namespace Ecat.Business.Repositories
 
                     if (memNotReturned.Any())
                     {
-                        //TODO: Check for assessment/strat/comments
-                        memNotReturned.ForEach(mr =>
-                        {
-                            mr.IsDeleted = true;
-                            ctxManager.Context.Entry(mr).State = System.Data.Entity.EntityState.Modified; grpMemRecon.NumRemoved++;
-                        });
+                        //memNotReturned.ForEach(mr =>
+                        //{
+                            //mr.IsDeleted = true;
+                            //ctxManager.Context.Entry(mr).State = System.Data.Entity.EntityState.Modified;
+                            //grpMemRecon.NumRemoved++;
+                        //});
+
+                        remLmsGrpMemIds.AddRange(memNotReturned.Select(csig => csig.BbCrseStudGroupId).ToList());
                     }
 
                     if (grpMemRecon.NumAdded > 0 || grpMemRecon.NumRemoved > 0)
@@ -415,6 +420,68 @@ namespace Ecat.Business.Repositories
                         results.Add(grpMemRecon);
                     }
                 });
+
+                if (remLmsGrpMemIds.Any())
+                {
+                    //group memberships are always deleted in 2.0
+                    var remMemsWithChildren = await ctxManager.Context.StudentInGroups.Where(csig => remLmsGrpMemIds.Contains(csig.BbCrseStudGroupId) && !csig.IsDeleted)
+                        .Include(csig => csig.WorkGroup)
+                        .Include(csig => csig.AssesseeSpResponses)
+                        .Include(csig => csig.AssesseeStratResponse)
+                        .Include(csig => csig.AssessorSpResponses)
+                        .Include(csig => csig.AssessorStratResponse)
+                        .Include(csig => csig.AuthorOfComments)
+                        .Include(csig => csig.RecipientOfComments)
+                        .Include(csig => csig.FacultyComment)
+                        .Include(csig => csig.FacultySpResponses)
+                        .Include(csig => csig.FacultyStrat)
+                        .ToListAsync();
+                    var remStuIdList = remMemsWithChildren.Select(mem => mem.StudentId).ToList();
+                    //var commFlags = await ctxManager.Context.StudSpCommentFlag.Where(flag => groupIdList.Contains(flag.WorkGroupId) && (studIdList.Contains(flag.AuthorPersonId) || studIdList.Contains(flag.RecipientPersonId))).ToListAsync();
+                    var authorFlags = await ctxManager.Context.StudSpCommentFlag.Where(flag => flag.WorkGroupId == remMemsWithChildren[0].WorkGroupId && remStuIdList.Contains(flag.AuthorPersonId)).ToListAsync();
+                    var recipFlags = await ctxManager.Context.StudSpCommentFlag.Where(flag => flag.WorkGroupId == remMemsWithChildren[0].WorkGroupId && remStuIdList.Contains(flag.RecipientPersonId)).ToListAsync();
+                    var facFlags = await ctxManager.Context.facSpCommentsFlag.Where(flag => flag.WorkGroupId == remMemsWithChildren[0].WorkGroupId && remStuIdList.Contains(flag.RecipientPersonId)).ToListAsync();
+
+                    remMemsWithChildren.ForEach(gm =>
+                    {
+                        if (gm.WorkGroup.MpSpStatus != MpSpStatus.Published)
+                        {
+                            if (gm.AssesseeSpResponses.Any()) { ctxManager.Context.SpResponses.RemoveRange(gm.AssesseeSpResponses); }
+                            if (gm.AssesseeStratResponse.Any()) { ctxManager.Context.SpStratResponses.RemoveRange(gm.AssesseeStratResponse); }
+                            if (gm.AssessorSpResponses.Any()) { ctxManager.Context.SpResponses.RemoveRange(gm.AssessorSpResponses); }
+                            if (gm.AssessorStratResponse.Any()) { ctxManager.Context.SpStratResponses.RemoveRange(gm.AssessorStratResponse); }
+
+                            if (gm.AuthorOfComments.Any())
+                            {
+                                var gmAuthorFlags = authorFlags.Where(flag => flag.AuthorPersonId == gm.StudentId && flag.WorkGroupId == gm.WorkGroupId).ToList();
+                                ctxManager.Context.StudSpCommentFlag.RemoveRange(gmAuthorFlags);
+                                ctxManager.Context.StudSpComments.RemoveRange(gm.AuthorOfComments);
+                            }
+                            if (gm.RecipientOfComments.Any())
+                            {
+                                var gmRecipFlags = recipFlags.Where(flag => flag.RecipientPersonId == gm.StudentId && flag.WorkGroupId == gm.WorkGroupId).ToList();
+                                ctxManager.Context.StudSpCommentFlag.RemoveRange(gmRecipFlags);
+                                ctxManager.Context.StudSpComments.RemoveRange(gm.RecipientOfComments);
+                            }
+
+                            if (gm.FacultyComment != null)
+                            {
+                                var gmFacFlag = facFlags.Where(flag => flag.RecipientPersonId == gm.StudentId && flag.WorkGroupId == gm.WorkGroupId).Single();
+                                ctxManager.Context.facSpCommentsFlag.Remove(gmFacFlag);
+                                ctxManager.Context.FacSpComments.Remove(gm.FacultyComment);
+                            }
+
+                            if (gm.FacultySpResponses.Any()) { ctxManager.Context.FacSpResponses.RemoveRange(gm.FacultySpResponses); }
+                            if (gm.FacultyStrat != null) { ctxManager.Context.FacStratResponses.Remove(gm.FacultyStrat); }
+
+
+                            ctxManager.Context.StudentInGroups.Remove(gm);
+
+                            var recon = results.Where(res => res.WorkGroupId == gm.WorkGroupId).Single();
+                            recon.NumRemoved++;
+                        }
+                    });
+                }
 
                 await ctxManager.Context.SaveChangesAsync();
             }

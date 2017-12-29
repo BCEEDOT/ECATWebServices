@@ -424,6 +424,8 @@ namespace Ecat.Business.Repositories
                     var newEnrolls = new List<CanvasEnrollment>();
                     var removedStudents = new List<StudentInCourse>();
                     var removedFaculty = new List<FacultyInCourse>();
+                    //var retStuEnrollIds = new List<string>();
+                    //var retFacEnrollIds = new List<string>();
                     var retStuUserIds = new List<string>();
                     var retFacUserIds = new List<string>();
 
@@ -442,10 +444,22 @@ namespace Ecat.Business.Repositories
                                     removedStudents.Add(stuEnrollExists);
                                 }
                             }
+
+                            //retStuEnrollIds.Add(ce.id.ToString());
                             
-                            if (stuEnrollExists == null)
+                            if (ce.enrollment_state == "active")
                             {
-                                newEnrolls.Add(ce);
+                                if (stuEnrollExists == null)
+                                {
+                                    newEnrolls.Add(ce);
+                                }
+
+                                if (stuEnrollExists != null && stuEnrollExists.IsDeleted)
+                                {
+                                    stuEnrollExists.IsDeleted = false;
+                                    ctxManager.Context.Entry(stuEnrollExists).State = System.Data.Entity.EntityState.Modified;
+                                    reconResult.NumAdded++;
+                                }
                             }
                         }
 
@@ -454,7 +468,7 @@ namespace Ecat.Business.Repositories
                             retFacUserIds.Add(ce.user_id.ToString());
                             var facEnrollExists = course.Faculty.Where(fic => fic.BbCourseMemId == ce.id.ToString()).Single();
 
-                            //TODO: Will students disenrolled in iGecko/SIS show as inactive or be removed from the course in Canvas completely? Update accordingly
+                            //TODO: Will faculty disenrolled in iGecko/SIS show as inactive or be removed from the course in Canvas completely? Update accordingly
                             if (ce.enrollment_state == "inactive")
                             {
                                 if (facEnrollExists != null && !facEnrollExists.IsDeleted)
@@ -463,9 +477,21 @@ namespace Ecat.Business.Repositories
                                 }
                             }
 
-                            if (facEnrollExists == null)
+                            //retFacEnrollIds.Add(ce.id.ToString());
+
+                            if (ce.enrollment_state == "active")
                             {
-                                newEnrolls.Add(ce);
+                                if (facEnrollExists == null)
+                                {
+                                    newEnrolls.Add(ce);
+                                }
+
+                                if (facEnrollExists != null && facEnrollExists.IsDeleted)
+                                {
+                                    facEnrollExists.IsDeleted = false;
+                                    ctxManager.Context.Entry(facEnrollExists).State = System.Data.Entity.EntityState.Modified;
+                                    reconResult.NumAdded++;
+                                }
                             }
                         }
                     });
@@ -597,6 +623,10 @@ namespace Ecat.Business.Repositories
                         ctxManager.Context.Faculty.Add(u.Faculty);
                     });
 
+                    //TODO: Will students disenrolled in iGecko/SIS show as inactive or be removed from the course in Canvas completely? Update accordingly
+                    //var removedFaculty = course.Faculty.Where(fic => !retFacEnrollIds.Contains(fic.BbCourseMemId) && !fic.isDeleted).ToList();
+                    //var removedStudents = course.Students.Where(sic => !retStuEnrollIds.Contains(sic.BbCourseMemId) && !sic.isDeleted).ToList();
+
                     int numRemoved = 0;
                     if (removedFaculty.Any())
                     {
@@ -615,6 +645,7 @@ namespace Ecat.Business.Repositories
                             numRemoved++;
                         });
 
+                        //need to delete studentingroup records so we don't mess up the group management screens
                         var studIdList = removedStudents.Select(sic => sic.StudentPersonId).ToList();
                         var csigList = await ctxManager.Context.StudentInGroups.Where(csig => studIdList.Contains(csig.StudentId) && csig.CourseId == course.Id && !csig.IsDeleted)
                             .Include(csig => csig.WorkGroup)
@@ -624,7 +655,18 @@ namespace Ecat.Business.Repositories
                             .Include(csig => csig.AssessorStratResponse)
                             .Include(csig => csig.AuthorOfComments)
                             .Include(csig => csig.RecipientOfComments)
+                            .Include(csig => csig.FacultyComment)
+                            .Include(csig => csig.FacultySpResponses)
+                            .Include(csig => csig.FacultyStrat)
                             .ToListAsync();
+                        var groupIdList = csigList.Select(csig => csig.WorkGroupId).Distinct().ToList();
+                        //var commFlags = await ctxManager.Context.StudSpCommentFlag.Where(flag => groupIdList.Contains(flag.WorkGroupId) && (studIdList.Contains(flag.AuthorPersonId) || studIdList.Contains(flag.RecipientPersonId))).ToListAsync();
+                        var authorFlags = await ctxManager.Context.StudSpCommentFlag.Where(flag => groupIdList.Contains(flag.WorkGroupId) && studIdList.Contains(flag.AuthorPersonId)).ToListAsync();
+                        var recipFlags = await ctxManager.Context.StudSpCommentFlag.Where(flag => groupIdList.Contains(flag.WorkGroupId) && studIdList.Contains(flag.RecipientPersonId)).ToListAsync();
+                        var facFlags = await ctxManager.Context.facSpCommentsFlag.Where(flag => groupIdList.Contains(flag.WorkGroupId) && studIdList.Contains(flag.RecipientPersonId)).ToListAsync();
+
+                        //if (commFlags.Any()) { ctxManager.Context.StudSpCommentFlag.RemoveRange(commFlags); }
+                        //if (facFlags.Any()) { ctxManager.Context.facSpCommentsFlag.RemoveRange(facFlags); }
 
                         studIdList.ForEach(id => {
                             var groupMems = csigList.Where(gm => gm.StudentId == id).ToList();
@@ -634,15 +676,36 @@ namespace Ecat.Business.Repositories
                                 {
                                     if (gm.WorkGroup.MpSpStatus != MpSpStatus.Published)
                                     {
-                                        if (gm.AssesseeSpResponses.Any() || gm.AssesseeStratResponse.Any() || gm.AssessorSpResponses.Any() || gm.AssessorStratResponse.Any() || gm.AuthorOfComments.Any() || gm.RecipientOfComments.Any())
+                                        if (gm.AssesseeSpResponses.Any()) { ctxManager.Context.SpResponses.RemoveRange(gm.AssesseeSpResponses); }
+                                        if (gm.AssesseeStratResponse.Any()) { ctxManager.Context.SpStratResponses.RemoveRange(gm.AssesseeStratResponse); }
+                                        if (gm.AssessorSpResponses.Any()) { ctxManager.Context.SpResponses.RemoveRange(gm.AssessorSpResponses); }
+                                        if (gm.AssessorStratResponse.Any()) { ctxManager.Context.SpStratResponses.RemoveRange(gm.AssessorStratResponse); }
+
+                                        if (gm.AuthorOfComments.Any())
                                         {
-                                            gm.IsDeleted = true;
-                                            ctxManager.Context.Entry(gm).State = System.Data.Entity.EntityState.Modified;
+                                            var gmAuthorFlags = authorFlags.Where(flag => flag.AuthorPersonId == gm.StudentId && flag.WorkGroupId == gm.WorkGroupId).ToList();
+                                            ctxManager.Context.StudSpCommentFlag.RemoveRange(gmAuthorFlags);
+                                            ctxManager.Context.StudSpComments.RemoveRange(gm.AuthorOfComments);
                                         }
-                                        else
+                                        if (gm.RecipientOfComments.Any())
                                         {
-                                            ctxManager.Context.StudentInGroups.Remove(gm);
+                                            var gmRecipFlags = recipFlags.Where(flag => flag.RecipientPersonId == gm.StudentId && flag.WorkGroupId == gm.WorkGroupId).ToList();
+                                            ctxManager.Context.StudSpCommentFlag.RemoveRange(gmRecipFlags);
+                                            ctxManager.Context.StudSpComments.RemoveRange(gm.RecipientOfComments);
                                         }
+
+                                        if (gm.FacultyComment != null)
+                                        {
+                                            var gmFacFlag = facFlags.Where(flag => flag.RecipientPersonId == gm.StudentId && flag.WorkGroupId == gm.WorkGroupId).Single();
+                                            ctxManager.Context.facSpCommentsFlag.Remove(gmFacFlag);
+                                            ctxManager.Context.FacSpComments.Remove(gm.FacultyComment);
+                                        }
+
+                                        if (gm.FacultySpResponses.Any()) { ctxManager.Context.FacSpResponses.RemoveRange(gm.FacultySpResponses); }
+                                        if (gm.FacultyStrat != null) { ctxManager.Context.FacStratResponses.Remove(gm.FacultyStrat); }
+
+
+                                        ctxManager.Context.StudentInGroups.Remove(gm);
                                     }
                                     
                                 });
