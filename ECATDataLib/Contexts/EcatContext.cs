@@ -15,6 +15,7 @@ using Ecat.Data.Models.Cognitive;
 using Ecat.Data.Models.Student;
 using Ecat.Data.Models.Faculty;
 using Ecat.Data.Models.Common;
+using System.Runtime.CompilerServices;
 
 namespace Ecat.Data.Contexts
 {
@@ -54,7 +55,8 @@ namespace Ecat.Data.Contexts
                 .Configure(type => type.ToTable(type.ClrType.Name.Substring(2)));
 
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
-                .Where(type => type.IsClass && 
+                .Where(type => type.IsClass &&
+                (!type.IsDefined(typeof(CompilerGeneratedAttribute))) &&
                 (type.Namespace == "Ecat.Data.Models.User.Config" ||
                 type.Namespace == "Ecat.Data.Models.School.Config" ||
                 type.Namespace == "Ecat.Data.Models.Designer.Config" ||
