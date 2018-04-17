@@ -261,6 +261,7 @@
     <Compile Include="Models\Canvas\Course.cs" />
     <Compile Include="Models\Canvas\Enrollment.cs" />
     <Compile Include="Models\Canvas\Group.cs" />
+    <Compile Include="Models\Canvas\GroupMembership.cs" />
     <Compile Include="Models\Canvas\Login.cs" />
     <Compile Include="Models\Canvas\Progress.cs" />
     <Compile Include="Models\Canvas\Section.cs" />

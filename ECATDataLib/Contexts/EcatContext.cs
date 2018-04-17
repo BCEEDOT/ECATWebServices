@@ -16,6 +16,7 @@ using Ecat.Data.Models.Student;
 using Ecat.Data.Models.Faculty;
 using Ecat.Data.Models.Common;
 using Ecat.Data.Models.Canvas;
+using System.Runtime.CompilerServices;
 
 namespace Ecat.Data.Contexts
 {
@@ -56,6 +57,7 @@ namespace Ecat.Data.Contexts
 
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(type => type.IsClass && 
+                (!type.IsDefined(typeof(CompilerGeneratedAttribute))) &&
                 (type.Namespace == "Ecat.Data.Models.User.Config" ||
                 type.Namespace == "Ecat.Data.Models.School.Config" ||
                 type.Namespace == "Ecat.Data.Models.Designer.Config" ||
