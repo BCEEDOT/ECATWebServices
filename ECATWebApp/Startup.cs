@@ -124,7 +124,7 @@ namespace Ecat.Web
                 AutomaticChallenge = true,
                 Audience = "ecat_server",
                 //TODO: Update with environment
-                Authority  = "http://localhost:62187",
+                Authority  = "http://localhost:50000",
                 RequireHttpsMetadata = false,
                 TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
                     NameClaimType = OpenIdConnectConstants.Claims.Name,
